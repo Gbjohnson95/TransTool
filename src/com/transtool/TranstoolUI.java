@@ -6,9 +6,6 @@ import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.Label;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
@@ -16,21 +13,21 @@ import com.vaadin.ui.VerticalLayout;
 @Theme("transtool")
 public class TranstoolUI extends UI {
 
-	@WebServlet(value = "/*", asyncSupported = true)
-	@VaadinServletConfiguration(productionMode = false, ui = TranstoolUI.class)
-	public static class Servlet extends VaadinServlet {
-	}
+    @WebServlet(value = "/*", asyncSupported = true)
+    @VaadinServletConfiguration(productionMode = false, ui = TranstoolUI.class)
+    public static class Servlet extends VaadinServlet {
+    }
 
-	@Override
-	protected void init(VaadinRequest request) {
-		final VerticalLayout layout = new VerticalLayout();
-		layout.setMargin(true);
-		setContent(layout);
-		
-		Upload xmlUpload = new Upload("Upload the main XML document here", xmlReceiver);
-		upload.setButtonCaption("Upload Now");
-		
-		layout.addComponent(xmlUpload);
-	}
+    @Override
+    protected void init(VaadinRequest request) {
+        final VerticalLayout layout = new VerticalLayout();
+        layout.setMargin(true);
+        setContent(layout);
+
+        TextField textFieldTest = new TextField("Test Text Field");
+        textFieldTest.setValue("Text goes here");
+
+        layout.addComponent(textFieldTest);
+    }
 
 }
