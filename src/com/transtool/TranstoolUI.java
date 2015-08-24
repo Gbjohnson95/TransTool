@@ -26,14 +26,11 @@ public class TranstoolUI extends UI {
 		final VerticalLayout layout = new VerticalLayout();
 		layout.setMargin(true);
 		setContent(layout);
-
-		Button button = new Button("Click Me");
-		button.addClickListener(new Button.ClickListener() {
-			public void buttonClick(ClickEvent event) {
-				layout.addComponent(new Label("I've been clicked"));
-			}
-		});
-		layout.addComponent(button);
+		
+		Upload xmlUpload = new Upload("Upload the main XML document here", xmlReceiver);
+		upload.setButtonCaption("Upload Now");
+		
+		layout.addComponent(xmlUpload);
 	}
 
 }
