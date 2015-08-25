@@ -15,31 +15,30 @@ public class xmlWriter {
     //      - newElement(element, atributes[])
     // Write to file
     //      - writeDoc(new File("C:\\file.xml")
-    
-    public static void xmlWriter () throws ParserConfigurationException {
-       DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-       DocumentBuilder docBuilder = docFactory.newDocumentBuilder();        
+
+    public static void xmlWriter() throws ParserConfigurationException {
+        DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
     }
-    
+
     public DocumentBuilderFactory docFactory;
-    public   DocumentBuilder docBuilder = docFactory.newDocumentBuilder(); 
+    public DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
     public Document doc = docBuilder.newDocument();
 
     public xmlWriter() {
         this.docFactory = DocumentBuilderFactory.newInstance();
     }
-    
+
     public void writeDoc(/*xml doc*/) throws TransformerConfigurationException {
-    
-       TransformerFactory transformerFactory = TransformerFactory.newInstance();
-       Transformer transformer = TransformerFactory.newTransformer();
-       DOMSource source = new DOMSource(doc);
-       StreamResult result = new StreamResult(new File("path to file"));
-    
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        Transformer transformer = TransformerFactory.newTransformer();
+        DOMSource source = new DOMSource(doc);
+        StreamResult result = new StreamResult(new File("path to file"));
+
     }
-   
+
     public static void newElement() {
-       // Code   
+        // Code   
     }
-    
+
 }
