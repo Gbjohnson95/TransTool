@@ -27,7 +27,7 @@ import org.xml.sax.SAXException;
  * It will parse through an XML Document, and store certain information
  * into an ArrayList
  */
-public class XMLParser {
+public final class XMLParser {
     private String nameOfXML;
 
     public XMLParser() {
@@ -39,20 +39,50 @@ public class XMLParser {
 
     public XMLParser(String nameOfXML) {
         this.nameOfXML = nameOfXML;
+        System.out.println("non default constructor: " + nameOfXML);
+        parseXML();
     }
     
-    public void parse(){
-        File fXmlFile = new File("/Users/mkyong/staff.xml");
+    public void parseXML(){
+        File fXmlFile = new File(nameOfXML);
 	DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 	DocumentBuilder dBuilder;
         try {
             dBuilder = dbFactory.newDocumentBuilder();
-            Document doc = dBuilder.parse(nameOfXML);
+
+            Document doc = dBuilder.parse("brainhoneymanifest.xml");
+            
             // Normalize the document.  
             doc.getDocumentElement().normalize();
             
+
             NodeList nodeList = doc.getElementsByTagName("question");
             
+            
+            
+            
+            
+            for (int temp = 0; temp < nodeList.getLength(); temp++) {
+
+		Node nNode = nodeList.item(temp);
+				
+		System.out.println("\nCurrent Element :" + nNode.getNodeName());
+				
+		if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+
+			Element eElement = (Element) nNode;
+                        
+                        
+                        System.out.println("Group: " + eElement.getAttribute("partial"));
+			//System.out.println("First Name : " + eElement.getElementsByTagName("firstname").item(0).getTextContent());
+			//System.out.println("Last Name : " + eElement.getElementsByTagName("lastname").item(0).getTextContent());
+			//System.out.println("Nick Name : " + eElement.getElementsByTagName("nickname").item(0).getTextContent());
+			//System.out.println("Salary : " + eElement.getElementsByTagName("salary").item(0).getTextContent());
+
+		
+
+		}
+            }
             
         } catch (ParserConfigurationException | SAXException | IOException ex) {
             Logger.getLogger(XMLParser.class.getName()).log(Level.SEVERE, null, ex);

@@ -29,7 +29,7 @@ public class xmlWriter {
     }
 
     /**
-     * Creates a new element with an array of Atributes, and some text to put
+     * Creates a new element with an array of Attributes, and some text to put
      * in the element.
      * 
      *

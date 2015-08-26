@@ -13,7 +13,7 @@ public class TransTool {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        XMLParser parse = new XMLParser();
+        XMLParser parse = new XMLParser("./brainhoneymanifest.xml");
     }
     
 }
