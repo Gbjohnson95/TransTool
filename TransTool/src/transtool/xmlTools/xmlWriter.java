@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
@@ -14,24 +13,24 @@ public class xmlWriter {
     private StringWriter stringWriter;
     private XMLOutputFactory xMLOutputFactory;
     private XMLStreamWriter xMLStreamWriter;
+    
 
     /**
      * Creates XMLStreamWriter and starts document.
      *
      * @throws XMLStreamException
      */
-    public void xmlWriter() throws XMLStreamException {
+    public xmlWriter() throws XMLStreamException {
         stringWriter = new StringWriter();
         xMLOutputFactory = XMLOutputFactory.newInstance();
         xMLStreamWriter = xMLOutputFactory.createXMLStreamWriter(stringWriter);
         xMLStreamWriter.writeStartDocument();
-
     }
 
     /**
-     * Creates a new element with an array of Atributes, and some text to put
+     * Creates a new element with an array of Attributes, and some text to put
      * in the element.
-     * 
+     *
      *
      * @param newElementName
      * @param newElementAtribute
@@ -45,9 +44,9 @@ public class xmlWriter {
         }
         xMLStreamWriter.writeCharacters(text);
     }
-    
+
     /**
-     * Creates an element with no atributes, along with some text. 
+     * Creates an element with no attributes, along with some text.
      *
      * @param newElementName
      * @param text
@@ -59,7 +58,7 @@ public class xmlWriter {
     }
 
     /**
-     * Creates a new element with just atributes.
+     * Creates a new element with just attributes.
      *
      * @param newElementName
      * @param newElementAtribute
@@ -67,7 +66,7 @@ public class xmlWriter {
      */
     public void newElement(String newElementName, String newElementAtribute[][]) throws XMLStreamException {
         xMLStreamWriter.writeStartElement(newElementName);
-        for (int a = 0; a <= newElementAtribute.length; a++) {
+        for (int a = 0; a == newElementAtribute.length; a++) {
             xMLStreamWriter.writeAttribute(newElementAtribute[a][0], newElementAtribute[a][1]);
         }
     }
@@ -80,6 +79,7 @@ public class xmlWriter {
      */
     public void newElement(String newElementName) throws XMLStreamException {
         xMLStreamWriter.writeStartElement(newElementName);
+        //System.out.print(newElementName);
     }
 
     /**
@@ -93,7 +93,7 @@ public class xmlWriter {
 
     /**
      * Generates a string that is returned, so that you can write it to a file,
-     * as well as cleaning up some stuff. 
+     * as well as cleaning up some stuff.
      *
      * @return
      */
