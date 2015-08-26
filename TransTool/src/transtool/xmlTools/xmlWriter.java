@@ -1,44 +1,41 @@
 package transtool.xmlTools;
 
-import java.io.File;
-import javax.xml.parsers.*;
-import javax.xml.transform.*;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-import org.w3c.dom.*;
+import java.io.IOException;
+import java.io.StringWriter;
+
+import javax.xml.stream.XMLOutputFactory;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
 
 public class xmlWriter {
     // TO-DO
     // Create virtual doc & and make root element
-    //      - newXmlDoc(root element, atributes[])
+    //      - newXmlDoc()
     // Create new element such as quiz question
     //      - newElement(element, atributes[])
     // Write to file
     //      - writeDoc(new File("C:\\file.xml")
 
-    public static void xmlWriter() throws ParserConfigurationException {
-        DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
-    }
+    private StringWriter stringWriter;
+    private XMLOutputFactory xMLOutputFactory;
+    private XMLStreamWriter xMLStreamWriter;
 
-    public DocumentBuilderFactory docFactory;
-    public DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
-    public Document doc = docBuilder.newDocument();
-
-    public xmlWriter() {
-        this.docFactory = DocumentBuilderFactory.newInstance();
-    }
-
-    public void writeDoc(/*xml doc*/) throws TransformerConfigurationException {
-        TransformerFactory transformerFactory = TransformerFactory.newInstance();
-        Transformer transformer = TransformerFactory.newTransformer();
-        DOMSource source = new DOMSource(doc);
-        StreamResult result = new StreamResult(new File("path to file"));
+    public void xmlWriter() throws XMLStreamException {
+        stringWriter = new StringWriter();
+        xMLOutputFactory = XMLOutputFactory.newInstance();
+        xMLStreamWriter = xMLOutputFactory.createXMLStreamWriter(stringWriter);
+        xMLStreamWriter.writeStartDocument();
 
     }
 
-    public static void newElement() {
-        // Code   
+    public void newElement(String newElementName, String newElementAtribute[][]) throws XMLStreamException {
+        xMLStreamWriter.writeStartElement(newElementName);
+        for (int a = 0; a <= newElementAtribute.length; a++) {
+            xMLStreamWriter.writeAttribute(newElementAtribute[a][0], newElementAtribute[a][1]);
+        }
     }
 
+    public void childElement(String newElement) {
+        //Code
+    }
 }
