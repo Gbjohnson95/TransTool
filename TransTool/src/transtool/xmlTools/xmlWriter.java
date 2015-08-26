@@ -13,7 +13,6 @@ public class xmlWriter {
     private StringWriter stringWriter;
     private XMLOutputFactory xMLOutputFactory;
     private XMLStreamWriter xMLStreamWriter;
-    
 
     /**
      * Creates XMLStreamWriter and starts document.
@@ -28,24 +27,6 @@ public class xmlWriter {
     }
 
     /**
-     * Creates a new element with an array of Attributes, and some text to put
-     * in the element.
-     *
-     *
-     * @param newElementName
-     * @param newElementAtribute
-     * @param text
-     * @throws XMLStreamException
-     */
-    public void newElement(String newElementName, String newElementAtribute[][], String text) throws XMLStreamException {
-        xMLStreamWriter.writeStartElement(newElementName);
-        for (int a = 0; a <= newElementAtribute.length; a++) {
-            xMLStreamWriter.writeAttribute(newElementAtribute[a][0], newElementAtribute[a][1]);
-        }
-        xMLStreamWriter.writeCharacters(text);
-    }
-
-    /**
      * Creates an element with no attributes, along with some text.
      *
      * @param newElementName
@@ -57,18 +38,16 @@ public class xmlWriter {
         xMLStreamWriter.writeCharacters(text);
     }
 
+
     /**
-     * Creates a new element with just attributes.
+     * Add an Attribute on the XML tag
      *
-     * @param newElementName
-     * @param newElementAtribute
+     * @param newElementAtributeTitle
+     * @param newElementAtributeValue
      * @throws XMLStreamException
      */
-    public void newElement(String newElementName, String newElementAtribute[][]) throws XMLStreamException {
-        xMLStreamWriter.writeStartElement(newElementName);
-        for (int a = 0; a == newElementAtribute.length; a++) {
-            xMLStreamWriter.writeAttribute(newElementAtribute[a][0], newElementAtribute[a][1]);
-        }
+    public void newElementAtribute(String newElementAtributeTitle, String newElementAtributeValue) throws XMLStreamException {
+        xMLStreamWriter.writeAttribute(newElementAtributeTitle, newElementAtributeValue);
     }
 
     /**
