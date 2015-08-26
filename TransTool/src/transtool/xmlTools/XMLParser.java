@@ -51,6 +51,9 @@ public class XMLParser {
             // Normalize the document.  
             doc.getDocumentElement().normalize();
             
+            NodeList nodeList = doc.getElementsByTagName("question");
+            
+            
         } catch (ParserConfigurationException | SAXException | IOException ex) {
             Logger.getLogger(XMLParser.class.getName()).log(Level.SEVERE, null, ex);
             System.out.println("Error: Cannot read file.  Exception thrown!");
