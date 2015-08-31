@@ -22,9 +22,9 @@ public class xmlDocument {
     private String filepath;
 
     public xmlDocument() {
-    filepath = System.getProperty("user.dir");
+        filepath = System.getProperty("user.dir");
     }
-    
+
     public void addElements(String newElements) {
         doc += newElements;
     }
@@ -32,7 +32,7 @@ public class xmlDocument {
     public void fileName(String file) {
         filename = file;
     }
-    
+
     /*public String filePath () {
         filepath = System.getProperty("user.dir");
         
@@ -40,9 +40,9 @@ public class xmlDocument {
         return filepath;
         
     }*/
-
+    
     public void writeToFile() throws IOException {
-        File file = new File(filepath+filename);
+        File file = new File(filepath + filename);
         System.out.println(filepath + filename);
 
         if (!file.exists()) {
