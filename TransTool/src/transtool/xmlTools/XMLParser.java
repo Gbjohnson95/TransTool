@@ -15,6 +15,7 @@ import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.parsers.ParserConfigurationException;
+import org.w3c.dom.NamedNodeMap;
 import org.xml.sax.SAXException;
 
 /**
@@ -62,10 +63,10 @@ public final class XMLParser {
             
             
             
+            
             for (int temp = 0; temp < nodeList.getLength(); temp++) {
 
-		Node nNode = nodeList.item(temp);
-				
+		Node nNode = nodeList.item(temp);		
 		System.out.println("\nCurrent Element :" + nNode.getNodeName());
 				
 		if (nNode.getNodeType() == Node.ELEMENT_NODE) {
@@ -73,7 +74,8 @@ public final class XMLParser {
 			Element eElement = (Element) nNode;
                         
                         
-                        System.out.println("Group: " + eElement.getAttribute("partial"));
+                        System.out.println("Group: " + eElement.getElementsByTagName("group").item(0).getTextContent());
+                        //System.out.println(testement.getAttributeNode("Body").getName());
 			//System.out.println("First Name : " + eElement.getElementsByTagName("firstname").item(0).getTextContent());
 			//System.out.println("Last Name : " + eElement.getElementsByTagName("lastname").item(0).getTextContent());
 			//System.out.println("Nick Name : " + eElement.getElementsByTagName("nickname").item(0).getTextContent());
