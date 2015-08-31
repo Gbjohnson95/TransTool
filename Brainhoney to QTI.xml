@@ -1,0 +1,134 @@
+<item id="DB7FP" creationdate="2014-12-19T19:34:54.43Z" creationby="25537871" modifieddate="2015-02-26T15:44:23.817Z" modifiedby="25537871">
+    <data>
+        <type>Assessment</type>
+        <sequence>a</sequence>
+        <title>demo</title>
+        <perfectscore>1</perfectscore>
+        <weight>100</weight>
+        <questions>
+            <question id="8f511bba891248248cca73eaf45fbee8" score="18" />
+            <question id="344b6f6c487d4e31b425b20acdc389c8" score="12" />
+            <question id="991bbe2a73c54ab7876353e04b038494" score="1" />
+            <question id="6317d3b588994ef587b7452da58256f1" score="1" />
+        </questions>
+        <attemptlimit>1</attemptlimit>
+    </data>
+</item>
+
+<question questionid="6317d3b588994ef587b7452da58256f1" score="1" partial="false">
+	<answer>
+		<value>Dog dog</value>
+		<value>Cat cat elephant</value>
+	</answer>
+	<body><p>Question Text</p></body>
+	<interaction type="text" flags="8" width="90" texttype="Normal" />
+</question>
+
+<question questionid="344b6f6c487d4e31b425b20acdc389c8" score="12" partial="false">
+	<groups>
+		<group>Awesome</group>
+	</groups>
+	<answer>
+		<value>1</value>
+	</answer>
+	<body>Can you do the can-can?</body>
+	<interaction type="choice">
+	<choice id="1" pscore="1">
+		<body>Yes</body>
+	</choice>
+	<choice id="2" pscore="1">
+		<body>No</body>
+    </choice>
+    <choice id="3" pscore="1">
+		<body>Maybe</body>
+    </choice>
+    <choice id="4" pscore="1">
+		<body>Is this a question or an elephant?</body>
+    </choice>
+	</interaction>
+</question>
+
+
+
+
+
+
+<assesment title="demo" ident="a1001">
+	<section title="main" ident="s1--2">
+		<item title="Question1" ident="QUE_1002">
+			<presentation>
+				
+				<material>
+					<mattext texttype="text/html">
+						<p>Question Text</p>
+					</mattext>
+				</material>
+				
+				<responce_lid ident="QUE_1003_RL" rcardinality="multiple rtiming="no">
+					<render_choice>
+						<responce_label ident="QUE_1004_A3">
+							<material>
+								<mattext texttype="text/html">
+									<p>Responce A</p>
+								</mattext>
+							</material>
+						</responce_label>
+						
+						<responce_label ident="QUE_1005_A5">
+							<material>
+								<mattext texttype="text/html">
+									<p>Responce B</p>
+								</mattext>
+							</material>
+						</responce_label>
+					</render_choice>
+				</responce_lid>
+				
+			</presentation>
+			
+			<resprocessing>
+			
+				<outcomes>
+                    <decvar vartype="Integer" defaultval="0" varname="que_score" maxvalue="100" minvalue="0" />
+                </outcomes>
+				
+				<respcondition>
+                    <conditionvar>
+                        <varequal respident="QUE_1003_RL">QUE_1004_A1</varequal>
+                    </conditionvar>
+                    <setvar varname="que_score" action="Add">-100.00</setvar>
+                    <displayfeedback feedbacktype="Response" linkrefid="QUE_1015_IC" />
+                    <displayfeedback feedbacktype="Response" linkrefid="QUE_1003_ALL" />
+                </respcondition>
+				
+				<respcondition>
+                    <conditionvar>
+                        <varequal respident="QUE_1003_RL">QUE_1005_A2</varequal>
+                    </conditionvar>
+                    <setvar varname="que_score" action="Add">100.00</setvar>
+                    <displayfeedback feedbacktype="Response" linkrefid="QUE_1016_IC" />
+                    <displayfeedback feedbacktype="Response" linkrefid="QUE_1003_ALL" />
+                </respcondition>
+				
+			</reprocessing>
+			
+			<itemfeedback ident="QUE_1015_IC" view="Candidate">
+                <material>
+                    <mattext texttype="text/html">
+                        <p>You chose, poorly</p>
+					</mattext>
+                </material>
+            </itemfeedback>
+			
+			<itemfeedback ident="QUE_1016_IC" view="Candidate">
+                <material>
+                    <mattext texttype="text/html">
+                        <p>You chose, correctly</p>
+					</mattext>
+                </material>
+            </itemfeedback>
+		</item>
+	</section>
+<assesment>
+	  
+	  
