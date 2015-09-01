@@ -15,7 +15,7 @@ import transtool.xmlTools.*;
 public class quiz {
 
     xmlWriter doc;
-    private int count = 0;
+    private int count = 1;
     private int responseCounter = 1;
     private String questionIdent;
 
@@ -28,6 +28,11 @@ public class quiz {
         endQuestion();
         endSection();
         endAssesment();
+        
+    }
+    
+    public String print() {
+        return doc.toStringAndClose();
     }
 
     private String ident(String prefix, String suffix) {
@@ -41,42 +46,45 @@ public class quiz {
     }
 
     private void newAssesment(String title) throws XMLStreamException {
-        doc.newElement("assesment");
+        doc.newElement("assesment"); // closed
         doc.newElementAtribute("title", title);
         doc.newElementAtribute("ident", ident("A"));
     }
 
-    private void endAssesment() {
+    private void endAssesment() throws XMLStreamException {
+        doc.closeElement(); // Closes assesment
+        
 
     }
 
     private void newSection(String title) throws XMLStreamException {
-        doc.newElement("section");
+        doc.newElement("section"); // closed
         doc.newElementAtribute("title", title);
         doc.newElementAtribute("ident", ident("S"));
     }
 
-    private void endSection() {
+    private void endSection() throws XMLStreamException {
+        doc.closeElement(); // Closes section
 
     }
 
     private void newQuestion(String questionTitle, String question) throws XMLStreamException {
         // Generates a new question item.
         questionIdent = ident("QUE_");
-        doc.newElement("item");
+        doc.newElement("item"); // closed
         doc.newElementAtribute("title", questionTitle);
-        doc.newElement("presentation");
+        doc.newElement("presentation"); //closed
         
         // Actual question material.
-        doc.newElement("material");
-        doc.newElement("mattext", question);
+        doc.newElement("material"); //closed
+        doc.newElement("mattext", question); //closed
         doc.newElementAtribute("texttype", "text//html");
         doc.closeElement(); // Closes mattext
         doc.closeElement(); // Closes material
         
         // Opening code for the responces.
-        doc.newElement("responce_lid", questionIdent + "_RL");
-        doc.newElement("render_choice");
+        doc.newElement("responce_lid", questionIdent + "_RL"); //closed
+        doc.newElement("render_choice"); //closed
         
         // Resets the responseCounter to 1.
     }
@@ -84,15 +92,18 @@ public class quiz {
     private void endQuestion() throws XMLStreamException {
         doc.closeElement(); // Closes render_choice
         doc.closeElement(); // Closes response_lid
+        
+        doc.closeElement(); // Closes presentation
+        doc.closeElement(); // Closes item
 
     }
 
     private void addQuestionResponce(String response, boolean isAnswer) throws XMLStreamException {
-        doc.newElement("responce_lable");
+        doc.newElement("responce_lable"); //closed
         doc.newElementAtribute("ident", questionIdent + "_A" + responseCounter);
         
-        doc.newElement("material");
-        doc.newElement("mattext", response);
+        doc.newElement("material"); // closed
+        doc.newElement("mattext", response); //closed
         doc.newElementAtribute("texttype", "txt//html");
         
         doc.closeElement(); // Closes mattext
