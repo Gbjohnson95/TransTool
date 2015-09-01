@@ -14,13 +14,12 @@ public class TransTool {
      * @param args the command line arguments
      * @throws javax.xml.stream.XMLStreamException
      */
-<<<<<<< HEAD
+
     public static void main(String[] args) {
         // TODO code application logic here
         XMLParser parse = new XMLParser("./brainhoneymanifest.xml");
     }
-=======
-
+/*
     public static void main(String[] args) throws XMLStreamException, IOException {
         xmlWriter question = new xmlWriter();
         
@@ -59,7 +58,6 @@ public class TransTool {
 
     //}
            }
-         
->>>>>>> origin/master
-    
+       
+  */  
 }
