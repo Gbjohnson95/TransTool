@@ -47,8 +47,9 @@ public class quiz {
      * @return
      */
     public String print() {
-        String ret = doc.toStringAndClose() + resDoc.toStringAndClose();
-        return ret;
+        String string = doc.toStringAndClose();
+        string = string.replaceAll("</presentation>", "</presentation>" + resDoc.toStringAndClose());
+        return string;
     }
 
     private String ident(String prefix, String suffix) {
@@ -64,23 +65,23 @@ public class quiz {
     }
 
     private void newAssesment(String title) throws XMLStreamException {
-        doc.newElement("assesment");
+        doc.newElement("assesment"); // closed
         doc.newElementAtribute("title", title);
         doc.newElementAtribute("ident", ident("a"));
     }
 
     private void endAssesment() throws XMLStreamException {
-        doc.closeElement();
+        doc.closeElement(); // Closes assesment
     }
 
     private void newSection(String title) throws XMLStreamException {
-        doc.newElement("section");
+        doc.newElement("section"); // closed
         doc.newElementAtribute("title", title);
         doc.newElementAtribute("ident", ident("s"));
     }
 
     private void endSection() throws XMLStreamException {
-        doc.closeElement();
+        doc.closeElement(); // Closes section
     }
 
     private void newQuestion(String questionTitle, String question) throws XMLStreamException {
@@ -109,30 +110,35 @@ public class quiz {
     }
 
     private void endQuestion() throws XMLStreamException {
-        doc.closeElement();
-        doc.closeElement();
-        doc.closeElement();
-        resDoc.closeElement();
-        doc.closeElement();
+        doc.closeElement(); // Closes render_choice
+        doc.closeElement(); // Closes response_lid
+        doc.closeElement(); // Closes presentation
+        //String resDocText = resDoc.toStringAndClose();
+        //doc.writeCharacters(resDocText);
+
+        resDoc.closeElement(); //Closes resprocessing
+
+        doc.closeElement(); // Closes item
+
     }
 
     private void addQuestionResponce(String response, boolean isAnswer) throws XMLStreamException {
-        doc.newElement("responce_lable");
+        doc.newElement("responce_lable"); //closed
         responseCounter += 1;
         String questionResponceID = questionIdent + "_A" + responseCounter;
         doc.newElementAtribute("ident", questionResponceID);
-        doc.newElement("material");
+        doc.newElement("material"); // closed
         doc.newElement("mattext", response); //closed
         //doc.newElementAtribute("texttype", "txt//html");
-        doc.closeElement();
-        doc.closeElement();
-        doc.closeElement();
+        doc.closeElement(); // Closes mattext
+        doc.closeElement(); // Closes material
+        doc.closeElement(); // Closes responce_lable
 
         resDoc.newElement("respcondition");
         resDoc.newElement("conitionvar");
         resDoc.newElement("varequal", questionResponceID);
-        resDoc.closeElement();
-        resDoc.closeElement();
+        resDoc.closeElement(); // CLoses varequal
+        resDoc.closeElement(); // Closes conditionvar
 
         String queScore;
         if (isAnswer) {
@@ -144,7 +150,7 @@ public class quiz {
         resDoc.newElement("setvar", queScore);
         //resDoc.newElementAtribute("varname", "que_score");
         //resDoc.newElementAtribute("action", "Add");
-        resDoc.closeElement();
-        resDoc.closeElement();
+        resDoc.closeElement(); //closes setvar
+        resDoc.closeElement(); // Closes Responce
     }
 }

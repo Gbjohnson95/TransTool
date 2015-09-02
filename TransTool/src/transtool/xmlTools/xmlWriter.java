@@ -10,11 +10,14 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Source;
+
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
+import java.io.*;
+import javax.xml.stream.*;
 
 public class xmlWriter {
 
@@ -31,7 +34,7 @@ public class xmlWriter {
         stringWriter = new StringWriter();
         xMLOutputFactory = XMLOutputFactory.newInstance();
         xMLStreamWriter = xMLOutputFactory.createXMLStreamWriter(stringWriter);
-        xMLStreamWriter.writeStartDocument();
+
     }
 
     /**
@@ -76,7 +79,7 @@ public class xmlWriter {
     public void closeElement() throws XMLStreamException {
         xMLStreamWriter.writeEndElement();
     }
-    
+
     public void newEmptyElement(String elementName) throws XMLStreamException {
         xMLStreamWriter.writeEmptyElement(elementName);
     }
@@ -107,7 +110,6 @@ public class xmlWriter {
         }
 
         //xmlString = prettyFormat(xmlString, 4);
-
         return xmlString;
     }
 
