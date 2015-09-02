@@ -76,6 +76,10 @@ public class xmlWriter {
     public void closeElement() throws XMLStreamException {
         xMLStreamWriter.writeEndElement();
     }
+    
+    public void newEmptyElement(String elementName) throws XMLStreamException {
+        xMLStreamWriter.writeEmptyElement(elementName);
+    }
 
     /**
      * Generates a string that is returned, so that you can write it to a file,
@@ -102,7 +106,7 @@ public class xmlWriter {
             Logger.getLogger(xmlWriter.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        xmlString = prettyFormat(xmlString, 4);
+        //xmlString = prettyFormat(xmlString, 4);
 
         return xmlString;
     }
