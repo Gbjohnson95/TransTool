@@ -1,5 +1,5 @@
 /*
- * Ravenclaw Rules!!!
+ * Ravenclaw Rules!!! 
  */
 package transtool.xmlTools;
 
@@ -33,7 +33,6 @@ public final class XMLParser {
     private String nameOfXML;
 
     public XMLParser() {
-
         System.out.println("Please enter the name of the XML document that you wish to parse through: ");
         Scanner scanner = new Scanner(System.in);
         nameOfXML = scanner.findInLine("Enter Something: ");
@@ -51,38 +50,21 @@ public final class XMLParser {
         DocumentBuilder dBuilder;
         try {
             dBuilder = dbFactory.newDocumentBuilder();
-
             Document doc = dBuilder.parse("brainhoneymanifest.xml");
-
             // Normalize the document.  
             doc.getDocumentElement().normalize();
-
             NodeList nodeList = doc.getElementsByTagName("question");
-
             for (int temp = 0; temp < nodeList.getLength(); temp++) {
-
                 Node nNode = nodeList.item(temp);
                 System.out.println("\nCurrent Element :" + nNode.getNodeName());
-
                 if (nNode.getNodeType() == Node.ELEMENT_NODE) {
-
                     Element eElement = (Element) nNode;
-
                     System.out.println("Group: " + eElement.getElementsByTagName("group").item(0).getTextContent());
-                        //System.out.println(testement.getAttributeNode("Body").getName());
-                    //System.out.println("First Name : " + eElement.getElementsByTagName("firstname").item(0).getTextContent());
-                    //System.out.println("Last Name : " + eElement.getElementsByTagName("lastname").item(0).getTextContent());
-                    //System.out.println("Nick Name : " + eElement.getElementsByTagName("nickname").item(0).getTextContent());
-                    //System.out.println("Salary : " + eElement.getElementsByTagName("salary").item(0).getTextContent());
-
                 }
             }
-
         } catch (ParserConfigurationException | SAXException | IOException ex) {
             Logger.getLogger(XMLParser.class.getName()).log(Level.SEVERE, null, ex);
             System.out.println("Error: Cannot read file.  Exception thrown!");
         }
-
     }
-
 }
