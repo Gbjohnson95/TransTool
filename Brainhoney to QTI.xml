@@ -64,7 +64,7 @@
 					</mattext>
 				</material>
 				
-				<responce_lid ident="QUE_1003_RL" rcardinality="multiple rtiming="no">
+				<responce_lid ident="QUE_1003_RL" multiple rtiming="no">
 					<render_choice>
 						<responce_label ident="QUE_1004_A3">
 							<material>

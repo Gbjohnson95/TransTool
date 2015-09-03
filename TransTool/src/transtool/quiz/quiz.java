@@ -5,8 +5,18 @@
  */
 package transtool.quiz;
 
+import java.io.StringReader;
+import java.io.StringWriter;
 import javax.xml.stream.XMLStreamException;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Source;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
 import transtool.xmlTools.*;
+import transtool.quiz.Question;
 
 /**
  * Generates a Quiz document.
@@ -33,12 +43,22 @@ public class quiz {
         resDoc = new xmlWriter();
         newAssesment("demo");
         newSection("main");
-        newQuestion("Question1", "Question Text");
+
+        newQuestion("Question1", "text");
         addQuestionResponce("ResponceA", false);
         addQuestionResponce("ResponceB", true);
         endQuestion();
+
+        newQuestion("Question2", "text");
+        addQuestionResponce("ResponceA", false);
+        addQuestionResponce("ResponceB", true);
+        addQuestionResponce("ResponceC", false);
+        endQuestion();
+
         endSection();
         endAssesment();
+        
+        Question question1 = new Question("Question1", "Question Text", 1);
     }
 
     /**
@@ -49,6 +69,8 @@ public class quiz {
     public String print() {
         String string = doc.toStringAndClose();
         string = string.replaceAll("</presentation>", "</presentation>" + resDoc.toStringAndClose());
+        string = string.replaceAll("<mattext>", "<mattext texttype=\"text/html\">");
+        string = prettyFormat(string, 3);
         return string;
     }
 
@@ -92,7 +114,8 @@ public class quiz {
         doc.newElement("presentation");
         doc.newElement("material");
         doc.newElement("mattext", question);
-        //doc.newElementAtribute("Texttype", "test");
+        //doc.newElementText();
+        doc.newElementAtribute("texttype", "test");
         doc.closeElement();
         doc.closeElement();
         doc.newElement("responce_lid", questionIdent + "_RL");
@@ -113,6 +136,7 @@ public class quiz {
         doc.closeElement(); // Closes render_choice
         doc.closeElement(); // Closes response_lid
         doc.closeElement(); // Closes presentation
+        responseCounter = 0;
         //String resDocText = resDoc.toStringAndClose();
         //doc.writeCharacters(resDocText);
 
@@ -123,7 +147,7 @@ public class quiz {
     }
 
     private void addQuestionResponce(String response, boolean isAnswer) throws XMLStreamException {
-        doc.newElement("responce_lable"); //closed
+       doc.newElement("responce_lable"); //closed
         responseCounter += 1;
         String questionResponceID = questionIdent + "_A" + responseCounter;
         doc.newElementAtribute("ident", questionResponceID);
@@ -151,6 +175,22 @@ public class quiz {
         //resDoc.newElementAtribute("varname", "que_score");
         //resDoc.newElementAtribute("action", "Add");
         resDoc.closeElement(); //closes setvar
-        resDoc.closeElement(); // Closes Responce
+        resDoc.closeElement(); // Closes Responce 
+    }
+
+    private static String prettyFormat(String input, int indent) {
+        try {
+            Source xmlInput = new StreamSource(new StringReader(input));
+            StringWriter stringWriter = new StringWriter();
+            StreamResult xmlOutput = new StreamResult(stringWriter);
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            transformerFactory.setAttribute("indent-number", indent);
+            Transformer transformer = transformerFactory.newTransformer();
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+            transformer.transform(xmlInput, xmlOutput);
+            return xmlOutput.getWriter().toString();
+        } catch (IllegalArgumentException | TransformerException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
