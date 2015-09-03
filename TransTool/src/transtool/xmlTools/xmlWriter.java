@@ -10,11 +10,14 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Source;
+
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
+import java.io.*;
+import javax.xml.stream.*;
 
 public class xmlWriter {
 
@@ -31,7 +34,7 @@ public class xmlWriter {
         stringWriter = new StringWriter();
         xMLOutputFactory = XMLOutputFactory.newInstance();
         xMLStreamWriter = xMLOutputFactory.createXMLStreamWriter(stringWriter);
-        xMLStreamWriter.writeStartDocument();
+
     }
 
     /**
@@ -77,6 +80,10 @@ public class xmlWriter {
         xMLStreamWriter.writeEndElement();
     }
 
+    public void newEmptyElement(String elementName) throws XMLStreamException {
+        xMLStreamWriter.writeEmptyElement(elementName);
+    }
+
     /**
      * Generates a string that is returned, so that you can write it to a file,
      * as well as cleaning up some stuff.
@@ -102,13 +109,15 @@ public class xmlWriter {
             Logger.getLogger(xmlWriter.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        xmlString = prettyFormat(xmlString, 4);
-
+        //xmlString = prettyFormat(xmlString, 4);
         return xmlString;
     }
 
+
     
-    public static String prettyFormat(String input, int indent) {
+
+    private static String prettyFormat(String input, int indent) {
+
         try {
             Source xmlInput = new StreamSource(new StringReader(input));
             StringWriter stringWriter = new StringWriter();

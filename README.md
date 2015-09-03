@@ -9,19 +9,19 @@
 
 ***
 
-> - 0.0.X = Bug fix and Feature Testing
-> - 0.X.0 = Feature Release
-> - 1.0.0 = Development goal has been reached and tool is considered complete
+> - 0.X = Feature Release
+> - 1.0 = Development goal has been reached and tool is considered complete
 
-### Road Map (v0.2)
+### Road Map (v0.3)
 
 ***
 
-- 0.1 = Create a quiz bank via a command line.
-- 0.2 = Basic GUI/Web/Scripted Interface.
-- 0.3 = Moving all HTML docs into a single folder and image assets into another.
-- 0.4 = Span Ripping of all HTML documents and application of new Template.
-- 0.5 = Fixing links of images in documents.
+- 0.1 = Working Parser and Working Quiz writer
+- 0.2 = Working Quiz tool For T/F Multiple choice questions
+- 0.3 = Working Quiz tool For Short Answer
+- 0.4 = GUI
+- 0.5 = Working import of Dropboxes and Discussion Boards
+- 0.6 = Marrige of TransTool and HTML Tool
 
 ***
 

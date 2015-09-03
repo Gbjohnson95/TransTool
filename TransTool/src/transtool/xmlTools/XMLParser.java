@@ -1,5 +1,5 @@
 /*
- * Ravenclaw Rules!!!
+ * Ravenclaw Rules!!! 
  */
 package transtool.xmlTools;
 
@@ -11,13 +11,11 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Node;
 import org.w3c.dom.Element;
-import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.parsers.ParserConfigurationException;
-import org.w3c.dom.NamedNodeMap;
 
 import org.xml.sax.SAXException;
 
@@ -34,14 +32,15 @@ public class XMLParser {
 
     // After everything has been parsed, brainhoney will hold all the variables.
     private ArrayList<BrainhoneyContents> brainhoney;
-    
+
     // nanme of XML document to be parsed.
     private String nameOfXML;
 
     /*
      * default constructor; takes a String from the user and parses the XML doc.
-    */
+     */
     public XMLParser() {
+
         brainhoney = new ArrayList<>();
 
         System.out.println("Please enter the name of the XML document that you wish to parse through: ");
@@ -51,9 +50,9 @@ public class XMLParser {
 
     /*
      * Takes a string in and parses the XML document.
-    */
+     */
     public XMLParser(String nameOfXML) {
-        
+
         brainhoney = new ArrayList<>();
         this.nameOfXML = nameOfXML;
         System.out.println("non default constructor: " + nameOfXML);
@@ -63,17 +62,18 @@ public class XMLParser {
     /*
      * uses the DOM parser to sort through the XML document and separate
      * the variables.
-    */
+     */
     public void parseXMLDom() {
-        
+
         //Standard opening procedures for DOM.
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder;
-        
+
         // Surrounded with a try-catch statement is the main bulk of the 
         // code; the XML parser is basically the point of this entire class.
         try {
             dBuilder = dbFactory.newDocumentBuilder();
+
             Document doc = dBuilder.parse(nameOfXML);
 
             // Normalize the document.  
@@ -85,12 +85,15 @@ public class XMLParser {
             NodeList nodeList = doc.getElementsByTagName("question");
 
             // And now we sort through each question individually.
-            for (int temp = 0; temp < nodeList.getLength(); temp++) {
+            // Normalize the document.  
+            doc.getDocumentElement().normalize();
 
+            for (int temp = 0; temp < nodeList.getLength(); temp++) {
                 Node nNode = nodeList.item(temp);
 
-                if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+                System.out.println("\nCurrent Element :" + nNode.getNodeName());
 
+                if (nNode.getNodeType() == Node.ELEMENT_NODE) {
                     Element eElement = (Element) nNode;
 
                     // If the question does not have an ID, it is an invalid
@@ -151,8 +154,8 @@ public class XMLParser {
     /*
      * Probably WILL NOT be implementing, but I am leaving this here just in
      * case something happens.
-    */
+     */
     public void xMLParseSax() {
     }
 
-}
+    }

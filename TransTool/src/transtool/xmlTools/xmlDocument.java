@@ -21,14 +21,19 @@ public class xmlDocument {
     private String filename;
     private String filepath;
 
+    /**
+     * Just sets the user directory at the moment....
+     *
+     */
     public xmlDocument() {
         filepath = System.getProperty("user.dir");
     }
 
-    public void addElements(String newElements) {
-        doc += newElements;
-    }
-
+    /**
+     * Use a string to set the name of the file.
+     *
+     * @param file
+     */
     public void fileName(String file) {
         filename = file;
     }
@@ -40,6 +45,12 @@ public class xmlDocument {
         return filepath;
         
     }*/
+
+    /**
+     * Writes to a file specified by fileName
+     *
+     * @throws IOException
+     */
 
     public void writeToFile() throws IOException {
         File file = new File(filepath + filename);
