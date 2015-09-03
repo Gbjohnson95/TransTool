@@ -106,6 +106,28 @@ public class xmlWriter {
         return xmlString;
     }
 
+<<<<<<< HEAD
     
+=======
+
+    
+
+    private static String prettyFormat(String input, int indent) {
+
+        try {
+            Source xmlInput = new StreamSource(new StringReader(input));
+            StringWriter stringWriter = new StringWriter();
+            StreamResult xmlOutput = new StreamResult(stringWriter);
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            transformerFactory.setAttribute("indent-number", indent);
+            Transformer transformer = transformerFactory.newTransformer();
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+            transformer.transform(xmlInput, xmlOutput);
+            return xmlOutput.getWriter().toString();
+        } catch (IllegalArgumentException | TransformerException e) {
+            throw new RuntimeException(e);
+        }
+    }
+>>>>>>> origin/master
 
 }

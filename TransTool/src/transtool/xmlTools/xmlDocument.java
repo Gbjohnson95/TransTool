@@ -45,17 +45,21 @@ public class xmlDocument {
         return filepath;
         
     }*/
+
     /**
      * Writes to a file specified by fileName
      *
      * @throws IOException
      */
+
     public void writeToFile() throws IOException {
         File file = new File(filepath + filename);
         System.out.println(filepath + filename);
+
         if (!file.exists()) {
             file.createNewFile();
         }
+
         FileWriter fw = new FileWriter(file.getAbsoluteFile());
         BufferedWriter bw = new BufferedWriter(fw);
         bw.write(doc);
