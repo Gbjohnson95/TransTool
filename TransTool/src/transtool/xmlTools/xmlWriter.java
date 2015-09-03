@@ -107,6 +107,7 @@ public class xmlWriter {
         return xmlString;
     }
 
+    
     public static String prettyFormat(String input, int indent) {
         try {
             Source xmlInput = new StreamSource(new StringReader(input));

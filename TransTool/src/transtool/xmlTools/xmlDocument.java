@@ -40,6 +40,7 @@ public class xmlDocument {
         return filepath;
         
     }*/
+
     public void writeToFile() throws IOException {
         File file = new File(filepath + filename);
         System.out.println(filepath + filename);

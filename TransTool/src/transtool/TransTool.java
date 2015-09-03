@@ -1,14 +1,18 @@
+
 package transtool;
 
 import transtool.xmlTools.*;
 
 //import transtool.xmlTools.XMLParser;
+
+
 public class TransTool {
 
     /**
      * @param args the command line arguments
      * @throws javax.xml.stream.XMLStreamException
      */
+
     public static void main(String[] args) {
         // TODO code application logic here
         XMLParser parse = new XMLParser("./brainhoneymanifest.xml");
@@ -44,6 +48,8 @@ public class TransTool {
         doc.fileName("test.xml");
         doc.writeToFile();
         System.out.println("file shoudl have been made");
+
+        
 
            // public static void main(String[] args) {
         // TODO code application logic here
