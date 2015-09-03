@@ -106,12 +106,10 @@ public class xmlWriter {
         return xmlString;
     }
 
-<<<<<<< HEAD
-    
-=======
 
     
 
+  
     private static String prettyFormat(String input, int indent) {
 
         try {
@@ -128,6 +126,5 @@ public class xmlWriter {
             throw new RuntimeException(e);
         }
     }
->>>>>>> origin/master
 
 }

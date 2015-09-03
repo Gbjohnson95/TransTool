@@ -9,7 +9,7 @@ import javax.xml.stream.XMLStreamException;
 import transtool.quiz.quiz;
 
 import transtool.xmlTools.*;
-import transtool.ui.Window;
+
 
 //import transtool.xmlTools.XMLParser;
 
@@ -18,14 +18,12 @@ public class TransTool {
 
     /**
      * @param args the command line arguments
-     * @throws javax.xml.stream.XMLStreamException
-     * @throws java.io.IOException
      */
 
 
     public static void main(String[] args) {
         // TODO code application logic here
-        XMLParser parse = new XMLParser("./brainhoneymanifest.xml");
+        //XMLParser parse = new XMLParser("./brainhoneymanifest.xml");
     }
 
 
