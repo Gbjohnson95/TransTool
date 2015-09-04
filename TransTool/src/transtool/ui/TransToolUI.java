@@ -5,14 +5,25 @@
  */
 package transtool.ui;
 
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Dimension;
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.SwingConstants;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import transtool.xmlTools.XMLParser;
 
 /**
  *
  * @author hallm8
  */
 public class TransToolUI extends javax.swing.JApplet {
+
+    private String filePath;
 
     /**
      * Initializes the applet TransToolUI
@@ -49,8 +60,8 @@ public class TransToolUI extends javax.swing.JApplet {
                     initComponents();
                 }
             });
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        } catch (InterruptedException | InvocationTargetException ex) {
+            System.out.println("Error!  Not working!  Abort mission!!");
         }
     }
 
@@ -64,33 +75,35 @@ public class TransToolUI extends javax.swing.JApplet {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
-        jLabel2 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        ChooseFile = new javax.swing.JButton();
+        Instructions = new javax.swing.JLabel();
+        createXML = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
-        jButton3 = new javax.swing.JButton();
+        about = new javax.swing.JButton();
+
+        setPreferredSize(new java.awt.Dimension(800, 800));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI Semilight", 0, 48)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("TransTool");
 
-        jButton2.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
-        jButton2.setText("Choose File");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        ChooseFile.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        ChooseFile.setText("Choose File");
+        ChooseFile.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                ChooseFileActionPerformed(evt);
             }
         });
 
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
-        jLabel2.setText("Choose the BrainHoney Manifest XML");
+        Instructions.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        Instructions.setText("Choose the BrainHoney Manifest XML");
 
-        jButton1.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
-        jButton1.setText("Go!");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        createXML.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        createXML.setText("Go!");
+        createXML.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                createXMLActionPerformed(evt);
             }
         });
 
@@ -99,9 +112,14 @@ public class TransToolUI extends javax.swing.JApplet {
         jTextArea1.setRows(5);
         jScrollPane1.setViewportView(jTextArea1);
 
-        jButton3.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
-        jButton3.setText("About");
-        jButton3.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        about.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        about.setText("About");
+        about.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        about.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                aboutActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -113,16 +131,16 @@ public class TransToolUI extends javax.swing.JApplet {
                     .addComponent(jScrollPane1)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButton3))
+                        .addComponent(about))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jButton2)
+                                .addComponent(ChooseFile)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel2)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 242, Short.MAX_VALUE)
-                        .addComponent(jButton1)))
+                                .addComponent(Instructions)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 231, Short.MAX_VALUE)
+                        .addComponent(createXML)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -132,41 +150,66 @@ public class TransToolUI extends javax.swing.JApplet {
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(createXML, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jButton2)
-                        .addComponent(jLabel2)))
+                        .addComponent(ChooseFile)
+                        .addComponent(Instructions)))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jButton3)
+                .addComponent(about)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void ChooseFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ChooseFileActionPerformed
         // TODO add your handling code here:
         JFileChooser fileChooser = new JFileChooser();
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("XML Files", "xml");
+        fileChooser.setFileFilter(filter);
 
         fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
         int result = fileChooser.showOpenDialog(this);
         if (result == JFileChooser.APPROVE_OPTION) {
             File selectedFile = fileChooser.getSelectedFile();
             System.out.println("Selected file: " + selectedFile.getAbsolutePath());
+            filePath = selectedFile.getAbsolutePath();
+            Instructions.setText("File " + filePath + " has been selected.");
         }
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_ChooseFileActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void createXMLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createXMLActionPerformed
+        XMLParser parse = new XMLParser(filePath);
+    }//GEN-LAST:event_createXMLActionPerformed
+
+    private void aboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutActionPerformed
+        //1. Create the frame.
+        JFrame frame = new JFrame("About");
+
+//2. Optional: What happens when the frame closes?
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+//3. Create components and put them in the frame.
+//...create emptyLabel...
+
+        JLabel label = new JLabel("Testing", SwingConstants.CENTER);
+        label.setPreferredSize(new Dimension(250,400));
+        frame.getContentPane().add(label, BorderLayout.CENTER);
+
+//4. Size the frame.
+        frame.pack();
+
+//5. Show it.
+        frame.setVisible(true);
+    }//GEN-LAST:event_aboutActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
+    private javax.swing.JButton ChooseFile;
+    private javax.swing.JLabel Instructions;
+    private javax.swing.JButton about;
+    private javax.swing.JButton createXML;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextArea jTextArea1;
     // End of variables declaration//GEN-END:variables
