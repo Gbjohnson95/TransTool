@@ -66,8 +66,6 @@ public class TransToolUI extends javax.swing.JApplet {
         }
         //</editor-fold>
 
-        
-
         try {
             java.awt.EventQueue.invokeAndWait(new Runnable() {
                 public void run() {
@@ -215,6 +213,7 @@ public class TransToolUI extends javax.swing.JApplet {
     //frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     private void aboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutActionPerformed
         About test = new About();
+        test.setVisible(true);
     }//GEN-LAST:event_aboutActionPerformed
 
     private void updateTextArea(final String text) {

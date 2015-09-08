@@ -57,7 +57,7 @@ public class quiz {
 
         endSection();
         endAssesment();
-        
+
         Question question1 = new Question("Question1", "Question Text", 1);
     }
 
@@ -147,7 +147,7 @@ public class quiz {
     }
 
     private void addQuestionResponce(String response, boolean isAnswer) throws XMLStreamException {
-       doc.newElement("responce_lable"); //closed
+        doc.newElement("responce_lable"); //closed
         responseCounter += 1;
         String questionResponceID = questionIdent + "_A" + responseCounter;
         doc.newElementAtribute("ident", questionResponceID);

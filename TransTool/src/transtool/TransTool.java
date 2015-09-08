@@ -10,6 +10,7 @@ import transtool.quiz.quiz;
 
 import transtool.xmlTools.*;
 import transtool.quiz.*;
+import transtool.ui.TransToolUI;
 
 
 //import transtool.xmlTools.XMLParser;
@@ -25,8 +26,9 @@ public class TransTool {
 
     public static void main(String[] args) throws XMLStreamException {
         
-        quiz test = new quiz();
-        System.out.print(test.print());
+        TransToolUI test = new TransToolUI();
+        test.setVisible(true);
+        
         
         
         

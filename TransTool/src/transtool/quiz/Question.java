@@ -72,13 +72,12 @@ public class Question {
     }
 
     public void newResponce(String responceText, boolean isTrue) {
-        
 
     }
 
     public void printPres() {
         String string = presDoc.toStringAndClose();
-        
+
     }
- 
+
 }
