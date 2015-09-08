@@ -115,7 +115,7 @@ public class quiz {
         doc.newElement("material");
         doc.newElement("mattext", question);
         //doc.newElementText();
-        doc.newElementAtribute("texttype", "test");
+        //doc.newElementAtribute("texttype", "test");
         doc.closeElement();
         doc.closeElement();
         doc.newElement("responce_lid", questionIdent + "_RL");

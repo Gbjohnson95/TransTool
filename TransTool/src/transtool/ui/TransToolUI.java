@@ -9,13 +9,26 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.scene.text.Font;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.xml.stream.XMLStreamException;
+import transtool.quiz.quiz;
 import transtool.xmlTools.XMLParser;
+import transtool.ui.About;
 
 /**
  *
@@ -53,11 +66,13 @@ public class TransToolUI extends javax.swing.JApplet {
         }
         //</editor-fold>
 
-        /* Create and display the applet */
+        
+
         try {
             java.awt.EventQueue.invokeAndWait(new Runnable() {
                 public void run() {
                     initComponents();
+                    resize(400, 550);
                 }
             });
         } catch (InterruptedException | InvocationTargetException ex) {
@@ -81,14 +96,17 @@ public class TransToolUI extends javax.swing.JApplet {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
         about = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
 
-        setPreferredSize(new java.awt.Dimension(800, 800));
+        setMaximumSize(new java.awt.Dimension(400, 550));
+        setMinimumSize(new java.awt.Dimension(400, 550));
+        setPreferredSize(new java.awt.Dimension(550, 400));
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI Semilight", 0, 48)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Arial", 0, 72)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("TransTool");
+        jLabel1.setText("<html><b>Trans</b>Tool</html>");
 
-        ChooseFile.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        ChooseFile.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         ChooseFile.setText("Choose File");
         ChooseFile.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -96,10 +114,10 @@ public class TransToolUI extends javax.swing.JApplet {
             }
         });
 
-        Instructions.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        Instructions.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         Instructions.setText("Choose the BrainHoney Manifest XML");
 
-        createXML.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        createXML.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         createXML.setText("Go!");
         createXML.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -108,11 +126,12 @@ public class TransToolUI extends javax.swing.JApplet {
         });
 
         jTextArea1.setColumns(20);
-        jTextArea1.setFont(new java.awt.Font("Source Code Pro", 0, 14)); // NOI18N
+        jTextArea1.setFont(new java.awt.Font("Consolas", 0, 14)); // NOI18N
+        jTextArea1.setLineWrap(true);
         jTextArea1.setRows(5);
         jScrollPane1.setViewportView(jTextArea1);
 
-        about.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        about.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         about.setText("About");
         about.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         about.addActionListener(new java.awt.event.ActionListener() {
@@ -120,6 +139,9 @@ public class TransToolUI extends javax.swing.JApplet {
                 aboutActionPerformed(evt);
             }
         });
+
+        jLabel2.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        jLabel2.setText("v0.1");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -133,13 +155,15 @@ public class TransToolUI extends javax.swing.JApplet {
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(about))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(ChooseFile)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(Instructions)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 231, Short.MAX_VALUE)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel2)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(ChooseFile)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(Instructions)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 128, Short.MAX_VALUE)
                         .addComponent(createXML)))
                 .addContainerGap())
         );
@@ -147,14 +171,15 @@ public class TransToolUI extends javax.swing.JApplet {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(createXML, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(ChooseFile)
-                        .addComponent(Instructions)))
-                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(ChooseFile)
+                    .addComponent(Instructions)
+                    .addComponent(createXML, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(19, 19, 19)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(about)
@@ -179,30 +204,48 @@ public class TransToolUI extends javax.swing.JApplet {
     }//GEN-LAST:event_ChooseFileActionPerformed
 
     private void createXMLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createXMLActionPerformed
-        XMLParser parse = new XMLParser(filePath);
+        try {
+            quiz test = new quiz();
+            String output = test.print();
+            updateTextArea(output);
+        } catch (XMLStreamException ex) {
+            Logger.getLogger(TransToolUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_createXMLActionPerformed
-
+    //frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     private void aboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutActionPerformed
-        //1. Create the frame.
-        JFrame frame = new JFrame("About");
-
-//2. Optional: What happens when the frame closes?
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-//3. Create components and put them in the frame.
-//...create emptyLabel...
-
-        JLabel label = new JLabel("Testing", SwingConstants.CENTER);
-        label.setPreferredSize(new Dimension(250,400));
-        frame.getContentPane().add(label, BorderLayout.CENTER);
-
-//4. Size the frame.
-        frame.pack();
-
-//5. Show it.
-        frame.setVisible(true);
+        About test = new About();
     }//GEN-LAST:event_aboutActionPerformed
 
+    private void updateTextArea(final String text) {
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                jTextArea1.append(text);
+            }
+        });
+    }
+
+    private void redirectSystemStreams() {
+        OutputStream out = new OutputStream() {
+            @Override
+            public void write(int b) throws IOException {
+                updateTextArea(String.valueOf((char) b));
+            }
+
+            @Override
+            public void write(byte[] b, int off, int len) throws IOException {
+                updateTextArea(new String(b, off, len));
+            }
+
+            @Override
+            public void write(byte[] b) throws IOException {
+                write(b, 0, b.length);
+            }
+        };
+
+        System.setOut(new PrintStream(out, true));
+        System.setErr(new PrintStream(out, true));
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton ChooseFile;
@@ -210,6 +253,7 @@ public class TransToolUI extends javax.swing.JApplet {
     private javax.swing.JButton about;
     private javax.swing.JButton createXML;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextArea jTextArea1;
     // End of variables declaration//GEN-END:variables

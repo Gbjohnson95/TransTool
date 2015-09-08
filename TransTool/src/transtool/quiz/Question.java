@@ -47,7 +47,7 @@ public class Question {
         presDoc.newElement("presentation");
         presDoc.newElement("material");
         presDoc.newElement("mattext", question);
-        presDoc.newElementAtribute("texttype", "test");
+        //presDoc.newElementAtribute("texttype", "test");
         presDoc.closeElement();
         presDoc.closeElement();
         presDoc.newElement("responce_lid", questionIdent + "_RL");

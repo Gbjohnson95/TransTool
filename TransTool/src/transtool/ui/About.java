@@ -5,7 +5,18 @@
  */
 package transtool.ui;
 
+import java.awt.Font;
+import java.awt.GraphicsEnvironment;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import static java.lang.System.in;
 import java.lang.reflect.InvocationTargetException;
+import java.net.URL;
+import javax.swing.JList;
+import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.UIManager;
 
 /**
  *
@@ -44,7 +55,10 @@ public class About extends javax.swing.JApplet {
         /* Create and display the applet */
         try {
             java.awt.EventQueue.invokeAndWait(() -> {
+
                 initComponents();
+                resize(400, 550);
+
             });
         } catch (InterruptedException | InvocationTargetException ex) {
         }
@@ -60,9 +74,14 @@ public class About extends javax.swing.JApplet {
     private void initComponents() {
 
         jDesktopPane1 = new javax.swing.JDesktopPane();
-        close = new javax.swing.JToggleButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        info = new javax.swing.JTextArea();
+        jTextPane1 = new javax.swing.JTextPane();
+        close = new javax.swing.JToggleButton();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
 
         javax.swing.GroupLayout jDesktopPane1Layout = new javax.swing.GroupLayout(jDesktopPane1);
         jDesktopPane1.setLayout(jDesktopPane1Layout);
@@ -75,6 +94,9 @@ public class About extends javax.swing.JApplet {
             .addGap(0, 100, Short.MAX_VALUE)
         );
 
+        jScrollPane1.setViewportView(jTextPane1);
+
+        close.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         close.setText("Close");
         close.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -82,31 +104,57 @@ public class About extends javax.swing.JApplet {
             }
         });
 
-        info.setColumns(20);
-        info.setLineWrap(true);
-        info.setRows(5);
-        info.setText("Brainhoney to BrightSpace quiz question\ntransition tool\n\nVersion .01\n\nAlso, Grant smells.\n");
-        jScrollPane1.setViewportView(info);
+        jLabel1.setFont(new java.awt.Font("Arial", 0, 72)); // NOI18N
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("<html><b>Trans</b>Tool</html>");
+
+        jLabel2.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel2.setText("Version 0.1");
+
+        jLabel3.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        jLabel3.setText("<html><p><b>TransTool:</b> A simple BrainHoney to Brightspace transition Tool</p><p>Copyright (C) 2015 BYU-Idaho</p><br /><p>This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.</p><br /><p>This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.</p><br /><p>You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.</p></html>");
+
+        jLabel4.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jLabel4.setText("Written by Mark Hall & Grant Johnson");
+
+        jLabel5.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        jLabel5.setText("<html><p>Source Code is avalible at</p><p>https://github.com/Gbjohnson95/TransTool</p></html>");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(376, Short.MAX_VALUE)
-                .addComponent(close)
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel5)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 53, Short.MAX_VALUE)
+                        .addComponent(close))
+                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jLabel2)))
                 .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 360, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel2)
                 .addGap(18, 18, 18)
-                .addComponent(close)
+                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 284, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(close)
+                    .addComponent(jLabel4))
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -118,8 +166,13 @@ public class About extends javax.swing.JApplet {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JToggleButton close;
-    private javax.swing.JTextArea info;
     private javax.swing.JDesktopPane jDesktopPane1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextPane jTextPane1;
     // End of variables declaration//GEN-END:variables
 }
