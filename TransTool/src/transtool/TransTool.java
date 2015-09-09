@@ -2,14 +2,9 @@
 package transtool;
 
 
-import java.io.IOException;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 import javax.xml.stream.XMLStreamException;
-import transtool.quiz.quiz;
+import transtool.quiz.Quiz2;
 
-import transtool.xmlTools.*;
-import transtool.quiz.*;
 
 
 //import transtool.xmlTools.XMLParser;
@@ -25,8 +20,7 @@ public class TransTool {
 
     public static void main(String[] args) throws XMLStreamException {
         
-        quiz test = new quiz();
-        System.out.print(test.print());
+        Quiz2 test = new Quiz2();
         
         
         
