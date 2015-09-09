@@ -37,53 +37,63 @@ public class Quiz2 {
         beginAssesment("demo");
         newSection("main");
 
-        newQuestion("Question", "text");
+        newQuestion("Question", "<p>text</p>");
         newResponse("ResponceA", "100");
         newResponse("ResponceB", "-100");
-        
+
         //newQuestion("test2", "text goes here");
         //newResponse("textA", "100");
         //newResponse("textb", "100");
-
         Document doc = new Document(assesment);
-        String test = doc.toXML();
-
-        System.out.println(prettyFormat(test, 4));
+        String xmlText = doc.toXML();
+        xmlText = xmlText.replaceAll("&lt;", "<");
+        xmlText = xmlText.replaceAll("&gt;", ">");
+        System.out.println(prettyFormat(xmlText, 4));
 
     }
 
     private void beginAssesment(String title) {
         assesment = new Element("assesment");
+        
         Attribute assesmentTitle = new Attribute("title", title);
-        Attribute assesmentIdent = new Attribute("ident", "ident");
         assesment.addAttribute(assesmentTitle);
+        Attribute assesmentIdent = new Attribute("ident", "ident");
         assesment.addAttribute(assesmentIdent);
     }
 
     private void newSection(String title) {
         section = new Element("section");
         Attribute sectionTitle = new Attribute("title", title);
-        Attribute sectionIdent = new Attribute("ident", "ident");
         section.addAttribute(sectionTitle);
+        Attribute sectionIdent = new Attribute("ident", "ident");
         section.addAttribute(sectionIdent);
+        
         assesment.appendChild(section);
     }
 
     private void newQuestion(String questionTitle, String question) {
         questionIdent = ident("QUE_");
+        
         item = new Element("item");
         Attribute itemTitle = new Attribute("title", questionTitle);
+        item.addAttribute(itemTitle);
         Attribute itemIdent = new Attribute("ident", questionIdent);
+        item.addAttribute(itemIdent);
+        
         presentation = new Element("presentation");
-        item.appendChild(presentation);
+        
         Element material = new Element("material");
-        presentation.appendChild(material);
+        
         Element mattext = new Element("mattext");
         Attribute texttype = new Attribute("texttype", "text/html");
-        material.appendChild(mattext);
         mattext.addAttribute(texttype);
-        mattext.appendChild(question);
+        
         section.appendChild(item);
+        item.appendChild(presentation);
+        presentation.appendChild(material);
+        material.appendChild(mattext);
+        mattext.appendChild(question);
+        
     }
 
     private void newResponse(String responce, String value) {
