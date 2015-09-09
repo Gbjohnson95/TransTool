@@ -16,13 +16,18 @@ public class Quiz2 {
     private int count = 1000;
     private int responseCounter = 0;
     private String questionIdent;
+    private Element assesment;
+    private Element section;
+    private Element presentation;
+    private Element item;
+    
 
     public Quiz2() {
 
     }
 
     public void beginAssesment(String title) {
-        Element assesment = new Element("assesment");
+        assesment = new Element("assesment");
         Attribute assesmentTitle = new Attribute("title", title);
         Attribute assesmentIdent = new Attribute("ident", "ident");
         assesment.addAttribute(assesmentTitle);
@@ -30,7 +35,7 @@ public class Quiz2 {
     }
 
     public void newSection(String title) {
-        Element section = new Element("section");
+        section = new Element("section");
         Attribute sectionTitle = new Attribute("title", title);
         Attribute sectionIdent = new Attribute("ident", "ident");
         section.addAttribute(sectionTitle);
@@ -39,30 +44,31 @@ public class Quiz2 {
 
     public void newQuestion(String questionTitle, String question) {
         questionIdent = ident("QUE_");
-        
         Element item = new Element("item");
         Attribute itemTitle = new Attribute("title", questionTitle);
         Attribute itemIdent = new Attribute("ident", questionIdent);
-        
-        Element presentation = new Element("presentation");
+        presentation = new Element("presentation");
         item.appendChild(presentation);
-        
         Element material = new Element("material");
-        item.appendChild(presentation);
-        
+        item.appendChild(material);
         Element mattext = new Element("mattext");
         Attribute texttype = new Attribute("texttype", "text/html");
         mattext.addAttribute(texttype);
-        
-        
-        
-        
-        
-
+        mattext.appendChild(question);
     }
 
-    public void newRespoce() {
-
+    public void newResponse() {
+        responseCounter++;
+        String questionResponseIdent = questionIdent + "_A" + responseCounter;
+        Element responce_lid = new Element("response_lid");
+        Attribute responce_lidIdent = new Attribute("ident", questionResponseIdent);
+        Element material = new Element("material");
+        
+        
+        
+        
+        
+        
     }
 
     private String ident(String prefix, String suffix) {
