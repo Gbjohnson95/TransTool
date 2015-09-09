@@ -54,7 +54,7 @@ public class Quiz2 {
 
     private void beginAssesment(String title) {
         assesment = new Element("assesment");
-        
+
         Attribute assesmentTitle = new Attribute("title", title);
         assesment.addAttribute(assesmentTitle);
         Attribute assesmentIdent = new Attribute("ident", "ident");
@@ -67,50 +67,57 @@ public class Quiz2 {
         section.addAttribute(sectionTitle);
         Attribute sectionIdent = new Attribute("ident", "ident");
         section.addAttribute(sectionIdent);
-        
+
         assesment.appendChild(section);
     }
 
     private void newQuestion(String questionTitle, String question) {
         questionIdent = ident("QUE_");
-        
+
         item = new Element("item");
         Attribute itemTitle = new Attribute("title", questionTitle);
         item.addAttribute(itemTitle);
         Attribute itemIdent = new Attribute("ident", questionIdent);
         item.addAttribute(itemIdent);
-        
+
         presentation = new Element("presentation");
-        
+
         Element material = new Element("material");
-        
+
         Element mattext = new Element("mattext");
         Attribute texttype = new Attribute("texttype", "text/html");
         mattext.addAttribute(texttype);
-        
+
         section.appendChild(item);
         item.appendChild(presentation);
         presentation.appendChild(material);
         material.appendChild(mattext);
         mattext.appendChild(question);
-        
+
     }
 
     private void newResponse(String responce, String value) {
         responseCounter++;
+        String questionResponseIdent = questionIdent + "_A" + responseCounter;
         String responce_lidIdent1 = questionIdent + "_RL";
+
         responce_lid = new Element("response_lid");
         Attribute responce_lidIdent = new Attribute("ident", responce_lidIdent1);
         responce_lid.addAttribute(responce_lidIdent);
+
         render_choice = new Element("render_choice");
+
         Element response_label = new Element("response_label");
-        String questionResponseIdent = questionIdent + "_A" + responseCounter;
-        Attribute response_lableIdent = new Attribute("ident", questionResponseIdent);
+        Attribute response_labelIdent = new Attribute("ident", questionResponseIdent);
+        response_label.addAttribute(response_labelIdent);
+
         Element material = new Element("material");
+
         Element mattext = new Element("mattext");
         Attribute texttype = new Attribute("texttype", "text/html");
-        mattext.appendChild("responce");
         mattext.addAttribute(texttype);
+        mattext.appendChild("responce");
+
         material.appendChild(mattext);
         response_label.appendChild(material);
         render_choice.appendChild(response_label);

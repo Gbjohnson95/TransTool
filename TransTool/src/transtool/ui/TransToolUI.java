@@ -5,29 +5,14 @@
  */
 package transtool.ui;
 
-import java.awt.BorderLayout;
-import java.awt.Component;
-import java.awt.Dimension;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javafx.scene.text.Font;
 import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.xml.stream.XMLStreamException;
-import transtool.quiz.quiz;
-import transtool.xmlTools.XMLParser;
 import transtool.ui.About;
 
 /**
@@ -204,13 +189,9 @@ public class TransToolUI extends javax.swing.JApplet {
     }//GEN-LAST:event_ChooseFileActionPerformed
 
     private void createXMLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createXMLActionPerformed
-        try {
-            quiz test = new quiz();
-            String output = test.print();
-            updateTextArea(output);
-        } catch (XMLStreamException ex) {
-            Logger.getLogger(TransToolUI.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        //Quiz2 test = new Quiz2();
+        //String output = test.print();
+        //updateTextArea(output);
     }//GEN-LAST:event_createXMLActionPerformed
     //frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     private void aboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutActionPerformed
