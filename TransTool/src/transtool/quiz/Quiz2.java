@@ -1,23 +1,14 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package transtool.quiz;
 
 import java.io.StringReader;
 import java.io.StringWriter;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Source;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.*;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 import nu.xom.*;
 
 /**
+ * A class for building Quizes.
  *
  * @author gbjohnson
  */
@@ -25,39 +16,60 @@ public class Quiz2 {
 
     private int count = 1000;
     private int responseCounter = 0;
+
     private String questionIdent;
+    private String responseLidIdent;
 
     private Element assesment;
     private Element section;
     private Element item;
     private Element presentation;
-    private Element responce_lid;
+    private Element response_lid;
     private Element render_choice;
-
     private Element resprocessing;
-    
-    String responce_lidIdent1;
 
+    /**
+     * Generates a QTI format quiz.
+     *
+     * @throws TransformerException
+     */
     public Quiz2() throws TransformerException {
+        // Starts the document.
         beginAssesment("demo");
-        newSection("main");
-
-        newQuestion("Question", "<p>text</p>");
-        newResponse("ResponceA", "100");
-        newResponse("ResponceB", "-100");
-
-        newQuestion("test2", "text goes here");
-        newResponse("textA", "100");
-        newResponse("textb", "100");
-        
-        Document doc = new Document(assesment);
-        String xmlText = doc.toXML();
-        xmlText = xmlText.replaceAll("&lt;", "<");
-        xmlText = xmlText.replaceAll("&gt;", ">");
-        System.out.println(prettyFormat(xmlText, 4));
-
+        newSection("main");        
     }
 
+    /**
+     * Prints to a terminal.
+     *
+     * @throws TransformerException
+     */
+    public void print() throws TransformerException {
+        System.out.print(getString());
+    }
+    
+    /**
+     * Returns a string of the XML document.
+     *
+     * @return
+     * @throws TransformerException
+     */
+    public String getString() throws TransformerException {
+        // Genrates a document, and puts the document into a String.
+        Document doc = new Document(assesment);
+        String xmlText = doc.toXML();
+
+        // Fixes the HTML tags, could be an issue with math questions, which
+        // at this point it doesn't support....
+        xmlText = xmlText.replaceAll("&lt;", "<");
+        xmlText = xmlText.replaceAll("&gt;", ">");
+
+        // Prints out a pretty formated document to terminal windows. The key 
+        // code is "prettyFormat(xmlText, 4);"
+        return prettyFormat(xmlText, 4);
+    }
+
+    // Lets you set the name of the assesment. 
     private void beginAssesment(String title) {
         assesment = new Element("assesment");
 
@@ -67,25 +79,37 @@ public class Quiz2 {
         assesment.addAttribute(assesmentIdent);
     }
 
+    // Lets you set the name of the section.
     private void newSection(String title) {
         section = new Element("section");
         Attribute sectionTitle = new Attribute("title", title);
         section.addAttribute(sectionTitle);
+        ++count;
         Attribute sectionIdent = new Attribute("ident", "ident");
         section.addAttribute(sectionIdent);
 
         assesment.appendChild(section);
     }
 
-    private void newQuestion(String questionTitle, String question) {
+    /**
+     * Makes a new Question, should probably implement a question weight int....
+     *
+     * @param questionTitle
+     * @param question
+     */
+    public void newQuestion(String questionTitle, String question) {
+        // General set up.
         questionIdent = ident("QUE_");
+        responseCounter = 0;
 
+        // Generates a new item. 
         item = new Element("item");
         Attribute itemTitle = new Attribute("title", questionTitle);
         item.addAttribute(itemTitle);
         Attribute itemIdent = new Attribute("ident", questionIdent);
         item.addAttribute(itemIdent);
 
+        // The code here is whats presented to the user. -----------------------
         presentation = new Element("presentation");
 
         Element material = new Element("material");
@@ -94,10 +118,10 @@ public class Quiz2 {
         Attribute texttype = new Attribute("texttype", "text/html");
         mattext.addAttribute(texttype);
 
-        responce_lidIdent1 = questionIdent + "_RL";
-        responce_lid = new Element("response_lid");
-        Attribute responce_lidIdent = new Attribute("ident", responce_lidIdent1);
-        responce_lid.addAttribute(responce_lidIdent);
+        responseLidIdent = questionIdent + "_RL";
+        response_lid = new Element("response_lid");
+        Attribute response_lidIdent = new Attribute("ident", responseLidIdent);
+        response_lid.addAttribute(response_lidIdent);
 
         render_choice = new Element("render_choice");
 
@@ -106,10 +130,10 @@ public class Quiz2 {
         presentation.appendChild(material);
         material.appendChild(mattext);
         mattext.appendChild(question);
-        responce_lid.appendChild(render_choice);
-        presentation.appendChild(responce_lid);
+        response_lid.appendChild(render_choice);
+        presentation.appendChild(response_lid);
 
-        // From here down is resprocessing -------------------------------------
+        // From here down is response processing -------------------------------
         resprocessing = new Element("resprocessing");
         Element outcomes = new Element("outcomes");
 
@@ -132,7 +156,13 @@ public class Quiz2 {
         outcomes.appendChild(decvar);
     }
 
-    private void newResponse(String responce, String value) {
+    /**
+     * Generates a new response, and gets the value for the response.
+     *
+     * @param response
+     * @param value
+     */
+    public void newResponse(String response, String value) {
         responseCounter++;
         String questionResponseIdent = questionIdent + "_A" + responseCounter;
 
@@ -145,7 +175,7 @@ public class Quiz2 {
         Element mattext = new Element("mattext");
         Attribute texttype = new Attribute("texttype", "text/html");
         mattext.addAttribute(texttype);
-        mattext.appendChild("responce");
+        mattext.appendChild(response);
 
         material.appendChild(mattext);
         response_label.appendChild(material);
@@ -154,9 +184,9 @@ public class Quiz2 {
         // From here down is resprocessing -------------------------------------
         Element respcondition = new Element("respcondition");
         Element conditionvar = new Element("conditionvar");
-        
+
         Element varequal = new Element("varequal");
-        Attribute respident = new Attribute("respident", responce_lidIdent1);
+        Attribute respident = new Attribute("respident", responseLidIdent);
         varequal.appendChild(questionResponseIdent);
         varequal.addAttribute(respident);
 
@@ -166,27 +196,29 @@ public class Quiz2 {
         setvar.appendChild(value);
         setvar.addAttribute(varname);
         setvar.addAttribute(action);
-        
+
         resprocessing.appendChild(respcondition);
         respcondition.appendChild(conditionvar);
         conditionvar.appendChild(varequal);
         respcondition.appendChild(setvar);
-        
-        
+
     }
 
+    // Helps set the ident of things.
     private String ident(String prefix, String suffix) {
         count++;
         String str = prefix + count + suffix;
         return str;
     }
 
+    // Helps set the ident of things.
     private String ident(String prefix) {
         count++;
         String str = prefix + count;
         return str;
     }
 
+    // Prints pretty XML.
     private static String prettyFormat(String input, int indent) throws TransformerConfigurationException, TransformerException {
         try {
             Source xmlInput = new StreamSource(new StringReader(input));

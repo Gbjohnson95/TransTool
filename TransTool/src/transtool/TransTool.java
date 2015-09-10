@@ -10,6 +10,12 @@ public class TransTool {
     public static void main(String[] args) throws XMLStreamException, TransformerException {
 
         Quiz2 test = new Quiz2();
+        
+        test.newQuestion("Question1", "<p>How fast is a swallow?</p>");
+        test.newResponse("African?", "50");
+        test.newResponse("European?", "50");
+        
+        test.print();
 
         //XMLParser parse = new XMLParser("./brainhoneymanifest.xml");
     }
