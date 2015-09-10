@@ -3,7 +3,7 @@
  */
 package transtool.xmlTools;
 
-import Questions.BrainhoneyContents;
+import transtool.quesitons.BrainhoneyContents;
 import java.util.ArrayList;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;

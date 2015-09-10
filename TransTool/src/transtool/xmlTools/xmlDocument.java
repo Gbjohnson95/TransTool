@@ -15,7 +15,7 @@ import java.io.IOException;
  *
  * @author gbjohnson
  */
-public class xmlDocument {
+public class XMLDocument {
 
     private String doc = " ";
     private String filename;
@@ -25,7 +25,7 @@ public class xmlDocument {
      * Just sets the user directory at the moment....
      *
      */
-    public xmlDocument() {
+    public XMLDocument() {
         filepath = System.getProperty("user.dir");
     }
 
