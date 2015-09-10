@@ -19,6 +19,7 @@ public class Quiz {
 
     private String questionIdent;
     private String responseLidIdent;
+    private String questionResponseIdent;
 
     private Element assesment;
     private Element section;
@@ -27,6 +28,7 @@ public class Quiz {
     private Element response_lid;
     private Element render_choice;
     private Element resprocessing;
+    private Element respcondition;
 
     /**
      * Generates a QTI format quiz.
@@ -164,7 +166,7 @@ public class Quiz {
      */
     public void newResponse(String response, String value) {
         responseCounter++;
-        String questionResponseIdent = questionIdent + "_A" + responseCounter;
+        questionResponseIdent = questionIdent + "_A" + responseCounter;
 
         Element response_label = new Element("response_label");
         Attribute response_labelIdent = new Attribute("ident", questionResponseIdent);
@@ -182,7 +184,7 @@ public class Quiz {
         render_choice.appendChild(response_label);
 
         // From here down is resprocessing -------------------------------------
-        Element respcondition = new Element("respcondition");
+        respcondition = new Element("respcondition");
         Element conditionvar = new Element("conditionvar");
 
         Element varequal = new Element("varequal");
@@ -209,6 +211,34 @@ public class Quiz {
         count++;
         String str = prefix + count + suffix;
         return str;
+    }
+
+    public void newFeedback(String feedback) {
+        String feedbackIdent = questionResponseIdent + "_FB";
+        
+        Element displayfeedback = new Element("displayfeedback");
+        Attribute feedbacktype = new Attribute("feedbacktype", "Response");
+        Attribute linkrefid = new Attribute("linkrefid", feedbackIdent);
+        displayfeedback.addAttribute(feedbacktype);
+        displayfeedback.addAttribute(linkrefid);
+        respcondition.appendChild(displayfeedback);
+        
+
+        Element itemfeedback = new Element("itemfeedback");
+        Attribute ident = new Attribute("ident", feedbackIdent);
+        Attribute view = new Attribute("view", "Canidate");
+        itemfeedback.addAttribute(ident);
+        itemfeedback.addAttribute(view);
+
+        Element material = new Element("material");
+        Element mattext = new Element("mattext");
+        Attribute texttype = new Attribute("texttype", "text/html");
+        mattext.addAttribute(texttype);
+        mattext.appendChild(feedback);
+        material.appendChild(mattext);
+        itemfeedback.appendChild(material);
+        item.appendChild(itemfeedback);
+
     }
 
     // Helps set the ident of things.

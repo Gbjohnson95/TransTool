@@ -13,6 +13,7 @@ public class TransTool {
 
         test.newQuestion("Question1", "<p>How fast is a swallow?</p>");
         test.newResponse("African?", "50");
+        test.newFeedback("Well I dont know?!");
         test.newResponse("European?", "50");
 
         test.print();
