@@ -26,12 +26,17 @@ public class Quiz2 {
     private int count = 1000;
     private int responseCounter = 0;
     private String questionIdent;
+
     private Element assesment;
     private Element section;
-    private Element presentation;
     private Element item;
-    private Element render_choice;
+    private Element presentation;
     private Element responce_lid;
+    private Element render_choice;
+
+    private Element resprocessing;
+    
+    String responce_lidIdent1;
 
     public Quiz2() throws TransformerException {
         beginAssesment("demo");
@@ -41,9 +46,10 @@ public class Quiz2 {
         newResponse("ResponceA", "100");
         newResponse("ResponceB", "-100");
 
-        //newQuestion("test2", "text goes here");
-        //newResponse("textA", "100");
-        //newResponse("textb", "100");
+        newQuestion("test2", "text goes here");
+        newResponse("textA", "100");
+        newResponse("textb", "100");
+        
         Document doc = new Document(assesment);
         String xmlText = doc.toXML();
         xmlText = xmlText.replaceAll("&lt;", "<");
@@ -88,24 +94,47 @@ public class Quiz2 {
         Attribute texttype = new Attribute("texttype", "text/html");
         mattext.addAttribute(texttype);
 
-        section.appendChild(item);
-        item.appendChild(presentation);
-        presentation.appendChild(material);
-        material.appendChild(mattext);
-        mattext.appendChild(question);
-
-    }
-
-    private void newResponse(String responce, String value) {
-        responseCounter++;
-        String questionResponseIdent = questionIdent + "_A" + responseCounter;
-        String responce_lidIdent1 = questionIdent + "_RL";
-
+        responce_lidIdent1 = questionIdent + "_RL";
         responce_lid = new Element("response_lid");
         Attribute responce_lidIdent = new Attribute("ident", responce_lidIdent1);
         responce_lid.addAttribute(responce_lidIdent);
 
         render_choice = new Element("render_choice");
+
+        section.appendChild(item);
+        item.appendChild(presentation);
+        presentation.appendChild(material);
+        material.appendChild(mattext);
+        mattext.appendChild(question);
+        responce_lid.appendChild(render_choice);
+        presentation.appendChild(responce_lid);
+
+        // From here down is resprocessing -------------------------------------
+        resprocessing = new Element("resprocessing");
+        Element outcomes = new Element("outcomes");
+
+        Element decvar = new Element("decvar");
+
+        Attribute vartype = new Attribute("vartype", "Integer");
+        Attribute defaultval = new Attribute("defaultval", "0");
+        Attribute varname = new Attribute("varname", "que_score");
+        Attribute maxvalue = new Attribute("maxvalue", "100");
+        Attribute minvalue = new Attribute("minvalue", "0");
+
+        decvar.addAttribute(vartype);
+        decvar.addAttribute(defaultval);
+        decvar.addAttribute(varname);
+        decvar.addAttribute(maxvalue);
+        decvar.addAttribute(minvalue);
+
+        item.appendChild(resprocessing);
+        resprocessing.appendChild(outcomes);
+        outcomes.appendChild(decvar);
+    }
+
+    private void newResponse(String responce, String value) {
+        responseCounter++;
+        String questionResponseIdent = questionIdent + "_A" + responseCounter;
 
         Element response_label = new Element("response_label");
         Attribute response_labelIdent = new Attribute("ident", questionResponseIdent);
@@ -121,8 +150,29 @@ public class Quiz2 {
         material.appendChild(mattext);
         response_label.appendChild(material);
         render_choice.appendChild(response_label);
-        responce_lid.appendChild(render_choice);
-        presentation.appendChild(responce_lid);
+
+        // From here down is resprocessing -------------------------------------
+        Element respcondition = new Element("respcondition");
+        Element conditionvar = new Element("conditionvar");
+        
+        Element varequal = new Element("varequal");
+        Attribute respident = new Attribute("respident", responce_lidIdent1);
+        varequal.appendChild(questionResponseIdent);
+        varequal.addAttribute(respident);
+
+        Element setvar = new Element("setvar");
+        Attribute varname = new Attribute("varname", "que_score");
+        Attribute action = new Attribute("action", "add");
+        setvar.appendChild(value);
+        setvar.addAttribute(varname);
+        setvar.addAttribute(action);
+        
+        resprocessing.appendChild(respcondition);
+        respcondition.appendChild(conditionvar);
+        conditionvar.appendChild(varequal);
+        respcondition.appendChild(setvar);
+        
+        
     }
 
     private String ident(String prefix, String suffix) {
