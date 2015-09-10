@@ -215,14 +215,13 @@ public class Quiz {
 
     public void newFeedback(String feedback) {
         String feedbackIdent = questionResponseIdent + "_FB";
-        
+
         Element displayfeedback = new Element("displayfeedback");
         Attribute feedbacktype = new Attribute("feedbacktype", "Response");
         Attribute linkrefid = new Attribute("linkrefid", feedbackIdent);
         displayfeedback.addAttribute(feedbacktype);
         displayfeedback.addAttribute(linkrefid);
         respcondition.appendChild(displayfeedback);
-        
 
         Element itemfeedback = new Element("itemfeedback");
         Attribute ident = new Attribute("ident", feedbackIdent);
