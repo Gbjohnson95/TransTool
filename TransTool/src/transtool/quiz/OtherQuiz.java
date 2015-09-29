@@ -166,7 +166,11 @@ public class OtherQuiz {
                 qtiDataField3.appendChild(fieldLabel3);
 
                 Element fieldEntry3 = doc.createElement("fieldentry");
-                fieldEntry3.appendChild(doc.createTextNode(brainhoney.get(i).getScore() + ".000000000"));
+                if (brainhoney.get(i).getScore().isEmpty()) {
+                    fieldEntry3.appendChild(doc.createTextNode("1.000000000"));
+                } else {
+                    fieldEntry3.appendChild(doc.createTextNode(brainhoney.get(i).getScore() + ".000000000"));
+                }
                 qtiDataField3.appendChild(fieldEntry3);
 
                 Element fieldLabel4 = doc.createElement("fieldlabel");
@@ -266,16 +270,18 @@ public class OtherQuiz {
 
                 for (int j = 0; j < brainhoney.get(i).getqChoice().size(); j++) {
                     Element respCondition = doc.createElement("respcondition");
-                    respCondition.setAttribute("title", "Response Condition " + Integer.toString(j + 1));
                     Element conditionvar = doc.createElement("conditionvar");
                     Element varequal = doc.createElement("varequal");
-                    varequal.setAttribute("respident", randID + "_LID");
-                    varequal.appendChild(doc.createTextNode(randID + "_A" + questionNumber));
                     Element setVar = doc.createElement("setvar");
-                    setVar.setAttribute("action", "Set");
+                    Element outcome = doc.createElement("outcome");
+                    Element decVar = doc.createElement("decvar");
 
                     switch (brainhoney.get(i).getInteractionType()) {
                         case "choice":
+                            respCondition.setAttribute("title", "Response Condition " + Integer.toString(j + 1));
+                            varequal.setAttribute("respident", randID + "_LID");
+                            varequal.appendChild(doc.createTextNode(randID + "_A" + questionNumber));
+                            setVar.setAttribute("action", "Set");
                             if (brainhoney.get(i).getRightAnswer().get(0).equals(Integer.toString(j + 1))) {
                                 setVar.appendChild(doc.createTextNode("100.000000000"));
                             } else {
@@ -287,16 +293,36 @@ public class OtherQuiz {
                             displayFeedback.setAttribute("linkrefid", randID + "_IF" + questionNumber);
                             questionNumber++;
                             respCondition.appendChild(displayFeedback);
+                            
+                            resprocessing.appendChild(respCondition);
+                        respCondition.appendChild(conditionvar);
+                        conditionvar.appendChild(varequal);
+                        respCondition.appendChild(setVar);
                             break;
 
                         case "text":
-                            System.out.println("SA Question Found!");
+                            decVar.setAttribute("vartype", "Integer");
+                            decVar.setAttribute("minvalue", "0");
+                            decVar.setAttribute("maxvalue", "100");
+                            decVar.setAttribute("varname", "Blank_1");
+                            
+                            for (int k = 0; k < brainhoney.get(i).getRightAnswer().size(); i++) {
+                                varequal.setAttribute("respident", randID + "_A" + questionNumber + "_ANS");
+                                varequal.setAttribute("case", "no");
+                                varequal.appendChild(doc.createTextNode(brainhoney.get(i).getRightAnswer().get(k)));
+                                setVar.setAttribute("action", "Set");
+                                setVar.appendChild(doc.createTextNode("100.000000000"));
+
+                                resprocessing.appendChild(respCondition);
+                                respCondition.appendChild(conditionvar);
+                                conditionvar.appendChild(varequal);
+                                respCondition.appendChild(setVar);
+                            }
 
                             break;
+                            
                         case "essay":
-                            System.out.println("LA Question Found!");
 
-                            break;
                         case "match":
                             System.out.println("Matching Question Found!");
 
@@ -318,10 +344,7 @@ public class OtherQuiz {
                     }
                     if (!brainhoney.get(i).getRightAnswer().isEmpty()) {
 
-                        resprocessing.appendChild(respCondition);
-                        respCondition.appendChild(conditionvar);
-                        conditionvar.appendChild(varequal);
-                        respCondition.appendChild(setVar);
+                        
 
                     }
                 }
