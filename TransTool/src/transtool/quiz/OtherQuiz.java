@@ -32,6 +32,10 @@ import transtool.questions.BrainhoneyContents;
  */
 public class OtherQuiz {
 
+    int itemNumber = 55011;
+    int questionNumber = 55011;
+    int feedbackNumber = 55011;
+
     public OtherQuiz(ArrayList<BrainhoneyContents> brainhoney) throws TransformerConfigurationException, TransformerException {
         try {
 
@@ -70,11 +74,20 @@ public class OtherQuiz {
                 item.appendChild(resprocessing);
 
                 Attr id = doc.createAttribute("d2l_2p0:id");
-                id.setValue(Integer.toString(i));
+                id.setValue(Integer.toString(i + 1));
                 item.setAttributeNode(id);
 
+                String randID = "QUES_18115_18120";
+                String randQuestion = "OBJ_78306";
+                randQuestion = randQuestion.substring(0, randQuestion.length() - Integer.toString(i).length());
+
+                randID = randID.substring(0, randID.length() - Integer.toString(i).length());
+                randID = randID + Integer.toString(i);
+
+                item.setAttribute("ident", randQuestion + i);
+
                 Attr label = doc.createAttribute("label");
-                label.setValue("QUES_10000_" + Integer.toString(i));
+                label.setValue(randID);
                 item.setAttributeNode(label);
 
                 Attr page = doc.createAttribute("d2l_2p0:page");
@@ -103,16 +116,49 @@ public class OtherQuiz {
                 fieldentry.appendChild(doc.createTextNode("yes"));
                 qtiDataField1.appendChild(fieldentry);
 
-                Element fieldLabel2 = doc.createElement("fieldentry");
+                Element fieldLabel2 = doc.createElement("fieldlabel");
                 fieldLabel2.appendChild(doc.createTextNode("qmd_questiontype"));
                 qtiDataField2.appendChild(fieldLabel2);
 
                 Element fieldEntry2 = doc.createElement("fieldentry");
 
-                if (brainhoney.get(i).getInteractionType().equals("choice")) {
-                    System.out.println("Multiple Choice Question Found!!");
-                    fieldEntry2.appendChild(doc.createTextNode("Multiple Choice"));
-                    qtiDataField2.appendChild(fieldEntry2);
+                switch (brainhoney.get(i).getInteractionType()) {
+                    case "choice":
+                        System.out.println("Multiple Choice Question Found!!");
+                        fieldEntry2.appendChild(doc.createTextNode("Multiple Choice"));
+                        qtiDataField2.appendChild(fieldEntry2);
+                        break;
+                    case "text":
+                        System.out.println("SA Question Found!");
+                        fieldEntry2.appendChild(doc.createTextNode("Short Answer"));
+                        qtiDataField2.appendChild(fieldEntry2);
+                        break;
+                    case "essay":
+                        System.out.println("LA Question Found!");
+                        fieldEntry2.appendChild(doc.createTextNode("Long Answer"));
+                        qtiDataField2.appendChild(fieldEntry2);
+                        break;
+                    case "match":
+                        System.out.println("Matching Question Found!");
+                        fieldEntry2.appendChild(doc.createTextNode("Matching"));
+                        qtiDataField2.appendChild(fieldEntry2);
+                        break;
+                    case "order":
+                        System.out.println("ORdering Question Found!");
+                        fieldEntry2.appendChild(doc.createTextNode("Ordering"));
+                        qtiDataField2.appendChild(fieldEntry2);
+                        break;
+                    case "answer":
+                        System.out.println("Multi-Answer Question Found!");
+                        fieldEntry2.appendChild(doc.createTextNode("Multi-Select"));
+                        qtiDataField2.appendChild(fieldEntry2);
+                        break;
+                    case "custom":
+                        System.out.println("Custom found!  Sorry, we don't currently have support for custom questions!!");
+                    default:
+                        System.out.println("Error!!! Question not recognized!!!");
+                        System.out.println(brainhoney.get(i).getInteractionType());
+                        break;
                 }
 
                 Element fieldLabel3 = doc.createElement("fieldlabel");
@@ -120,7 +166,7 @@ public class OtherQuiz {
                 qtiDataField3.appendChild(fieldLabel3);
 
                 Element fieldEntry3 = doc.createElement("fieldentry");
-                fieldEntry3.appendChild(doc.createTextNode("1.000000000"));
+                fieldEntry3.appendChild(doc.createTextNode(brainhoney.get(i).getScore() + ".000000000"));
                 qtiDataField3.appendChild(fieldEntry3);
 
                 Element fieldLabel4 = doc.createElement("fieldlabel");
@@ -128,7 +174,9 @@ public class OtherQuiz {
                 qtiDataField4.appendChild(fieldLabel4);
 
                 Element fieldEntry4 = doc.createElement("fieldentry");
-                fieldEntry4.appendChild(doc.createTextNode("54e92f71-a948-44f1-83d1-de542e246" + Integer.toString(i)));
+                String randVariable = "54e92f71-a948-44f1-83d1-71852872bef4";
+                randVariable = randVariable.substring(0, randVariable.length() - Integer.toString(i).length());
+                fieldEntry4.appendChild(doc.createTextNode(randVariable + Integer.toString(i)));
                 qtiDataField4.appendChild(fieldEntry4);
 
                 Element fieldLabel5 = doc.createElement("fieldlabel");
@@ -177,12 +225,12 @@ public class OtherQuiz {
                 extension.appendChild(gType);
 
                 dStyle.appendChild(doc.createTextNode("2"));
-                enumeration.appendChild(doc.createTextNode("6"));
+                enumeration.appendChild(doc.createTextNode("5"));
                 gType.appendChild(doc.createTextNode("0"));
 
                 Attr identity = doc.createAttribute("ident");
                 Attr rcardinality = doc.createAttribute("rcardinality");
-                identity.setValue("I don't know yet.  Sorry.");
+                identity.setValue(randID + "_LID");
                 rcardinality.setValue("Single");
                 lid.setAttributeNode(identity);
                 lid.setAttributeNode(rcardinality);
@@ -201,6 +249,7 @@ public class OtherQuiz {
                     flowLabel.setAttributeNode(classLabel);
 
                     Element responseLabel = doc.createElement("response_label");
+                    responseLabel.setAttribute("ident", randID + "_A" + itemNumber);
                     Element flowMat = doc.createElement("flow_mat");
                     Element mbody = doc.createElement("material");
                     Element materialText = doc.createElement("mattext");
@@ -212,6 +261,7 @@ public class OtherQuiz {
                     responseLabel.appendChild(flowMat);
                     flowMat.appendChild(mbody);
                     mbody.appendChild(materialText);
+                    itemNumber++;
                 }
 
                 for (int j = 0; j < brainhoney.get(i).getqChoice().size(); j++) {
@@ -219,33 +269,66 @@ public class OtherQuiz {
                     respCondition.setAttribute("title", "Response Condition " + Integer.toString(j + 1));
                     Element conditionvar = doc.createElement("conditionvar");
                     Element varequal = doc.createElement("varequal");
-                    varequal.setAttribute("respident", "QUES_FILLTHISOUTLATER!!!!!");
-                    varequal.appendChild(doc.createTextNode("QUES_FILLTHISOUTLATER!!!!"));
+                    varequal.setAttribute("respident", randID + "_LID");
+                    varequal.appendChild(doc.createTextNode(randID + "_A" + questionNumber));
                     Element setVar = doc.createElement("setvar");
                     setVar.setAttribute("action", "Set");
 
-                    if (!brainhoney.get(i).getRightAnswer().isEmpty()) {
+                    switch (brainhoney.get(i).getInteractionType()) {
+                        case "choice":
+                            if (brainhoney.get(i).getRightAnswer().get(0).equals(Integer.toString(j + 1))) {
+                                setVar.appendChild(doc.createTextNode("100.000000000"));
+                            } else {
+                                setVar.appendChild(doc.createTextNode("0.000000000"));
+                            }
 
-                        if (brainhoney.get(i).getRightAnswer().get(0).equals(Integer.toString(j + 1))) {
-                            setVar.appendChild(doc.createTextNode("100.000000000"));
-                        } else {
-                            setVar.appendChild(doc.createTextNode("0.000000000"));
-                        }
-                        Element displayFeedback = doc.createElement("displayfeedback");
-                        displayFeedback.setAttribute("feedbacktype", "Response");
-                        displayFeedback.setAttribute("linkrefid", "FILLINRIGHTHERE :D");
+                            Element displayFeedback = doc.createElement("displayfeedback");
+                            displayFeedback.setAttribute("feedbacktype", "Response");
+                            displayFeedback.setAttribute("linkrefid", randID + "_IF" + questionNumber);
+                            questionNumber++;
+                            respCondition.appendChild(displayFeedback);
+                            break;
+
+                        case "text":
+                            System.out.println("SA Question Found!");
+
+                            break;
+                        case "essay":
+                            System.out.println("LA Question Found!");
+
+                            break;
+                        case "match":
+                            System.out.println("Matching Question Found!");
+
+                            break;
+                        case "order":
+                            System.out.println("ORdering Question Found!");
+
+                            break;
+                        case "answer":
+                            System.out.println("Multi-Answer Question Found!");
+
+                            break;
+                        case "custom":
+                            System.out.println("Custom found!  Sorry, we don't currently have support for custom questions!!");
+                        default:
+                            System.out.println("Error!!! Question not recognized!!!");
+                            System.out.println(brainhoney.get(i).getInteractionType());
+                            break;
+                    }
+                    if (!brainhoney.get(i).getRightAnswer().isEmpty()) {
 
                         resprocessing.appendChild(respCondition);
                         respCondition.appendChild(conditionvar);
                         conditionvar.appendChild(varequal);
                         respCondition.appendChild(setVar);
-                        respCondition.appendChild(displayFeedback);
+
                     }
                 }
 
                 for (String qChoice : brainhoney.get(i).getqChoice()) {
                     Element itemFeedback = doc.createElement("itemfeedback");
-                    itemFeedback.setAttribute("ident", "SetThisLater --------");
+                    itemFeedback.setAttribute("ident", randID + "_IF" + feedbackNumber);
                     Element fMaterial = doc.createElement("material");
                     Element mattext = doc.createElement("mattext");
                     mattext.setAttribute("texttype", "text/html");
@@ -253,6 +336,7 @@ public class OtherQuiz {
                     item.appendChild(itemFeedback);
                     itemFeedback.appendChild(fMaterial);
                     fMaterial.appendChild(mattext);
+                    feedbackNumber++;
                 }
 
             }
@@ -261,7 +345,7 @@ public class OtherQuiz {
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
             DOMSource source = new DOMSource(doc);
-            StreamResult result = new StreamResult(new File("C:\\file.xml"));
+            StreamResult result = new StreamResult(new File("C:\\questiondb.xml"));
 
             // Output to console for testing
             // StreamResult result = new StreamResult(System.out);
@@ -273,9 +357,4 @@ public class OtherQuiz {
             System.out.println("Oops!  Error!!");
         }
     }
-
-    private void createRandom() {
-
-    }
-
 }
