@@ -2,6 +2,7 @@ package transtool;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.transform.TransformerException;
+import transtool.quiz.OtherQuiz;
 import transtool.quiz.Quiz;
 
 //import transtool.xmlTools.XMLParser;
@@ -17,6 +18,8 @@ public class TransTool {
         test.newResponse("European?", "50");
 
         test.print();
+        
+        
 
         //XMLParser parse = new XMLParser("./brainhoneymanifest.xml");
     }

@@ -15,7 +15,7 @@ import java.io.IOException;
  *
  * @author gbjohnson
  */
-public class XMLDocument {
+public class xmlDocument {
 
     private String doc = " ";
     private String filename;
@@ -25,7 +25,7 @@ public class XMLDocument {
      * Just sets the user directory at the moment....
      *
      */
-    public XMLDocument() {
+    public xmlDocument() {
         filepath = System.getProperty("user.dir");
     }
 
@@ -61,9 +61,9 @@ public class XMLDocument {
         }
 
         FileWriter fw = new FileWriter(file.getAbsoluteFile());
-        BufferedWriter bw = new BufferedWriter(fw);
-        bw.write(doc);
-        bw.close();
+        try (BufferedWriter bw = new BufferedWriter(fw)) {
+            bw.write(doc);
+        }
     }
 
 }

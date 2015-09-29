@@ -6,8 +6,12 @@
 package transtool.ui;
 
 import java.io.File;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.xml.transform.TransformerException;
+import transtool.quiz.OtherQuiz;
 import transtool.xmlTools.XMLParser;
 
 /**
@@ -254,7 +258,12 @@ public class TransToolUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        XMLParser toParse = new XMLParser(filePath);
+        try {
+            XMLParser toParse = new XMLParser(filePath);
+            OtherQuiz test2 = new OtherQuiz(toParse.getBrainhoney());
+        } catch (TransformerException ex) {
+            Logger.getLogger(TransToolUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     /**

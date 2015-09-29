@@ -8,7 +8,7 @@ import javax.xml.transform.stream.StreamSource;
 import nu.xom.*;
 
 /**
- * A class for building Quizes.
+ * A class for building Quizzes.
  *
  * @author gbjohnson
  */
