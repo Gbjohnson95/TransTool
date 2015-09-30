@@ -125,13 +125,21 @@ public class XMLParser {
                             System.out.println("Right Answer Number: " + eElement.getElementsByTagName("value").item(i).getTextContent());
                         }
                         System.out.println("Length of possible answers: " + eElement.getElementsByTagName("body").getLength());
-                        
+
                         brain.setBody(eElement.getElementsByTagName("body").item(0).getTextContent());
 
                         // The body of each question.  It's kind of weird, but... that's the way it looks.
                         for (int i = 1; i < eElement.getElementsByTagName("body").getLength(); i++) {
                             qChoice.add(eElement.getElementsByTagName("body").item(i).getTextContent());
                             System.out.println("Body Text for Questions: " + eElement.getElementsByTagName("body").item(i).getTextContent());
+                        }
+                            System.out.println(qChoice.size());
+                        if (brain.getInteractionType().equals("text")) {
+
+                            for (int i = 0; i < rightAnswer.size(); i++) {
+                                qChoice.add(rightAnswer.get(i));
+                                System.out.println(rightAnswer.get(i));
+                            }
                         }
 
                         // Last, we push everything together and finally on brain.
@@ -149,8 +157,8 @@ public class XMLParser {
             Logger.getLogger(XMLParser.class.getName()).log(Level.SEVERE, null, ex);
             System.out.println("Error: Cannot read file.  Exception thrown!");
         }
-        
-        System.out.println("Number of questions: " + brainhoney.size());       
+
+        System.out.println("Number of questions: " + brainhoney.size());
     }
 
     public ArrayList<BrainhoneyContents> getBrainhoney() {
@@ -161,8 +169,6 @@ public class XMLParser {
         this.brainhoney = brainhoney;
     }
 
-    
-    
     /*
      * Probably WILL NOT be implementing, but I am leaving this here just in
      * case something happens.
@@ -170,4 +176,4 @@ public class XMLParser {
     public void xMLParseSax() {
     }
 
-    }
+}

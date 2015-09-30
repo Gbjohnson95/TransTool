@@ -130,8 +130,10 @@ public class OtherQuiz {
                         break;
                     case "text":
                         System.out.println("SA Question Found!");
+
                         fieldEntry2.appendChild(doc.createTextNode("Short Answer"));
                         qtiDataField2.appendChild(fieldEntry2);
+
                         break;
                     case "essay":
                         System.out.println("LA Question Found!");
@@ -205,13 +207,33 @@ public class OtherQuiz {
 
                 Element flow = doc.createElement("flow");
                 presentation.appendChild(flow);
-
-                Element material = doc.createElement("material");
                 Element extension = doc.createElement("response_extension");
                 Element lid = doc.createElement("response_lid");
+                Element material = doc.createElement("material");
+
                 flow.appendChild(material);
-                flow.appendChild(extension);
-                flow.appendChild(lid);
+
+                if (!brainhoney.get(i).getInteractionType().equals("text")) {
+                    flow.appendChild(extension);
+                    flow.appendChild(lid);
+                } else {
+                    Element responseStr = doc.createElement("response_str");
+                    responseStr.setAttribute("ident", randID + "_A" + questionNumber + "_STR");
+                    responseStr.setAttribute("rcardinality", "Single");
+                    
+                    Element renderFib = doc.createElement("render_fib");
+                    renderFib.setAttribute("rows", "3");
+                    renderFib.setAttribute("columns", "60");
+                    renderFib.setAttribute("prompt", "Box");
+                    renderFib.setAttribute("fibtype", "String");
+                    
+                    Element responseLabel = doc.createElement("response_label");
+                    responseLabel.setAttribute("ident", randID + "_A" + questionNumber + "_ANS");
+                    
+                    flow.appendChild(responseStr);
+                    responseStr.appendChild(renderFib);
+                    renderFib.appendChild(responseLabel);
+                }
 
                 Element matText = doc.createElement("mattext");
                 material.appendChild(matText);
@@ -283,6 +305,7 @@ public class OtherQuiz {
                             varequal.appendChild(doc.createTextNode(randID + "_A" + questionNumber));
                             setVar.setAttribute("action", "Set");
                             if (brainhoney.get(i).getRightAnswer().get(0).equals(Integer.toString(j + 1))) {
+                                System.out.println("correct answer found!  Inserting!");
                                 setVar.appendChild(doc.createTextNode("100.000000000"));
                             } else {
                                 setVar.appendChild(doc.createTextNode("0.000000000"));
@@ -293,26 +316,31 @@ public class OtherQuiz {
                             displayFeedback.setAttribute("linkrefid", randID + "_IF" + questionNumber);
                             questionNumber++;
                             respCondition.appendChild(displayFeedback);
-                            
+
                             resprocessing.appendChild(respCondition);
-                        respCondition.appendChild(conditionvar);
-                        conditionvar.appendChild(varequal);
-                        respCondition.appendChild(setVar);
+                            respCondition.appendChild(conditionvar);
+                            conditionvar.appendChild(varequal);
+                            respCondition.appendChild(setVar);
                             break;
 
                         case "text":
+                            Element outcomes = doc.createElement("outcomes");
                             decVar.setAttribute("vartype", "Integer");
                             decVar.setAttribute("minvalue", "0");
                             decVar.setAttribute("maxvalue", "100");
                             decVar.setAttribute("varname", "Blank_1");
-                            
-                            for (int k = 0; k < brainhoney.get(i).getRightAnswer().size(); i++) {
+
+                            for (String rightAnswer : brainhoney.get(i).getRightAnswer()) {
                                 varequal.setAttribute("respident", randID + "_A" + questionNumber + "_ANS");
                                 varequal.setAttribute("case", "no");
-                                varequal.appendChild(doc.createTextNode(brainhoney.get(i).getRightAnswer().get(k)));
+                                varequal.appendChild(doc.createTextNode(rightAnswer));
+
+                                System.out.println(rightAnswer);
                                 setVar.setAttribute("action", "Set");
                                 setVar.appendChild(doc.createTextNode("100.000000000"));
 
+                                resprocessing.appendChild(outcomes);
+                                outcomes.appendChild(decVar);
                                 resprocessing.appendChild(respCondition);
                                 respCondition.appendChild(conditionvar);
                                 conditionvar.appendChild(varequal);
@@ -320,7 +348,7 @@ public class OtherQuiz {
                             }
 
                             break;
-                            
+
                         case "essay":
 
                         case "match":
@@ -343,8 +371,6 @@ public class OtherQuiz {
                             break;
                     }
                     if (!brainhoney.get(i).getRightAnswer().isEmpty()) {
-
-                        
 
                     }
                 }
