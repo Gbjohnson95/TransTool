@@ -359,7 +359,7 @@ public class OtherQuiz {
 
                             break;
                         case "order":
-                            System.out.println("ORdering Question Found!");
+                            System.out.println("Ordering Question Found!");
 
                             break;
                         case "answer":
