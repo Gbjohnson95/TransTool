@@ -61,7 +61,8 @@ public class OtherQuiz {
             staff.setAttributeNode(attr2);
 
             for (int i = 0; i < brainhoney.size(); i++) {
-
+                questionNumber = itemNumber;
+                feedbackNumber = questionNumber;
                 Element item = doc.createElement("item");
                 Element metaData = doc.createElement("itemmetadata");
                 Element itemproc = doc.createElement("itemproc_extension");
@@ -156,6 +157,7 @@ public class OtherQuiz {
                         qtiDataField2.appendChild(fieldEntry2);
                         break;
                     case "custom":
+                    case "composite":
                         System.out.println("Custom found!  Sorry, we don't currently have support for custom questions!!");
                     default:
                         System.out.println("Error!!! Question not recognized!!!");
@@ -220,16 +222,16 @@ public class OtherQuiz {
                     Element responseStr = doc.createElement("response_str");
                     responseStr.setAttribute("ident", randID + "_A" + questionNumber + "_STR");
                     responseStr.setAttribute("rcardinality", "Single");
-                    
+
                     Element renderFib = doc.createElement("render_fib");
                     renderFib.setAttribute("rows", "3");
                     renderFib.setAttribute("columns", "60");
                     renderFib.setAttribute("prompt", "Box");
                     renderFib.setAttribute("fibtype", "String");
-                    
+
                     Element responseLabel = doc.createElement("response_label");
                     responseLabel.setAttribute("ident", randID + "_A" + questionNumber + "_ANS");
-                    
+
                     flow.appendChild(responseStr);
                     responseStr.appendChild(renderFib);
                     renderFib.appendChild(responseLabel);
@@ -360,10 +362,65 @@ public class OtherQuiz {
 
                             break;
                         case "answer":
-                            System.out.println("Multi-Answer Question Found!");
+                            Element out = doc.createElement("outcomes");
+                            decVar.setAttribute("vartype", "Integer");
+                            decVar.setAttribute("defaultval", "0");
+                            decVar.setAttribute("minvalue", "0");
+
+                            Element decVar2 = doc.createElement("decVar");
+                            Element decVar3 = doc.createElement("decVar");
+
+                            decVar2.setAttribute("vartype", "Integer");
+                            decVar2.setAttribute("defaultval", "0");
+                            decVar2.setAttribute("minvalue", "0");
+
+                            decVar3.setAttribute("vartype", "Integer");
+                            decVar3.setAttribute("defaultval", "0");
+                            decVar3.setAttribute("minvalue", "0");
+
+                            decVar.setAttribute("varname", "que_score");
+                            decVar.setAttribute("maxvalue", "100");
+
+                            decVar2.setAttribute("varname", "D2L_Correct");
+                            decVar3.setAttribute("varname", "D2L_Incorrect");
+
+                            respCondition.setAttribute("title", "Response Condition ");
+                            respCondition.setAttribute("continue", "yes");
+                            varequal.setAttribute("respident", randID + "_LID");
+                            varequal.appendChild(doc.createTextNode(randID + "_A" + questionNumber));
+                            setVar.setAttribute("action", "Add");
+                            setVar.appendChild(doc.createTextNode("1"));
+
+                            boolean didFind = false;
+                            for (int k = 0; k < brainhoney.get(i).getRightAnswer().size(); k++) {
+                                if (brainhoney.get(i).getRightAnswer().get(k).equals(Integer.toString(j + 1))) {
+                                    System.out.println("correct answer found!  Inserting:" + brainhoney.get(i).getRightAnswer().get(k));
+                                    setVar.setAttribute("varname", "D2L_Correct");
+                                    didFind = true;
+                                    respCondition.appendChild(setVar);
+                                }
+                            }
+                            if (didFind == false) {
+                                System.out.println("Inserting: " + (j + 1));
+                                setVar.setAttribute("varname", "D2L_Incorrect");
+                            }
+
+                            questionNumber++;
+
+                            resprocessing.appendChild(out);
+                            out.appendChild(decVar);
+                            out.appendChild(decVar2);
+                            out.appendChild(decVar3);
+
+                            resprocessing.appendChild(respCondition);
+                            respCondition.appendChild(conditionvar);
+                            conditionvar.appendChild(varequal);
+                            
 
                             break;
+
                         case "custom":
+                        case "composite":
                             System.out.println("Custom found!  Sorry, we don't currently have support for custom questions!!");
                         default:
                             System.out.println("Error!!! Question not recognized!!!");
