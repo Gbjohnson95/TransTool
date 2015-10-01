@@ -25,8 +25,9 @@ import transtool.questions.BrainhoneyContents;
  *
  * @author hallm8
  *
- * Hey Grant, don't delete this; I am going to play with the DOM parser and
- * create it as a D2L file instead, so I don't have to mess with your code.
+ * Hey Grant, don't delete this; (YOU'RE NOT MY SUPERVISOR -grant) I am going to 
+ * play with the DOM parser and create it as a D2L file instead, so I don't have 
+ * to mess with your code.
  *
  *
  */
