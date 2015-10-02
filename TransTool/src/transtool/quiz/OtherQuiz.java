@@ -298,7 +298,6 @@ public class OtherQuiz {
                     Element conditionvar = doc.createElement("conditionvar");
                     Element varequal = doc.createElement("varequal");
                     Element setVar = doc.createElement("setvar");
-                    Element outcome = doc.createElement("outcome");
                     Element decVar = doc.createElement("decvar");
 
                     switch (brainhoney.get(i).getInteractionType()) {
