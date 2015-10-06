@@ -33,7 +33,7 @@ public class XMLParser {
     // After everything has been parsed, brainhoney will hold all the variables.
     private ArrayList<BrainhoneyContents> brainhoney;
 
-    // nanme of XML document to be parsed.
+    // name of XML document to be parsed.
     private String nameOfXML;
 
     /*
@@ -99,6 +99,7 @@ public class XMLParser {
                     // If the question does not have an ID, it is an invalid
                     // question.
                     if (!eElement.getAttribute("questionid").isEmpty()) {
+                        
                         // Create all the objects that will eventually be pushed
                         // onto the Brainhoney array.
                         BrainhoneyContents brain = new BrainhoneyContents();
@@ -145,6 +146,7 @@ public class XMLParser {
                         // Last, we push everything together and finally on brain.
                         brain.setRightAnswer(rightAnswer);
                         brain.setqChoice(qChoice);
+                        brain.setQuestionID(eElement.getAttribute("questionid"));
                         brainhoney.add(brain);
 
                         // For aesthetic purposes.

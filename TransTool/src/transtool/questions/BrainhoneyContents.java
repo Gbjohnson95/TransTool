@@ -19,6 +19,7 @@ public class BrainhoneyContents {
     private String interactionType;
     private String score;
     private String partial;
+    private String questionID;
 
     public BrainhoneyContents() {
     }
@@ -69,6 +70,14 @@ public class BrainhoneyContents {
 
     public void setPartial(String partial) {
         this.partial = partial;
+    }
+
+    public String getQuestionID() {
+        return questionID;
+    }
+
+    public void setQuestionID(String questionID) {
+        this.questionID = questionID;
     }
 
 }

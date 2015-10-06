@@ -6,12 +6,19 @@
 package transtool.ui;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.xml.transform.TransformerException;
 import transtool.quiz.OtherQuiz;
+import transtool.xmlTools.QuizParse;
 import transtool.xmlTools.XMLParser;
 
 /**
@@ -20,8 +27,9 @@ import transtool.xmlTools.XMLParser;
  */
 public class TransToolUI extends javax.swing.JFrame {
 
-    
     private String filePath;
+    private String savePath;
+
     /**
      * Creates new form Window3
      */
@@ -280,14 +288,31 @@ public class TransToolUI extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         try {
             XMLParser toParse = new XMLParser(filePath);
-            OtherQuiz test2 = new OtherQuiz(toParse.getBrainhoney());
+            
+            QuizParse quiz = new QuizParse(filePath);
+            OtherQuiz test2 = new OtherQuiz(quiz.getQuiz(), savePath);
         } catch (TransformerException ex) {
             Logger.getLogger(TransToolUI.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+        zipFile();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
+        JFileChooser chooser = new JFileChooser();
+        chooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+        chooser.setDialogTitle("choosertitle");
+        chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        chooser.setAcceptAllFileFilterUsed(false);
+
+        if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+            System.out.println("getCurrentDirectory(): " + chooser.getCurrentDirectory());
+            savePath = chooser.getSelectedFile().getAbsolutePath();
+            System.out.println("getSelectedFile() : " + savePath);
+
+        } else {
+            System.out.println("No Selection ");
+        }
     }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
@@ -354,4 +379,36 @@ public class TransToolUI extends javax.swing.JFrame {
     private javax.swing.JTextPane jTextPane1;
     private javax.swing.JLabel pathFileText;
     // End of variables declaration//GEN-END:variables
+
+    private void zipFile() {
+        byte[] buffer = new byte[1024];
+        try {
+
+            String[] sourceFiles = {savePath + "\\imsmanifest.xml", savePath + "\\questiondb.xml"};
+
+            FileOutputStream fos = new FileOutputStream(savePath + "\\import.zip");
+            ZipOutputStream zos = new ZipOutputStream(fos);
+
+            for (String sourceFile : sourceFiles) {
+                File srcFile = new File(sourceFile);
+                FileInputStream fis;
+                fis = new FileInputStream(srcFile);
+                zos.putNextEntry(new ZipEntry(srcFile.getName()));
+                int length;
+                while ((length = fis.read(buffer)) > 0) {
+                    zos.write(buffer, 0, length);
+                }
+                zos.closeEntry();
+                fis.close();
+            }
+            zos.close();
+
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(TransToolUI.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(TransToolUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+
 }

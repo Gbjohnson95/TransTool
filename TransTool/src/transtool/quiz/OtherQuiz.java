@@ -7,6 +7,8 @@ package transtool.quiz;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -25,8 +27,8 @@ import transtool.questions.BrainhoneyContents;
  *
  * @author hallm8
  *
- * Hey Grant, don't delete this; (YOU'RE NOT MY SUPERVISOR -grant) I am going to 
- * play with the DOM parser and create it as a D2L file instead, so I don't have 
+ * Hey Grant, don't delete this; (YOU'RE NOT MY SUPERVISOR -grant) I am going to
+ * play with the DOM parser and create it as a D2L file instead, so I don't have
  * to mess with your code.
  *
  *
@@ -37,8 +39,16 @@ public class OtherQuiz {
     int questionNumber = 55011;
     int feedbackNumber = 55011;
 
-    public OtherQuiz(ArrayList<BrainhoneyContents> brainhoney) throws TransformerConfigurationException, TransformerException {
+    String toSave;
+
+    public OtherQuiz(ArrayList<transtool.xmlTools.Quiz> quiz, String savePath) throws TransformerConfigurationException, TransformerException {
         try {
+
+            
+
+            toSave = savePath;
+
+            createManifest();
 
             DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
@@ -60,7 +70,8 @@ public class OtherQuiz {
             Attr attr2 = doc.createAttribute("ident");
             attr2.setValue("QLIB_1000");
             staff.setAttributeNode(attr2);
-
+            for (int l = 0; l < quiz.size(); l++){
+                ArrayList
             for (int i = 0; i < brainhoney.size(); i++) {
                 questionNumber = itemNumber;
                 feedbackNumber = questionNumber;
@@ -126,34 +137,28 @@ public class OtherQuiz {
 
                 switch (brainhoney.get(i).getInteractionType()) {
                     case "choice":
-                        System.out.println("Multiple Choice Question Found!!");
                         fieldEntry2.appendChild(doc.createTextNode("Multiple Choice"));
                         qtiDataField2.appendChild(fieldEntry2);
                         break;
                     case "text":
-                        System.out.println("SA Question Found!");
 
                         fieldEntry2.appendChild(doc.createTextNode("Short Answer"));
                         qtiDataField2.appendChild(fieldEntry2);
 
                         break;
                     case "essay":
-                        System.out.println("LA Question Found!");
                         fieldEntry2.appendChild(doc.createTextNode("Long Answer"));
                         qtiDataField2.appendChild(fieldEntry2);
                         break;
                     case "match":
-                        System.out.println("Matching Question Found!");
                         fieldEntry2.appendChild(doc.createTextNode("Matching"));
                         qtiDataField2.appendChild(fieldEntry2);
                         break;
                     case "order":
-                        System.out.println("ORdering Question Found!");
                         fieldEntry2.appendChild(doc.createTextNode("Ordering"));
                         qtiDataField2.appendChild(fieldEntry2);
                         break;
                     case "answer":
-                        System.out.println("Multi-Answer Question Found!");
                         fieldEntry2.appendChild(doc.createTextNode("Multi-Select"));
                         qtiDataField2.appendChild(fieldEntry2);
                         break;
@@ -297,20 +302,22 @@ public class OtherQuiz {
                     Element respCondition = doc.createElement("respcondition");
                     Element conditionvar = doc.createElement("conditionvar");
                     Element varequal = doc.createElement("varequal");
-                    Element setVar = doc.createElement("setvar");
                     Element decVar = doc.createElement("decvar");
 
                     switch (brainhoney.get(i).getInteractionType()) {
                         case "choice":
+                            Element setVariable = doc.createElement("setvar");
                             respCondition.setAttribute("title", "Response Condition " + Integer.toString(j + 1));
                             varequal.setAttribute("respident", randID + "_LID");
                             varequal.appendChild(doc.createTextNode(randID + "_A" + questionNumber));
-                            setVar.setAttribute("action", "Set");
-                            if (brainhoney.get(i).getRightAnswer().get(0).equals(Integer.toString(j + 1))) {
-                                System.out.println("correct answer found!  Inserting!");
-                                setVar.appendChild(doc.createTextNode("100.000000000"));
-                            } else {
-                                setVar.appendChild(doc.createTextNode("0.000000000"));
+                            setVariable.setAttribute("action", "Set");
+
+                            if (!brainhoney.get(i).getRightAnswer().isEmpty()) {
+                                if (brainhoney.get(i).getRightAnswer().get(0).equals(Integer.toString(j + 1))) {
+                                    setVariable.appendChild(doc.createTextNode("100.000000000"));
+                                } else {
+                                    setVariable.appendChild(doc.createTextNode("0.000000000"));
+                                }
                             }
 
                             Element displayFeedback = doc.createElement("displayfeedback");
@@ -322,31 +329,34 @@ public class OtherQuiz {
                             resprocessing.appendChild(respCondition);
                             respCondition.appendChild(conditionvar);
                             conditionvar.appendChild(varequal);
-                            respCondition.appendChild(setVar);
+                            respCondition.appendChild(setVariable);
                             break;
 
                         case "text":
+                            Element setVar = doc.createElement("setvar");
                             Element outcomes = doc.createElement("outcomes");
                             decVar.setAttribute("vartype", "Integer");
                             decVar.setAttribute("minvalue", "0");
                             decVar.setAttribute("maxvalue", "100");
                             decVar.setAttribute("varname", "Blank_1");
 
-                            for (String rightAnswer : brainhoney.get(i).getRightAnswer()) {
-                                varequal.setAttribute("respident", randID + "_A" + questionNumber + "_ANS");
-                                varequal.setAttribute("case", "no");
-                                varequal.appendChild(doc.createTextNode(rightAnswer));
+                            if (!brainhoney.get(i).getRightAnswer().isEmpty()) {
+                                for (String rightAnswer : brainhoney.get(i).getRightAnswer()) {
+                                    System.out.println("Correct Answer: " + rightAnswer);
+                                    Element varequals = doc.createElement("varequal");
+                                    varequals.setAttribute("respident", randID + "_A" + questionNumber + "_ANS");
+                                    varequals.setAttribute("case", "no");
+                                    varequals.appendChild(doc.createTextNode(rightAnswer));
+                                    setVar.setAttribute("action", "Set");
+                                    setVar.appendChild(doc.createTextNode("100.000000000"));
 
-                                System.out.println(rightAnswer);
-                                setVar.setAttribute("action", "Set");
-                                setVar.appendChild(doc.createTextNode("100.000000000"));
-
-                                resprocessing.appendChild(outcomes);
-                                outcomes.appendChild(decVar);
-                                resprocessing.appendChild(respCondition);
-                                respCondition.appendChild(conditionvar);
-                                conditionvar.appendChild(varequal);
-                                respCondition.appendChild(setVar);
+                                    resprocessing.appendChild(outcomes);
+                                    outcomes.appendChild(decVar);
+                                    resprocessing.appendChild(respCondition);
+                                    respCondition.appendChild(conditionvar);
+                                    conditionvar.appendChild(varequals);
+                                    respCondition.appendChild(setVar);
+                                }
                             }
 
                             break;
@@ -354,14 +364,13 @@ public class OtherQuiz {
                         case "essay":
 
                         case "match":
-                            System.out.println("Matching Question Found!");
 
                             break;
                         case "order":
-                            System.out.println("Ordering Question Found!");
 
                             break;
                         case "answer":
+                            Element setVariation = doc.createElement("setvar");
                             Element out = doc.createElement("outcomes");
                             decVar.setAttribute("vartype", "Integer");
                             decVar.setAttribute("defaultval", "0");
@@ -384,25 +393,21 @@ public class OtherQuiz {
                             decVar2.setAttribute("varname", "D2L_Correct");
                             decVar3.setAttribute("varname", "D2L_Incorrect");
 
-                            respCondition.setAttribute("title", "Response Condition ");
-                            respCondition.setAttribute("continue", "yes");
                             varequal.setAttribute("respident", randID + "_LID");
                             varequal.appendChild(doc.createTextNode(randID + "_A" + questionNumber));
-                            setVar.setAttribute("action", "Add");
-                            setVar.appendChild(doc.createTextNode("1"));
+                            setVariation.setAttribute("action", "Add");
+                            setVariation.appendChild(doc.createTextNode("1"));
 
                             boolean didFind = false;
                             for (int k = 0; k < brainhoney.get(i).getRightAnswer().size(); k++) {
                                 if (brainhoney.get(i).getRightAnswer().get(k).equals(Integer.toString(j + 1))) {
-                                    System.out.println("correct answer found!  Inserting:" + brainhoney.get(i).getRightAnswer().get(k));
-                                    setVar.setAttribute("varname", "D2L_Correct");
+                                    setVariation.setAttribute("varname", "D2L_Correct");
                                     didFind = true;
-                                    respCondition.appendChild(setVar);
+                                    respCondition.appendChild(setVariation);
                                 }
                             }
                             if (didFind == false) {
-                                System.out.println("Inserting: " + (j + 1));
-                                setVar.setAttribute("varname", "D2L_Incorrect");
+                                setVariation.setAttribute("varname", "D2L_Incorrect");
                             }
 
                             questionNumber++;
@@ -415,7 +420,6 @@ public class OtherQuiz {
                             resprocessing.appendChild(respCondition);
                             respCondition.appendChild(conditionvar);
                             conditionvar.appendChild(varequal);
-                            
 
                             break;
 
@@ -446,12 +450,13 @@ public class OtherQuiz {
                 }
 
             }
+            }
 
             // write the content into xml file
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
             DOMSource source = new DOMSource(doc);
-            StreamResult result = new StreamResult(new File("C:\\questiondb.xml"));
+            StreamResult result = new StreamResult(new File(savePath) + "\\questiondb.xml");
 
             // Output to console for testing
             // StreamResult result = new StreamResult(System.out);
@@ -462,5 +467,52 @@ public class OtherQuiz {
         } catch (ParserConfigurationException | TransformerException pce) {
             System.out.println("Oops!  Error!!");
         }
+    }
+
+    private void createManifest() {
+        try {
+
+            DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+
+            // root elements
+            Document doc = docBuilder.newDocument();
+            Element rootElement = doc.createElement("manifest");
+            doc.appendChild(rootElement);
+            rootElement.setAttribute("xmlns:d2l_2p0", "http://desire2learn.com/xsd/d2lcp_v2p0");
+            rootElement.setAttribute("xmlns:scorm_1p2", "http://www.adlnet.org/xsd/adlcp_rootv1p2");
+            rootElement.setAttribute("xmlns", "http://www.imsglobal.org/xsd/imscp_v1p1");
+
+            Element resources = doc.createElement("resources");
+            Element resource = doc.createElement("resource");
+
+            resource.setAttribute("identifier", "res_question_library");
+            resource.setAttribute("type", "webcontent");
+            resource.setAttribute("d2l_2p0:material_type", "d2lquestionlibrary");
+            resource.setAttribute("d2l_2p0:link_target", "");
+            resource.setAttribute("href", "questiondb.xml");
+            resource.setAttribute("title", "Question Library");
+
+            rootElement.appendChild(resources);
+            resources.appendChild(resource);
+
+            // write the content into xml file
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            Transformer transformer = transformerFactory.newTransformer();
+            DOMSource source = new DOMSource(doc);
+            StreamResult result = new StreamResult(new File(toSave) + "\\imsmanifest.xml");
+
+            // Output to console for testing
+            // StreamResult result = new StreamResult(System.out);
+            transformer.transform(source, result);
+
+            System.out.println("File saved!");
+
+        } catch (ParserConfigurationException pce) {
+            System.out.println("Oops!  Error!!");
+        } catch (TransformerException ex) {
+            Logger.getLogger(OtherQuiz.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
 }
