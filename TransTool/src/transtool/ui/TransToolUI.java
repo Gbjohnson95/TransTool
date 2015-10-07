@@ -289,7 +289,7 @@ public class TransToolUI extends javax.swing.JFrame {
         try {
             XMLParser toParse = new XMLParser(filePath);
             
-            QuizParse quiz = new QuizParse(filePath);
+            QuizParse quiz = new QuizParse(filePath, toParse.getBrainhoney());
             OtherQuiz test2 = new OtherQuiz(quiz.getQuiz(), savePath);
         } catch (TransformerException ex) {
             Logger.getLogger(TransToolUI.class.getName()).log(Level.SEVERE, null, ex);

@@ -112,34 +112,26 @@ public class XMLParser {
                         brain.setScore(eElement.getAttribute("score"));
 
                         // Keep this for now.  May go in the final product.  
-                        System.out.println("Score: " + eElement.getAttribute("score"));
-                        System.out.println("Is partial? " + eElement.getAttribute("partial"));
 
                         // Next, we have to pull the interaction type off.
                         // Very long code. 
                         brain.setInteractionType(eElement.getElementsByTagName("interaction").item(0).getAttributes().getNamedItem("type").getTextContent());
-                        System.out.println("Interaction: " + brain.getInteractionType());
 
                         // Now we pull off the correct answers, if there are any.
                         for (int i = 0; i < eElement.getElementsByTagName("value").getLength(); i++) {
                             rightAnswer.add(eElement.getElementsByTagName("value").item(i).getTextContent());
-                            System.out.println("Right Answer Number: " + eElement.getElementsByTagName("value").item(i).getTextContent());
                         }
-                        System.out.println("Length of possible answers: " + eElement.getElementsByTagName("body").getLength());
 
                         brain.setBody(eElement.getElementsByTagName("body").item(0).getTextContent());
 
                         // The body of each question.  It's kind of weird, but... that's the way it looks.
                         for (int i = 1; i < eElement.getElementsByTagName("body").getLength(); i++) {
                             qChoice.add(eElement.getElementsByTagName("body").item(i).getTextContent());
-                            System.out.println("Body Text for Questions: " + eElement.getElementsByTagName("body").item(i).getTextContent());
                         }
-                            System.out.println(qChoice.size());
                         if (brain.getInteractionType().equals("text")) {
 
                             for (int i = 0; i < rightAnswer.size(); i++) {
                                 qChoice.add(rightAnswer.get(i));
-                                System.out.println(rightAnswer.get(i));
                             }
                         }
 
@@ -150,7 +142,6 @@ public class XMLParser {
                         brainhoney.add(brain);
 
                         // For aesthetic purposes.
-                        System.out.println(" ");
                     }
                 }
             }

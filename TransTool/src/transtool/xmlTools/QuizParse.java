@@ -17,6 +17,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+import transtool.questions.BrainhoneyContents;
 
 /**
  *
@@ -28,11 +29,14 @@ import org.xml.sax.SAXException;
  */
 public class QuizParse {
 
-    ArrayList<Quiz> quiz;
+    private ArrayList<Quiz> quiz;
     private String nameOfXML;
+    private ArrayList<BrainhoneyContents> brainhoneyContents;
 
-    public QuizParse(String nameOfXML) {
+    public QuizParse(String nameOfXML, ArrayList<BrainhoneyContents> brainhoney) {
         this.quiz = new ArrayList<>();
+
+        brainhoneyContents = brainhoney;
 
         //Standard opening procedures for DOM.
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -52,11 +56,9 @@ public class QuizParse {
             // However, there are other question tags as well, so we have to 
             // also make sure that we are pulling the right information off.
             NodeList nodeList = doc.getElementsByTagName("questions");
-            
+
             //NodeList nodie  = doc.getElementsByTagName("item");
             //NodeList nodeTest2 = nodie.item(3).getChildNodes();
-            
-            
             // And now we sort through each question individually.
             // Normalize the document.  
             doc.getDocumentElement().normalize();
@@ -74,9 +76,7 @@ public class QuizParse {
 
                 NodeList question = nNode.getChildNodes();
 
-                
                 //System.out.println(eElement.getParentNode().getChildNodes().item(4).getTextContent());
-
                 for (int i = 0; i < question.getLength(); i++) {
                     if (question.item(i).getNodeType() == Node.ELEMENT_NODE) {
 
@@ -88,10 +88,16 @@ public class QuizParse {
                 }
                 tQuiz.setQuizQuestions(questions);
                 tQuiz.setQuizName(Integer.toString(temp));
+
+                quiz.add(tQuiz);
+
+                System.out.println(quiz.size());
             }
         } catch (SAXException | IOException | ParserConfigurationException ex) {
             Logger.getLogger(QuizParse.class.getName()).log(Level.SEVERE, null, ex);
         }
+
+        assignSections();
     }
 
     public ArrayList<Quiz> getQuiz() {
@@ -109,9 +115,20 @@ public class QuizParse {
     public void setNameOfXML(String nameOfXML) {
         this.nameOfXML = nameOfXML;
     }
-    
-    
-    
-    
+
+    void assignSections() {
+        for (Quiz quiz1 : quiz) {
+            ArrayList<BrainhoneyContents> tempContents = new ArrayList<>();
+            for (String question : quiz1.getQuizQuestions()) {
+
+                for (BrainhoneyContents brainhoneyContent : brainhoneyContents) {
+                    if (question.equals(brainhoneyContent.getQuestionID())) {
+                        tempContents.add(brainhoneyContent);
+                    }
+                }
+            }
+            quiz1.setBrainhoney(tempContents);
+        }
+    }
 
 }

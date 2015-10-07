@@ -20,9 +20,23 @@ public class BrainhoneyContents {
     private String score;
     private String partial;
     private String questionID;
+    
+    private String quizName;
 
     public BrainhoneyContents() {
     }
+    
+    public void printContents(){
+        System.out.println("body: " + body);
+        System.out.println("Interaction Type: " + interactionType);
+        System.out.println("Score: " + score);
+        System.out.println("Is this partial? " + partial);
+        System.out.println("Question ID: " + questionID);
+        System.out.println("how many choices? " + rightAnswer.size());
+        System.out.println("Question Choices: " + qChoice.size());
+        System.out.println(quizName);
+    }
+    
 
     public ArrayList<String> getRightAnswer() {
         return rightAnswer;
@@ -80,4 +94,13 @@ public class BrainhoneyContents {
         this.questionID = questionID;
     }
 
+    public String getQuizName() {
+        return quizName;
+    }
+
+    public void setQuizName(String quizName) {
+        this.quizName = quizName;
+    }
+
+    
 }

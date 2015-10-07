@@ -6,6 +6,7 @@
 package transtool.xmlTools;
 
 import java.util.ArrayList;
+import transtool.questions.BrainhoneyContents;
 
 /**
  *
@@ -16,6 +17,7 @@ import java.util.ArrayList;
 public class Quiz {
     private String quizName;
     private ArrayList<String> quizQuestions;
+    private ArrayList<BrainhoneyContents> brainhoney;
 
     public String getQuizName() {
         return quizName;
@@ -33,5 +35,11 @@ public class Quiz {
         this.quizQuestions = quizQuestions;
     }
 
-   
+    public ArrayList<BrainhoneyContents> getBrainhoney() {
+        return brainhoney;
+    }
+
+    public void setBrainhoney(ArrayList<BrainhoneyContents> brainhoney) {
+        this.brainhoney = brainhoney;
+    }  
 }
