@@ -270,34 +270,6 @@ public class TransToolUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        JFileChooser fileChooser = new JFileChooser();
-        FileNameExtensionFilter filter = new FileNameExtensionFilter("XML Files", "xml");
-        fileChooser.setFileFilter(filter);
-
-        fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
-        int result = fileChooser.showOpenDialog(this);
-        if (result == JFileChooser.APPROVE_OPTION) {
-            File selectedFile = fileChooser.getSelectedFile();
-            System.out.println("Selected file: " + selectedFile.getAbsolutePath());
-            filePath = selectedFile.getAbsolutePath();
-            pathFileText.setText(filePath);
-        }
-    }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        try {
-            XMLParser toParse = new XMLParser(filePath);
-            
-            QuizParse quiz = new QuizParse(filePath, toParse.getBrainhoney());
-            OtherQuiz test2 = new OtherQuiz(quiz.getQuiz(), savePath);
-        } catch (TransformerException ex) {
-            Logger.getLogger(TransToolUI.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        zipFile();
-    }//GEN-LAST:event_jButton2ActionPerformed
-
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         JFileChooser chooser = new JFileChooser();
         chooser.setCurrentDirectory(new File(System.getProperty("user.home")));
@@ -314,6 +286,34 @@ public class TransToolUI extends javax.swing.JFrame {
             System.out.println("No Selection ");
         }
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        try {
+            XMLParser toParse = new XMLParser(filePath);
+
+            QuizParse quiz = new QuizParse(filePath, toParse.getBrainhoney());
+            OtherQuiz test2 = new OtherQuiz(quiz.getQuiz(), savePath);
+        } catch (TransformerException ex) {
+            Logger.getLogger(TransToolUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        zipFile();
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        JFileChooser fileChooser = new JFileChooser();
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("XML Files", "xml");
+        fileChooser.setFileFilter(filter);
+
+        fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+        int result = fileChooser.showOpenDialog(this);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            File selectedFile = fileChooser.getSelectedFile();
+            System.out.println("Selected file: " + selectedFile.getAbsolutePath());
+            filePath = selectedFile.getAbsolutePath();
+            pathFileText.setText(filePath);
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments

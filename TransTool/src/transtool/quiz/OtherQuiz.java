@@ -90,7 +90,7 @@ public class OtherQuiz {
                 sectionproc.appendChild(typeDisplaySection);
 
                 for (int i = 0; i < brainhoney.size(); i++) {
-                    brainhoney.get(i).printContents();
+                    //brainhoney.get(i).printContents();
                     questionNumber = itemNumber;
                     feedbackNumber = questionNumber;
                     Element item = doc.createElement("item");
@@ -257,6 +257,7 @@ public class OtherQuiz {
 
                         Element responseLabel = doc.createElement("response_label");
                         responseLabel.setAttribute("ident", randID + "_A" + questionNumber + "_ANS");
+                        
 
                         flow.appendChild(responseStr);
                         responseStr.appendChild(renderFib);
@@ -353,29 +354,30 @@ public class OtherQuiz {
                                 break;
 
                             case "text":
-                                Element setVar = doc.createElement("setvar");
+
                                 Element outcomes = doc.createElement("outcomes");
                                 decVar.setAttribute("vartype", "Integer");
                                 decVar.setAttribute("minvalue", "0");
                                 decVar.setAttribute("maxvalue", "100");
                                 decVar.setAttribute("varname", "Blank_1");
-
+                                resprocessing.appendChild(outcomes);
+                                outcomes.appendChild(decVar);
                                 if (!brainhoney.get(i).getRightAnswer().isEmpty()) {
-                                    for (String rightAnswer : brainhoney.get(i).getRightAnswer()) {
+                                    //for (String rightAnswer : brainhoney.get(i).getRightAnswer()) {
+                                        Element setVar = doc.createElement("setvar");
                                         Element varequals = doc.createElement("varequal");
                                         varequals.setAttribute("respident", randID + "_A" + questionNumber + "_ANS");
                                         varequals.setAttribute("case", "no");
-                                        varequals.appendChild(doc.createTextNode(rightAnswer));
+                                        varequals.appendChild(doc.createTextNode(brainhoney.get(i).getRightAnswer().get(j)));
                                         setVar.setAttribute("action", "Set");
                                         setVar.appendChild(doc.createTextNode("100.000000000"));
 
-                                        resprocessing.appendChild(outcomes);
-                                        outcomes.appendChild(decVar);
                                         resprocessing.appendChild(respCondition);
                                         respCondition.appendChild(conditionvar);
                                         conditionvar.appendChild(varequals);
                                         respCondition.appendChild(setVar);
-                                    }
+                                        
+                                    //}
                                 }
 
                                 break;
