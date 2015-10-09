@@ -5,14 +5,18 @@
  */
 package transtool.ui;
 
+import java.awt.Desktop;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.Enumeration;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -298,6 +302,14 @@ public class TransToolUI extends javax.swing.JFrame {
         }
 
         zipFile();
+        File file;
+        file = new File(savePath);
+        Desktop desktop = Desktop.getDesktop();
+        try {
+            desktop.open(file);
+        } catch (IOException ex) {
+            Logger.getLogger(TransToolUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -410,5 +422,4 @@ public class TransToolUI extends javax.swing.JFrame {
         }
 
     }
-
 }
