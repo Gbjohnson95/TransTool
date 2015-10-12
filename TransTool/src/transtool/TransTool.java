@@ -6,9 +6,30 @@ import transtool.quiz.OtherQuiz;
 import transtool.quiz.Quiz;
 import transtool.ui.TransToolUI;
 
+/***********************************
+ * NOTE: MAIN IS TO BE REMOVED
+ * 
+ * Instead, run the TransToolUI.java file to run this program.
+ * 
+ * 
+ * @author hallm8
+ */
 //import transtool.xmlTools.XMLParser;
 public class TransTool {
 
+ /***********************************
+ * NOTE: MAIN IS TO BE REMOVED
+ * 
+ * Instead, run the TransToolUI.java file to run this program.  
+ * 
+ * Main is currently only being used for testing purposes.
+ * 
+ * 
+ * @author hallm8
+     * @param args
+     * @throws javax.xml.stream.XMLStreamException
+     * @throws javax.xml.transform.TransformerException
+ */
     public static void main(String[] args) throws XMLStreamException, TransformerException {
 
         

@@ -34,6 +34,12 @@ public class QuizParse {
     private ArrayList<BrainhoneyContents> brainhoneyContents;
     private ArrayList<String> quizName = new ArrayList<>();
 
+    /**
+     * Constructor.  Does all of the work for you.
+     * 
+     * @param nameOfXML
+     * @param brainhoney 
+     */
     public QuizParse(String nameOfXML, ArrayList<BrainhoneyContents> brainhoney) {
         this.quiz = new ArrayList<>();
 
@@ -76,8 +82,9 @@ public class QuizParse {
                 }
 
             }
-            System.out.println(quizName.size());
-
+            
+            // Goes through the nodelist except for the last node and sorts 
+            // through and finds each quiz.
             for (int temp = 0; temp < nodeList.getLength() - 1; temp++) {
 
                 boolean isQuiz = false;
@@ -89,7 +96,8 @@ public class QuizParse {
 
                 NodeList question = nNode.getChildNodes();
 
-                //System.out.println(eElement.getParentNode().getChildNodes().item(4).getTextContent());
+                // Checks to see if the item is a quiz.  If it is, it pulls off
+                // the name of the quiz.
                 for (int i = 0; i < question.getLength(); i++) {
 
                     if (question.item(i).getNodeType() == Node.ELEMENT_NODE) {
@@ -103,7 +111,6 @@ public class QuizParse {
                     }
                 }
                 tQuiz.setQuizQuestions(questions);
-                //tQuiz.setQuizName(quizName.get(temp));
 
                 if (isQuiz == true) {
                     quiz.add(tQuiz);
@@ -121,22 +128,56 @@ public class QuizParse {
         assignSections();
     }
 
+    /**
+     * QUIZ
+     * 
+     * The quiz - question ID's, the Questions, and the quiz name.
+     * 
+     * @return 
+     */
     public ArrayList<Quiz> getQuiz() {
         return quiz;
     }
 
+    /**
+     * QUIZ
+     * 
+     * The quiz - question ID's, the Questions, and the quiz name.
+     * 
+     * @param quiz
+     */
     public void setQuiz(ArrayList<Quiz> quiz) {
         this.quiz = quiz;
     }
 
+    /**
+     * NAME OF XML
+     * 
+     * This is the name of the XML that we are reading from
+     * 
+     * @return 
+     */
     public String getNameOfXML() {
         return nameOfXML;
     }
 
+    /**
+     * NAME OF XML
+     * 
+     * This is the name of the XML that we are reading from.
+     * 
+     * @param nameOfXML 
+     */
     public void setNameOfXML(String nameOfXML) {
         this.nameOfXML = nameOfXML;
     }
 
+    /**
+     * ASSIGN SECTIONS
+     * 
+     *  Here, the questions are injected into each quiz, so that the sections
+     * can be made.
+     */
     void assignSections() {
 
         for (Quiz quiz1 : quiz) {
