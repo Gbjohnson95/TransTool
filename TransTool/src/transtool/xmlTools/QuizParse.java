@@ -5,6 +5,7 @@
  */
 package transtool.xmlTools;
 
+import GradeItems.GradeCategories;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -33,12 +34,13 @@ public class QuizParse {
     private String nameOfXML;
     private ArrayList<BrainhoneyContents> brainhoneyContents;
     private ArrayList<String> quizName = new ArrayList<>();
+    private ArrayList<GradeCategories> gradeCategories = new ArrayList<>();
 
     /**
-     * Constructor.  Does all of the work for you.
-     * 
+     * Constructor. Does all of the work for you.
+     *
      * @param nameOfXML
-     * @param brainhoney 
+     * @param brainhoney
      */
     public QuizParse(String nameOfXML, ArrayList<BrainhoneyContents> brainhoney) {
         this.quiz = new ArrayList<>();
@@ -65,6 +67,8 @@ public class QuizParse {
             NodeList nodeList = doc.getElementsByTagName("questions");
             NodeList testList = doc.getElementsByTagName("type");
 
+            parseGradingCategories(doc.getElementsByTagName("categories"));
+
             //NodeList nodie  = doc.getElementsByTagName("item");
             //NodeList nodeTest2 = nodie.item(3).getChildNodes();
             // And now we sort through each question individually.
@@ -79,10 +83,18 @@ public class QuizParse {
                     quizName.add(eElement.getElementsByTagName("title").item(0).getTextContent());
                 } else if (testList.item(temp).getTextContent().equals("Assessment") && eElement.getElementsByTagName("title").getLength() == 0) {
                     quizName.add("Blank Test");
+                } else if (testList.item(temp).getTextContent().equals("AssetLink")) {
+                    System.out.println("Link found!!");
+                } else if (testList.item(temp).getTextContent().equals("Resource")) {
+                    System.out.println("Resource found!!");
+                } else if (testList.item(temp).getTextContent().equals("Assignment")) {
+                    System.out.println("Dropbox found!!");
                 }
+                else
+                    System.out.println(testList.item(temp).getTextContent());
 
             }
-            
+
             // Goes through the nodelist except for the last node and sorts 
             // through and finds each quiz.
             for (int temp = 0; temp < nodeList.getLength() - 1; temp++) {
@@ -121,19 +133,21 @@ public class QuizParse {
             Logger.getLogger(QuizParse.class.getName()).log(Level.SEVERE, null, ex);
         }
         System.out.println(quiz.size() + " and question size: " + quizName.size());
-        for (int i = 0; i < quiz.size(); i++) {
-            System.out.println(quizName.get(i));
+        System.out.println("How many quiz names?!" + quizName.size());
+        for (int i = 0; i < quizName.size(); i++) {
+            System.out.println("Quiz name is: " + quizName.get(i) + ". Index: " + i);
             quiz.get(i).setQuizName(quizName.get(i));
+
         }
         assignSections();
     }
 
     /**
      * QUIZ
-     * 
+     *
      * The quiz - question ID's, the Questions, and the quiz name.
-     * 
-     * @return 
+     *
+     * @return
      */
     public ArrayList<Quiz> getQuiz() {
         return quiz;
@@ -141,9 +155,9 @@ public class QuizParse {
 
     /**
      * QUIZ
-     * 
+     *
      * The quiz - question ID's, the Questions, and the quiz name.
-     * 
+     *
      * @param quiz
      */
     public void setQuiz(ArrayList<Quiz> quiz) {
@@ -152,10 +166,10 @@ public class QuizParse {
 
     /**
      * NAME OF XML
-     * 
+     *
      * This is the name of the XML that we are reading from
-     * 
-     * @return 
+     *
+     * @return
      */
     public String getNameOfXML() {
         return nameOfXML;
@@ -163,10 +177,10 @@ public class QuizParse {
 
     /**
      * NAME OF XML
-     * 
+     *
      * This is the name of the XML that we are reading from.
-     * 
-     * @param nameOfXML 
+     *
+     * @param nameOfXML
      */
     public void setNameOfXML(String nameOfXML) {
         this.nameOfXML = nameOfXML;
@@ -174,9 +188,9 @@ public class QuizParse {
 
     /**
      * ASSIGN SECTIONS
-     * 
-     *  Here, the questions are injected into each quiz, so that the sections
-     * can be made.
+     *
+     * Here, the questions are injected into each quiz, so that the sections can
+     * be made.
      */
     void assignSections() {
 
@@ -194,4 +208,21 @@ public class QuizParse {
         }
     }
 
+    public void parseGradingCategories(NodeList nodeList) {
+        NodeList categories = nodeList.item(0).getChildNodes();
+
+        // Go through each category and drop it in the ArrayList.
+        for (int i = 0; i < categories.getLength(); i++) {
+            GradeCategories category = new GradeCategories();
+            if (categories.item(i).getNodeType() == Node.ELEMENT_NODE) {
+                Element element = (Element) categories.item(i);
+                category.setCatID(element.getAttribute("id"));
+                category.setCatName(element.getAttribute("name"));
+                category.setCatWeight(element.getAttribute("weight"));
+                category.setDropLowest(element.getAttribute("droplowest"));
+                gradeCategories.add(category);
+            }
+        }
+
+    }
 }

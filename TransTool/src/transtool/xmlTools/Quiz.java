@@ -32,7 +32,7 @@ public class Quiz {
      * 
      *  Contains the Quiz Name
      * 
-     * @return 
+     * @return Name of the quiz
      */
     public String getQuizName() {
         return quizName;
@@ -43,7 +43,7 @@ public class Quiz {
      * 
      *  Contains the quiz name
      * 
-     * @param quizName 
+     * @param quizName Name of the quiz
      */
     public void setQuizName(String quizName) {
         this.quizName = quizName;
@@ -54,7 +54,7 @@ public class Quiz {
      * 
      *  Contains the ID for all the quiz questions to link back to the items.
      * 
-     * @return 
+     * @return Quiz question ID
      */
     public ArrayList<String> getQuizQuestions() {
         return quizQuestions;
@@ -65,7 +65,7 @@ public class Quiz {
      * 
      *  Contains the ID for all the quiz questions to link back to the items.
      * 
-     * @param quizQuestions
+     * @param quizQuestions Quiz question ID
      */
     public void setQuizQuestions(ArrayList<String> quizQuestions) {
         this.quizQuestions = quizQuestions;

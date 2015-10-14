@@ -26,9 +26,9 @@ public class TransTool {
  * 
  * 
  * @author hallm8
-     * @param args
-     * @throws javax.xml.stream.XMLStreamException
-     * @throws javax.xml.transform.TransformerException
+     * @param args Args does nothing
+     * @throws javax.xml.stream.XMLStreamException Throws nothing
+     * @throws javax.xml.transform.TransformerException Throws nothing
  */
     public static void main(String[] args) throws XMLStreamException, TransformerException {
 

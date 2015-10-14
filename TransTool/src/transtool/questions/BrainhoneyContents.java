@@ -57,7 +57,7 @@ public class BrainhoneyContents {
     /**
      * RIGHT ANSWER
      *  The correct answer to the question 
-     * @return 
+     * @return Right Answer
      */
     public ArrayList<String> getRightAnswer() {
         return rightAnswer;
@@ -67,7 +67,7 @@ public class BrainhoneyContents {
      * RIGHT ANSWER
      *  The correct answer to the question 
      * 
-     * @param rightAnswer
+     * @param rightAnswer - Takes in Right Answer and changes value.
      */
     public void setRightAnswer(ArrayList<String> rightAnswer) {
         this.rightAnswer = rightAnswer;
@@ -77,7 +77,7 @@ public class BrainhoneyContents {
      * GET BODY
      * The body text for the question.  
      * 
-     * @return 
+     * @return Body
      */
     public String getBody() {
         return body;
@@ -88,7 +88,7 @@ public class BrainhoneyContents {
      * The body text for the question.  
      * 
      * 
-     * @param body
+     * @param body - Takes in body and changes value
      */
     public void setBody(String body) {
         this.body = body;
@@ -97,7 +97,8 @@ public class BrainhoneyContents {
     /**
      * GET QUESTION CHOICE
      *   An array list that is filled with possible answers
-     * @return 
+     * 
+     * @return Question Choice
      */
     public ArrayList<String> getqChoice() {
         return qChoice;
@@ -107,7 +108,7 @@ public class BrainhoneyContents {
      * GET QUESTION CHOICE
      *   An array list that is filled with possible answers
      * 
-     * @param qChoice
+     * @param qChoice - Question Choice
      */
     public void setqChoice(ArrayList<String> qChoice) {
         this.qChoice = qChoice;
@@ -117,7 +118,7 @@ public class BrainhoneyContents {
      * INTERACTION TYPE
      *  What kind of quiz question is this?
      * 
-     * @return 
+     * @return Interaction Type
      */
     public String getInteractionType() {
         return interactionType;
@@ -127,7 +128,7 @@ public class BrainhoneyContents {
      * INTERACTION TYPE
      *  What kind of quiz question is this?
      * 
-     * @param interactionType 
+     * @param interactionType  - Interaction Type
      */
     public void setInteractionType(String interactionType) {
         this.interactionType = interactionType;
@@ -138,7 +139,7 @@ public class BrainhoneyContents {
      *  
      *  Returns the point value of the quiz.
      * 
-     * @return 
+     * @return Score
      */
     public String getScore() {
         return score;
@@ -149,7 +150,7 @@ public class BrainhoneyContents {
      * 
      *  Returns the point value of the quiz.
      * 
-     * @param score 
+     * @param score - Sets score
      */
     public void setScore(String score) {
         this.score = score;
@@ -162,7 +163,7 @@ public class BrainhoneyContents {
      * full credit.  By partial, it means that some questions are worth a 
      * percentage of the full point value.
      * 
-     * @return 
+     * @return String is partial?
      */
     public String isPartial() {
         return partial;
@@ -176,7 +177,7 @@ public class BrainhoneyContents {
      * percentage of the full point value.
      * 
      *  
-     * @param partial
+     * @param partial - is Partial?
      */
     public void setPartial(String partial) {
         this.partial = partial;
@@ -187,7 +188,7 @@ public class BrainhoneyContents {
      * 
      *  Question ID is used for association with a quiz in Brainhoney
      * 
-     * @return 
+     * @return Question ID
      */
     public String getQuestionID() {
         return questionID;
@@ -198,7 +199,7 @@ public class BrainhoneyContents {
      * 
      *  Question ID is used for association with a quiz in Brainhoney
      * 
-     * @param questionID
+     * @param questionID - Question ID
      */
     public void setQuestionID(String questionID) {
         this.questionID = questionID;
