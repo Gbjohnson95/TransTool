@@ -20,6 +20,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.xml.transform.TransformerException;
 import transtool.quiz.OtherQuiz;
 import transtool.xmlTools.QuizParse;
+import transtool.xmlTools.WriteGradeItems;
 import transtool.xmlTools.XMLParser;
 
 /**
@@ -294,6 +295,7 @@ public class TransToolUI extends javax.swing.JFrame {
 
             QuizParse quiz = new QuizParse(filePath, toParse.getBrainhoney());
             OtherQuiz test2 = new OtherQuiz(quiz.getQuiz(), savePath);
+            WriteGradeItems categories = new WriteGradeItems(savePath, quiz.getGradeCategories());
         } catch (TransformerException ex) {
             Logger.getLogger(TransToolUI.class.getName()).log(Level.SEVERE, null, ex);
         }

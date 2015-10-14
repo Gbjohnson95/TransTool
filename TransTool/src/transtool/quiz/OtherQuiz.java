@@ -560,6 +560,25 @@ public class OtherQuiz {
 
             rootElement.appendChild(resources);
             resources.appendChild(resource);
+            
+            
+            Element resource1 = doc.createElement("resource");
+            
+            resource.setAttribute("identifier", "res_grades");
+            resource.setAttribute("type", "webcontent");
+            resource.setAttribute("d2l_2p0:material_type", "d2lgrades");
+            resource.setAttribute("d2l_2p0:link_target", "");
+            resource.setAttribute("href", "grades_d2l.xml");
+            resource.setAttribute("title", "");
+            
+            resources.appendChild(resource1);
+            
+            
+            
+            
+            
+            
+            
 
             // write the content into xml file
             TransformerFactory transformerFactory = TransformerFactory.newInstance();

@@ -14,6 +14,7 @@ public class GradeCategories {
     String catName;
     String catWeight;
     String dropLowest;
+    
 
     
     public void outputAll(){

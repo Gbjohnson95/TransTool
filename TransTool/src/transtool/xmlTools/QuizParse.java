@@ -68,6 +68,7 @@ public class QuizParse {
             NodeList testList = doc.getElementsByTagName("type");
 
             parseGradingCategories(doc.getElementsByTagName("categories"));
+            
 
             //NodeList nodie  = doc.getElementsByTagName("item");
             //NodeList nodeTest2 = nodie.item(3).getChildNodes();
@@ -225,4 +226,30 @@ public class QuizParse {
         }
 
     }
+
+    public ArrayList<BrainhoneyContents> getBrainhoneyContents() {
+        return brainhoneyContents;
+    }
+
+    public void setBrainhoneyContents(ArrayList<BrainhoneyContents> brainhoneyContents) {
+        this.brainhoneyContents = brainhoneyContents;
+    }
+
+    public ArrayList<String> getQuizName() {
+        return quizName;
+    }
+
+    public void setQuizName(ArrayList<String> quizName) {
+        this.quizName = quizName;
+    }
+
+    public ArrayList<GradeCategories> getGradeCategories() {
+        return gradeCategories;
+    }
+
+    public void setGradeCategories(ArrayList<GradeCategories> gradeCategories) {
+        this.gradeCategories = gradeCategories;
+    }
+    
+    
 }
