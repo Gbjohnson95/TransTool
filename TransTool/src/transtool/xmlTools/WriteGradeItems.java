@@ -153,10 +153,10 @@ public class WriteGradeItems {
                 Element highDrop = doc.createElement("high_non_bonus_drop");
                 Element lowDrop = doc.createElement("low_non_bonus_drop");
                 Element maxPoints = doc.createElement("max_item_points");
-                
+
                 categories.appendChild(category);
-                categories.appendChild(scoring);
-                
+                category.appendChild(scoring);
+
                 category.appendChild(name);
                 category.appendChild(sName);
                 category.appendChild(sOrder);
@@ -164,7 +164,7 @@ public class WriteGradeItems {
                 category.appendChild(sDist);
                 category.appendChild(desc);
                 category.appendChild(isActive);
-                
+
                 scoring.appendChild(weight);
                 scoring.appendChild(canExceed);
                 scoring.appendChild(distType);
@@ -173,7 +173,7 @@ public class WriteGradeItems {
                 scoring.appendChild(lowDrop);
                 scoring.appendChild(maxPoints);
 
-                category.setAttribute("id", Integer.toString(i));
+                category.setAttribute("id", Integer.toString(i + 1));
                 category.setAttribute("identifier", Integer.toString(categoryID));
                 categoryID++;
 
@@ -193,7 +193,7 @@ public class WriteGradeItems {
                 weight.appendChild(doc.createTextNode(gradeCategories.get(i).getCatWeight()));
                 canExceed.appendChild(doc.createTextNode("false"));
 
-                distType.appendChild(doc.createTextNode("1"));
+                distType.appendChild(doc.createTextNode("2"));
                 isAuto.appendChild(doc.createTextNode("false"));
                 highDrop.appendChild(doc.createTextNode("0"));
 
@@ -202,13 +202,11 @@ public class WriteGradeItems {
                 } else {
                     lowDrop.appendChild(doc.createTextNode(gradeCategories.get(i).getDropLowest()));
                 }
-                
-                maxPoints.appendChild(doc.createTextNode("10"));
+
+                maxPoints.appendChild(doc.createTextNode("0"));
 
             }
 
-            
-            
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
             DOMSource source = new DOMSource(doc);
@@ -219,8 +217,7 @@ public class WriteGradeItems {
             transformer.transform(source, result);
 
             System.out.println("File saved!");
-            
-            
+
         } catch (ParserConfigurationException ex) {
             Logger.getLogger(WriteGradeItems.class.getName()).log(Level.SEVERE, null, ex);
         } catch (TransformerConfigurationException ex) {
@@ -271,6 +268,4 @@ public class WriteGradeItems {
         this.replaceIfShName = replaceIfShName;
     }
 
-    
-    
 }

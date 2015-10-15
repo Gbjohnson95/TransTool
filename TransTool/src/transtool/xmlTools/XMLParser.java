@@ -91,15 +91,13 @@ public class XMLParser {
             for (int temp = 0; temp < nodeList.getLength(); temp++) {
                 Node nNode = nodeList.item(temp);
 
-                System.out.println("\nCurrent Element :" + nNode.getNodeName());
-
                 if (nNode.getNodeType() == Node.ELEMENT_NODE) {
                     Element eElement = (Element) nNode;
 
                     // If the question does not have an ID, it is an invalid
                     // question.
                     if (!eElement.getAttribute("questionid").isEmpty()) {
-                        
+
                         // Create all the objects that will eventually be pushed
                         // onto the Brainhoney array.
                         BrainhoneyContents brain = new BrainhoneyContents();
@@ -112,7 +110,6 @@ public class XMLParser {
                         brain.setScore(eElement.getAttribute("score"));
 
                         // Keep this for now.  May go in the final product.  
-
                         // Next, we have to pull the interaction type off.
                         // Very long code. 
                         brain.setInteractionType(eElement.getElementsByTagName("interaction").item(0).getAttributes().getNamedItem("type").getTextContent());
