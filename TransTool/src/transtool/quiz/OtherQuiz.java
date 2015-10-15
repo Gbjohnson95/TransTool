@@ -27,14 +27,11 @@ import transtool.questions.BrainhoneyContents;
  * OTHER QUIZ Titled "Other Quiz" because Grant was working on another quiz
  * writer, instead going through the QTI standard as opposed to Brainhoney.
  *
- * VARIABLES: 
- *  - Item Number      - Each Brightspace import associates with an item number 
- *  - Question Number - Each Brightspace import also associates with a question
- *                      number.
- *  - Feedback Number - Each question number is associated with a feedback ID
- *                      as well.
- *  - ID number       - Each question has a Question ID to link back to quizzes
- *                      by their ID.  This number is pretty important.
+ * VARIABLES: - Item Number - Each Brightspace import associates with an item
+ * number - Question Number - Each Brightspace import also associates with a
+ * question number. - Feedback Number - Each question number is associated with
+ * a feedback ID as well. - ID number - Each question has a Question ID to link
+ * back to quizzes by their ID. This number is pretty important.
  *
  * @author hallm8
  *
@@ -49,11 +46,12 @@ public class OtherQuiz {
     String toSave;
 
     /**
-     * Constructor.  Does pretty much everything for this program.
+     * Constructor. Does pretty much everything for this program.
+     *
      * @param quiz
      * @param savePath
      * @throws TransformerConfigurationException
-     * @throws TransformerException 
+     * @throws TransformerException
      */
     public OtherQuiz(ArrayList<transtool.xmlTools.Quiz> quiz, String savePath) throws TransformerConfigurationException, TransformerException {
         try {
@@ -89,7 +87,7 @@ public class OtherQuiz {
             Attr attr2 = doc.createAttribute("ident");
             attr2.setValue("QLIB_1000");
             staff.setAttributeNode(attr2);
-            
+
             // Each quiz question has been separated into quizzes.  So now, we
             // parse through each quiz and pull them out.  This has been done
             // so that we can separate them in the quiz bank.
@@ -223,7 +221,7 @@ public class OtherQuiz {
                     qtiDataField3.appendChild(fieldLabel3);
 
                     Element fieldEntry3 = doc.createElement("fieldentry");
-                    
+
                     // Some scores in Brainhoney aren't given a point value,
                     // because they are only worth 1 point.  This just says
                     // if they don't have a point value, we give it one point.
@@ -356,7 +354,6 @@ public class OtherQuiz {
                         itemNumber++;
                     }
 
-                    
                     for (int j = 0; j < brainhoney.get(i).getqChoice().size(); j++) {
                         Element respCondition = doc.createElement("respcondition");
                         Element conditionvar = doc.createElement("conditionvar");
@@ -560,25 +557,17 @@ public class OtherQuiz {
 
             rootElement.appendChild(resources);
             resources.appendChild(resource);
-            
-            
+
             Element resource1 = doc.createElement("resource");
-            
-            resource.setAttribute("identifier", "res_grades");
-            resource.setAttribute("type", "webcontent");
-            resource.setAttribute("d2l_2p0:material_type", "d2lgrades");
-            resource.setAttribute("d2l_2p0:link_target", "");
-            resource.setAttribute("href", "grades_d2l.xml");
-            resource.setAttribute("title", "");
-            
+
+            resources.setAttribute("identifier", "res_grades");
+            resources.setAttribute("type", "webcontent");
+            resources.setAttribute("d2l_2p0:material_type", "d2lgrades");
+            resources.setAttribute("d2l_2p0:link_target", "");
+            resources.setAttribute("href", "grades_d2l.xml");
+            resources.setAttribute("title", "");
+
             resources.appendChild(resource1);
-            
-            
-            
-            
-            
-            
-            
 
             // write the content into xml file
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
