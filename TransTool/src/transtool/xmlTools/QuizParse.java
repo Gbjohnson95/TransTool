@@ -68,7 +68,6 @@ public class QuizParse {
             NodeList testList = doc.getElementsByTagName("type");
 
             parseGradingCategories(doc.getElementsByTagName("categories"));
-            
 
             //NodeList nodie  = doc.getElementsByTagName("item");
             //NodeList nodeTest2 = nodie.item(3).getChildNodes();
@@ -90,9 +89,9 @@ public class QuizParse {
                     System.out.println("Resource found!!");
                 } else if (testList.item(temp).getTextContent().equals("Assignment")) {
                     System.out.println("Dropbox found!!");
-                }
-                else
+                } else {
                     System.out.println(testList.item(temp).getTextContent());
+                }
 
             }
 
@@ -135,7 +134,16 @@ public class QuizParse {
         }
         System.out.println(quiz.size() + " and question size: " + quizName.size());
         System.out.println("How many quiz names?!" + quizName.size());
-        for (int i = 0; i < quizName.size(); i++) {
+
+        int size = 0;
+        
+        if (quiz.size() > quizName.size()) {
+            size = quizName.size();
+        }
+        else{
+            size = quiz.size();  
+        }
+        for (int i = 0; i < size; i++) {
             System.out.println("Quiz name is: " + quizName.get(i) + ". Index: " + i);
             quiz.get(i).setQuizName(quizName.get(i));
 
@@ -250,6 +258,5 @@ public class QuizParse {
     public void setGradeCategories(ArrayList<GradeCategories> gradeCategories) {
         this.gradeCategories = gradeCategories;
     }
-    
-    
+
 }
