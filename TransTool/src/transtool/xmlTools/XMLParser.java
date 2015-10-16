@@ -3,6 +3,7 @@
  */
 package transtool.xmlTools;
 
+import Parameter.Parameter;
 import transtool.questions.BrainhoneyContents;
 import java.util.ArrayList;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -40,9 +41,9 @@ public class XMLParser {
      * default constructor; takes a String from the user and parses the XML doc.
      */
     public XMLParser() {
-
+        
         brainhoney = new ArrayList<>();
-
+        
         System.out.println("Please enter the name of the XML document that you wish to parse through: ");
         Scanner scanner = new Scanner(System.in);
         nameOfXML = scanner.findInLine("Enter Something: ");
@@ -52,7 +53,7 @@ public class XMLParser {
      * Takes a string in and parses the XML document.
      */
     public XMLParser(String nameOfXML) {
-
+        
         brainhoney = new ArrayList<>();
         this.nameOfXML = nameOfXML;
         System.out.println("non default constructor: " + nameOfXML);
@@ -73,7 +74,7 @@ public class XMLParser {
         // code; the XML parser is basically the point of this entire class.
         try {
             dBuilder = dbFactory.newDocumentBuilder();
-
+            
             Document doc = dBuilder.parse(nameOfXML);
 
             // Normalize the document.  
@@ -87,10 +88,10 @@ public class XMLParser {
             // And now we sort through each question individually.
             // Normalize the document.  
             doc.getDocumentElement().normalize();
-
+            
             for (int temp = 0; temp < nodeList.getLength(); temp++) {
                 Node nNode = nodeList.item(temp);
-
+                
                 if (nNode.getNodeType() == Node.ELEMENT_NODE) {
                     Element eElement = (Element) nNode;
 
@@ -103,6 +104,8 @@ public class XMLParser {
                         BrainhoneyContents brain = new BrainhoneyContents();
                         ArrayList<String> qChoice = new ArrayList<>();
                         ArrayList<String> rightAnswer = new ArrayList<>();
+                        ArrayList<Parameter> parameter = new ArrayList<>();
+                        NodeList param = eElement.getElementsByTagName("parameter");
 
                         // The easiest of questions are in the attributes.
                         // One liner.  awwwhh yeahhh.
@@ -115,46 +118,66 @@ public class XMLParser {
                         brain.setInteractionType(eElement.getElementsByTagName("interaction").item(0).getAttributes().getNamedItem("type").getTextContent());
 
                         // Now we pull off the correct answers, if there are any.
-                        for (int i = 0; i < eElement.getElementsByTagName("value").getLength(); i++) {
-                            rightAnswer.add(eElement.getElementsByTagName("value").item(i).getTextContent());
+                        if (eElement.getElementsByTagName("parameter").getLength() > 0) {
+                            for (int i = 0; i < eElement.getElementsByTagName("value").getLength(); i++) {
+                                rightAnswer.add(eElement.getElementsByTagName("value").item(i).getTextContent());
+                            }
+                        } else {
+                            
                         }
-
+                        
                         brain.setBody(eElement.getElementsByTagName("body").item(0).getTextContent());
 
-                        // The body of each question.  It's kind of weird, but... that's the way it looks.
-                        for (int i = 1; i < eElement.getElementsByTagName("body").getLength(); i++) {
-                            qChoice.add(eElement.getElementsByTagName("body").item(i).getTextContent());
-                        }
-                        if (brain.getInteractionType().equals("text")) {
-
-                            for (int i = 0; i < rightAnswer.size(); i++) {
-                                qChoice.add(rightAnswer.get(i));
+                        // Last, we push everything together and finally on brain.
+                        if (eElement.getElementsByTagName("parameter").getLength() == 0) {
+                            for (int i = 1; i < eElement.getElementsByTagName("body").getLength(); i++) {
+                                qChoice.add(eElement.getElementsByTagName("body").item(i).getTextContent());
+                            }
+                            // The body of each question.  It's kind of weird, but... that's the way it looks.
+                            if (brain.getInteractionType().equals("text")) {
+                                
+                                for (int i = 0; i < rightAnswer.size(); i++) {
+                                    qChoice.add(rightAnswer.get(i));
+                                }
+                            }
+                            brain.setRightAnswer(rightAnswer);
+                            brain.setqChoice(qChoice);
+                            brain.setQuestionID(eElement.getAttribute("questionid"));
+                            brainhoney.add(brain);
+                        } else {
+                            Element pValues = (Element) param.item(0);
+                            NodeList values = pValues.getElementsByTagName("value");
+                            
+                            for (int i = 0; i < values.getLength(); i++) {
+                                ArrayList<String> pChoice = new ArrayList<>();
+                                ArrayList<String> pRightAnswer = new ArrayList<>();
+                                BrainhoneyContents multi = new BrainhoneyContents();
+                                
+                                for (int j = 0; i < param.getLength(); j++) {
+                                    Element eValues = (Element) param.item(i);
+                                    NodeList nValues = pValues.getElementsByTagName("value");
+                                    
+                                }
+                                
                             }
                         }
-
-                        // Last, we push everything together and finally on brain.
-                        brain.setRightAnswer(rightAnswer);
-                        brain.setqChoice(qChoice);
-                        brain.setQuestionID(eElement.getAttribute("questionid"));
-                        brainhoney.add(brain);
-
                         // For aesthetic purposes.
                     }
                 }
             }
-
+            
         } catch (ParserConfigurationException | SAXException | IOException ex) {
             Logger.getLogger(XMLParser.class.getName()).log(Level.SEVERE, null, ex);
             System.out.println("Error: Cannot read file.  Exception thrown!");
         }
-
+        
         System.out.println("Number of questions: " + brainhoney.size());
     }
-
+    
     public ArrayList<BrainhoneyContents> getBrainhoney() {
         return brainhoney;
     }
-
+    
     public void setBrainhoney(ArrayList<BrainhoneyContents> brainhoney) {
         this.brainhoney = brainhoney;
     }
@@ -165,5 +188,5 @@ public class XMLParser {
      */
     public void xMLParseSax() {
     }
-
+    
 }
