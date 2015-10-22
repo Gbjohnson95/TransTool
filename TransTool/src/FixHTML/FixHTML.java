@@ -21,6 +21,8 @@ public class FixHTML {
      * 
      * The assumption is, and I still haven't delved into the HTML cleaner
      * just yet, is that it will parse through the file, similar to 
+     * 
+     * Not bad work here, I'm inpressed. I may work on this some.....
      */
     public FixHTML() {
         //Jsoup jsoup;
