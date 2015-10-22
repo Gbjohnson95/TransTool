@@ -23,6 +23,7 @@ public class FixHTML {
      * just yet, is that it will parse through the file, similar to 
      * 
      * Not bad work here, I'm inpressed. I may work on this some.....
+     * engine.eval(new java.io.FileReader("welcome.js"));
      */
     public FixHTML() {
         //Jsoup jsoup;
