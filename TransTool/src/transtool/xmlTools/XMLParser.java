@@ -41,9 +41,9 @@ public class XMLParser {
      * default constructor; takes a String from the user and parses the XML doc.
      */
     public XMLParser() {
-        
+
         brainhoney = new ArrayList<>();
-        
+
         System.out.println("Please enter the name of the XML document that you wish to parse through: ");
         Scanner scanner = new Scanner(System.in);
         nameOfXML = scanner.findInLine("Enter Something: ");
@@ -53,7 +53,7 @@ public class XMLParser {
      * Takes a string in and parses the XML document.
      */
     public XMLParser(String nameOfXML) {
-        
+
         brainhoney = new ArrayList<>();
         this.nameOfXML = nameOfXML;
         System.out.println("non default constructor: " + nameOfXML);
@@ -74,7 +74,7 @@ public class XMLParser {
         // code; the XML parser is basically the point of this entire class.
         try {
             dBuilder = dbFactory.newDocumentBuilder();
-            
+
             Document doc = dBuilder.parse(nameOfXML);
 
             // Normalize the document.  
@@ -88,10 +88,10 @@ public class XMLParser {
             // And now we sort through each question individually.
             // Normalize the document.  
             doc.getDocumentElement().normalize();
-            
+
             for (int temp = 0; temp < nodeList.getLength(); temp++) {
                 Node nNode = nodeList.item(temp);
-                
+
                 if (nNode.getNodeType() == Node.ELEMENT_NODE) {
                     Element eElement = (Element) nNode;
 
@@ -106,6 +106,7 @@ public class XMLParser {
                         ArrayList<String> rightAnswer = new ArrayList<>();
                         ArrayList<Parameter> parameter = new ArrayList<>();
                         NodeList param = eElement.getElementsByTagName("parameter");
+                        Element tElement = (Element) param.item(0);
 
                         // The easiest of questions are in the attributes.
                         // One liner.  awwwhh yeahhh.
@@ -118,75 +119,89 @@ public class XMLParser {
                         brain.setInteractionType(eElement.getElementsByTagName("interaction").item(0).getAttributes().getNamedItem("type").getTextContent());
 
                         // Now we pull off the correct answers, if there are any.
-                        if (eElement.getElementsByTagName("parameter").getLength() > 0) {
-                            for (int i = 0; i < eElement.getElementsByTagName("value").getLength(); i++) {
-                                rightAnswer.add(eElement.getElementsByTagName("value").item(i).getTextContent());
-                            }
-                        } else {
-                            
+                        //if (eElement.getElementsByTagName("parameter").getLength() > 0) {
+                        for (int i = 0; i < eElement.getElementsByTagName("value").getLength(); i++) {
+                            rightAnswer.add(eElement.getElementsByTagName("value").item(i).getTextContent());
                         }
-                        
-                        brain.setBody(eElement.getElementsByTagName("body").item(0).getTextContent());
+                       // } else {
 
+                       // }
+                        brain.setBody(eElement.getElementsByTagName("body").item(0).getTextContent());
                         // Last, we push everything together and finally on brain.
-                        if (eElement.getElementsByTagName("parameter").getLength() == 0) {
+                        if (param.getLength() > 0){
+                        if (tElement.getElementsByTagName("value").getLength() < 2) {
+                            // Do nothing.
+                        } else {
+
+                            System.out.println("Arrived at the parameter!  Either this is good or bad!  You decide!!");
+                            Element pValues = (Element) param.item(0);
+                            NodeList values = pValues.getElementsByTagName("value");
+
+                            for (int i = 0; i < values.getLength(); i++) {
+                                System.out.println(i + " Sorting through Multi.");
+                                ArrayList<String> pChoice = new ArrayList<>();
+                                ArrayList<String> pRightAnswer = new ArrayList<>();
+                                BrainhoneyContents multi = new BrainhoneyContents();
+
+                                multi.setPartial(eElement.getAttribute("partial"));
+                                multi.setScore(eElement.getAttribute("score"));
+                                multi.setInteractionType(eElement.getElementsByTagName("interaction").item(0).getAttributes().getNamedItem("type").getTextContent());
+                                multi.setQuestionID(eElement.getAttribute("questionid"));
+
+                                multi.setRightAnswer(pRightAnswer);
+                                multi.setqChoice(pChoice);
+                                multi.setBody(eElement.getElementsByTagName("body").item(0).getTextContent());
+
+                                ArrayList<Element> eList = new ArrayList<>();
+
+                                for (int j = 0; j < param.getLength(); j++) {
+                                    System.out.println(j + " = J");
+                                    //Element valueElement = (Element)param.item(j);
+                                    //NodeList eValues = valueElement.getElementsByTagName("value");
+
+                                    //NodeList nValues = eValues.getElementsByTagName("value");
+                                    //for (int k = 0; k < nValues.getLength(); k++) {
+                                }
+
+                            }
+                        }
+                        }
+                        else{
                             for (int i = 1; i < eElement.getElementsByTagName("body").getLength(); i++) {
+                                System.out.println("Arrived right to the many values!!! alert! Alert!");
                                 qChoice.add(eElement.getElementsByTagName("body").item(i).getTextContent());
                             }
                             // The body of each question.  It's kind of weird, but... that's the way it looks.
                             if (brain.getInteractionType().equals("text")) {
-                                
+
                                 for (int i = 0; i < rightAnswer.size(); i++) {
                                     qChoice.add(rightAnswer.get(i));
+                                    System.out.println(i + "Right Answer thingie");
                                 }
                             }
                             brain.setRightAnswer(rightAnswer);
                             brain.setqChoice(qChoice);
                             brain.setQuestionID(eElement.getAttribute("questionid"));
                             brainhoney.add(brain);
-                        } else {
-                            Element pValues = (Element) param.item(0);
-                            NodeList values = pValues.getElementsByTagName("value");
-                            
-                            for (int i = 0; i < values.getLength(); i++) {
-                                ArrayList<String> pChoice = new ArrayList<>();
-                                ArrayList<String> pRightAnswer = new ArrayList<>();
-                                BrainhoneyContents multi = new BrainhoneyContents();
-                                
-                                for (int j = 0; i < param.getLength(); j++) {
-                                    Element eValues = (Element) param.item(i);
-                                    NodeList nValues = pValues.getElementsByTagName("value");
-                                    
-                                }
-                                
-                            }
                         }
-                        // For aesthetic purposes.
+
                     }
                 }
             }
-            
+
         } catch (ParserConfigurationException | SAXException | IOException ex) {
             Logger.getLogger(XMLParser.class.getName()).log(Level.SEVERE, null, ex);
             System.out.println("Error: Cannot read file.  Exception thrown!");
         }
-        
+
         System.out.println("Number of questions: " + brainhoney.size());
     }
-    
+
     public ArrayList<BrainhoneyContents> getBrainhoney() {
         return brainhoney;
     }
-    
+
     public void setBrainhoney(ArrayList<BrainhoneyContents> brainhoney) {
         this.brainhoney = brainhoney;
     }
-
-    /*
-     * Probably WILL NOT be implementing, but I am leaving this here just in
-     * case something happens.
-     */
-    public void xMLParseSax() {
-    }
-    
 }

@@ -78,10 +78,12 @@ public class QuizParse {
             for (int temp = 0; temp < testList.getLength(); temp++) {
                 Element eElement = (Element) testList.item(temp).getParentNode();
 
-                if (testList.item(temp).getTextContent().equals("Assessment") && eElement.getElementsByTagName("title").getLength() != 0) {
+                if (testList.item(temp).getTextContent().equals("Assessment") && eElement.getElementsByTagName("title").getLength() != 0
+                        || testList.item(temp).getTextContent().equals("Homework") && eElement.getElementsByTagName("title").getLength() != 0) {
                     System.out.println(eElement.getElementsByTagName("title").item(0).getTextContent());
                     quizName.add(eElement.getElementsByTagName("title").item(0).getTextContent());
-                } else if (testList.item(temp).getTextContent().equals("Assessment") && eElement.getElementsByTagName("title").getLength() == 0) {
+                } else if (testList.item(temp).getTextContent().equals("Assessment") && eElement.getElementsByTagName("title").getLength() == 0 ||
+                        testList.item(temp).getTextContent().equals("Homework") && eElement.getElementsByTagName("title").getLength() == 0) {
                     quizName.add("Blank Test");
                 } else if (testList.item(temp).getTextContent().equals("AssetLink")) {
                     System.out.println("Link found!!");
@@ -136,12 +138,11 @@ public class QuizParse {
         System.out.println("How many quiz names?!" + quizName.size());
 
         int size = 0;
-        
+
         if (quiz.size() > quizName.size()) {
             size = quizName.size();
-        }
-        else{
-            size = quiz.size();  
+        } else {
+            size = quiz.size();
         }
         for (int i = 0; i < size; i++) {
             System.out.println("Quiz name is: " + quizName.get(i) + ". Index: " + i);

@@ -291,10 +291,16 @@ public class TransToolUI extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         try {
+            System.out.println("1");
             XMLParser toParse = new XMLParser(filePath);
 
+             System.out.println("2");
             QuizParse quiz = new QuizParse(filePath, toParse.getBrainhoney());
+            
+             System.out.println("3");
             OtherQuiz test2 = new OtherQuiz(quiz.getQuiz(), savePath);
+            
+             System.out.println("4");
             WriteGradeItems categories = new WriteGradeItems(savePath, quiz.getGradeCategories());
         } catch (TransformerException ex) {
             Logger.getLogger(TransToolUI.class.getName()).log(Level.SEVERE, null, ex);

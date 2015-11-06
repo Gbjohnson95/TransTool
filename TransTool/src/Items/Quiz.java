@@ -5,6 +5,8 @@
  */
 package Items;
 
+import org.w3c.dom.Element;
+
 /**
  *
  * @author hallm8
@@ -16,6 +18,8 @@ public class Quiz extends Item{
     private String attemptLimit;
     private String securityLevel;
     private String password;
+    
+    private Element quizItem;
     
     @Override
     public void writeItem() {
@@ -71,6 +75,24 @@ public class Quiz extends Item{
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public Element getQuizItem() {
+        return quizItem;
+    }
+
+    public void setQuizItem(Element quizItem) {
+        this.quizItem = quizItem;
+    }
+    
+    
+    public void populateClass () {
+        if (quizItem != null){
+            
+        }
+        else
+            System.out.println("Object not initialized!  Please initialize!");
+    }
+    
     
     
 }
