@@ -34,7 +34,7 @@ import transtool.questions.BrainhoneyContents;
  * @author hallm8
  *
  */
-public class OtherQuiz {
+public class QuestionDB {
 
     int itemNumber = 50000;
     int questionNumber = 50000;
@@ -51,7 +51,7 @@ public class OtherQuiz {
      * @throws TransformerConfigurationException
      * @throws TransformerException
      */
-    public OtherQuiz(ArrayList<transtool.xmlTools.Quiz> quiz, String savePath) throws TransformerConfigurationException, TransformerException {
+    public QuestionDB(ArrayList<transtool.xmlTools.Quiz> quiz, String savePath) throws TransformerConfigurationException, TransformerException {
         try {
             // Save file path.
             toSave = savePath;

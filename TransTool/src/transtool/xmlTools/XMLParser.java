@@ -132,13 +132,10 @@ public class XMLParser {
                         if (tElement.getElementsByTagName("value").getLength() < 2) {
                             // Do nothing.
                         } else {
-
-                            System.out.println("Arrived at the parameter!  Either this is good or bad!  You decide!!");
                             Element pValues = (Element) param.item(0);
                             NodeList values = pValues.getElementsByTagName("value");
 
                             for (int i = 0; i < values.getLength(); i++) {
-                                System.out.println(i + " Sorting through Multi.");
                                 ArrayList<String> pChoice = new ArrayList<>();
                                 ArrayList<String> pRightAnswer = new ArrayList<>();
                                 BrainhoneyContents multi = new BrainhoneyContents();
@@ -156,11 +153,6 @@ public class XMLParser {
 
                                 for (int j = 0; j < param.getLength(); j++) {
                                     System.out.println(j + " = J");
-                                    //Element valueElement = (Element)param.item(j);
-                                    //NodeList eValues = valueElement.getElementsByTagName("value");
-
-                                    //NodeList nValues = eValues.getElementsByTagName("value");
-                                    //for (int k = 0; k < nValues.getLength(); k++) {
                                 }
 
                             }
@@ -168,7 +160,6 @@ public class XMLParser {
                         }
                         else{
                             for (int i = 1; i < eElement.getElementsByTagName("body").getLength(); i++) {
-                                System.out.println("Arrived right to the many values!!! alert! Alert!");
                                 qChoice.add(eElement.getElementsByTagName("body").item(i).getTextContent());
                             }
                             // The body of each question.  It's kind of weird, but... that's the way it looks.
@@ -176,7 +167,6 @@ public class XMLParser {
 
                                 for (int i = 0; i < rightAnswer.size(); i++) {
                                     qChoice.add(rightAnswer.get(i));
-                                    System.out.println(i + "Right Answer thingie");
                                 }
                             }
                             brain.setRightAnswer(rightAnswer);

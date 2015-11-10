@@ -87,7 +87,7 @@ public class WriteManifest {
         } catch (ParserConfigurationException pce) {
             System.out.println("Oops!  Error!!");
         } catch (TransformerException ex) {
-            Logger.getLogger(OtherQuiz.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(QuestionDB.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }

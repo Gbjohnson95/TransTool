@@ -18,9 +18,9 @@ import java.util.zip.ZipOutputStream;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.xml.transform.TransformerException;
-import transtool.quiz.OtherQuiz;
+import transtool.quiz.QuestionDB;
 import transtool.xmlTools.QuizParse;
-import transtool.xmlTools.WriteGradeItems;
+import GradeItems.WriteGradeItems;
 import transtool.xmlTools.XMLParser;
 
 /**
@@ -298,7 +298,7 @@ public class TransToolUI extends javax.swing.JFrame {
             QuizParse quiz = new QuizParse(filePath, toParse.getBrainhoney());
             
              System.out.println("3");
-            OtherQuiz test2 = new OtherQuiz(quiz.getQuiz(), savePath);
+            QuestionDB test2 = new QuestionDB(quiz.getQuiz(), savePath);
             
              System.out.println("4");
             WriteGradeItems categories = new WriteGradeItems(savePath, quiz.getGradeCategories());
