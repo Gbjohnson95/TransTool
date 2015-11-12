@@ -113,7 +113,11 @@ public class QuestionDB {
 
                 // each Brainhoney class is actually a single question
                 for (int i = 0; i < brainhoney.size(); i++) {
-                    //brainhoney.get(i).printContents();
+                    
+                    
+                    
+                    
+                    
                     questionNumber = itemNumber;
                     feedbackNumber = questionNumber;
                     Element item = doc.createElement("item");
@@ -133,13 +137,13 @@ public class QuestionDB {
                     item.setAttributeNode(id);
 
                     String randID = "QUES_18115_10000";
-                    String randQuestion = "OBJ_78306";
+                    String randQuestion = "OBJ_10000";
                     randQuestion = randQuestion.substring(0, randQuestion.length() - Integer.toString(idNumber).length());
 
                     randID = randID.substring(0, randID.length() - Integer.toString(idNumber).length());
                     randID = randID + Integer.toString(idNumber);
 
-                    item.setAttribute("ident", randQuestion + i);
+                    item.setAttribute("ident", randQuestion + idNumber);
 
                     Attr label = doc.createAttribute("label");
                     label.setValue(randID);
