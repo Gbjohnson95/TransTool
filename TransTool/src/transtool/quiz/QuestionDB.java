@@ -7,8 +7,6 @@ package transtool.quiz;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -128,12 +126,14 @@ public class QuestionDB {
                             section.appendChild(multipleChoice.getItem());
                             break;
                         case "text":
+                            /*
                             ShortAnswerQuestion shortAnswer = new ShortAnswerQuestion(brainhoneyContent, doc, idNumber, itemNumber, section);
                             idNumber = shortAnswer.getIdNumber();
                             itemNumber = shortAnswer.getItemNumber();
                             feedbackNumber = shortAnswer.getItemNumber();
                             questionNumber = shortAnswer.getItemNumber();
                             section.appendChild(shortAnswer.getItem());
+                            */
                             break;
                         case "essay":
                             LongAnswerQuestion longAnswer = new LongAnswerQuestion(brainhoneyContent, doc, idNumber, itemNumber, section);
@@ -145,52 +145,55 @@ public class QuestionDB {
 
                             break;
                         case "match":
-
+/*
                             MatchingQuestion matchingQuestion = new MatchingQuestion(brainhoneyContent, doc, idNumber, itemNumber, section);
                             idNumber = matchingQuestion.getIdNumber();
                             itemNumber = matchingQuestion.getItemNumber();
                             feedbackNumber = matchingQuestion.getItemNumber();
                             questionNumber = matchingQuestion.getItemNumber();
                             section.appendChild(matchingQuestion.getItem());
+                            */
                             break;
                         case "order":
+/*
                             OrderQuestion orderQuestion = new OrderQuestion(brainhoneyContent, doc, idNumber, itemNumber, section);
                             idNumber = orderQuestion.getIdNumber();
                             itemNumber = orderQuestion.getItemNumber();
                             feedbackNumber = orderQuestion.getItemNumber();
                             questionNumber = orderQuestion.getItemNumber();
                             section.appendChild(orderQuestion.getItem());
+                            */
                             break;
 
                         case "answer":
+                            /*
                             MultiSelect multiSelect = new MultiSelect(brainhoneyContent, doc, idNumber, itemNumber, section);
                             idNumber = multiSelect.getIdNumber();
                             itemNumber = multiSelect.getItemNumber();
                             feedbackNumber = multiSelect.getItemNumber();
                             questionNumber = multiSelect.getItemNumber();
                             section.appendChild(multiSelect.getItem());
-
+                             */
                             break;
+
                         case "custom":
                         case "composite":
                             break;
                     }
                 }
             }
-       // write the content into xml file
-		TransformerFactory transformerFactory = TransformerFactory.newInstance();
-		Transformer transformer = transformerFactory.newTransformer();
-		DOMSource source = new DOMSource(doc);
-		StreamResult result = new StreamResult(new File(toSave + "\\questiondb.xml"));
+            // write the content into xml file
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            Transformer transformer = transformerFactory.newTransformer();
+            DOMSource source = new DOMSource(doc);
+            StreamResult result = new StreamResult(new File(toSave + "\\questiondb.xml"));
 
 		// Output to console for testing
-		// StreamResult result = new StreamResult(System.out);
+            // StreamResult result = new StreamResult(System.out);
+            transformer.transform(source, result);
 
-		transformer.transform(source, result);
+            System.out.println("File saved!");
 
-		System.out.println("File saved!");
-        
-        
         } catch (ParserConfigurationException ex) {
             System.out.println("Error!!! Unable to save file! Something wrong!!");
         }

@@ -64,10 +64,7 @@ public class BrainhoneyQuestion {
         randID = randID + Integer.toString(idNumber);
 
         rootItem.setAttribute("ident", randQuestion + idNumber);
-
-        Attr label = doc.createAttribute("label");
-        label.setValue(randID);
-        rootItem.setAttributeNode(label);
+        rootItem.setAttribute("label", randID);
 
         Attr page = doc.createAttribute("d2l_2p0:page");
         page.setValue("1");

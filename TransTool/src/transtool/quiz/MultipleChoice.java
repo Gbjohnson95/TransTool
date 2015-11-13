@@ -44,9 +44,7 @@ public class MultipleChoice extends BrainhoneyQuestion {
         Element matText = doc.createElement("mattext");
         material.appendChild(matText);
 
-        Attr textType = doc.createAttribute("texttype");
-        textType.setValue("text/html");
-        matText.setAttributeNode(textType);
+        matText.setAttribute("texttype","text/html");
         matText.appendChild(doc.createTextNode(brainhoney.getBody()));
 
         Element dStyle = doc.createElement("d2l_2p0:display_style");
