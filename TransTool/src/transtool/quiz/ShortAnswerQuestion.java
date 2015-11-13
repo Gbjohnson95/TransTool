@@ -46,15 +46,15 @@ public class ShortAnswerQuestion extends BrainhoneyQuestion {
         str.appendChild(fib);
         fib.appendChild(response_label);
 
-        str.setAttribute("ident", randID + "_STR");
-        str.setAttribute("cardinality", "single");
+        str.setAttribute("ident", randID + "_A" + questionNumber + "_ANS");
+        str.setAttribute("rcardinality", "Single");
 
-        fib.setAttribute("rows", "3");
-        fib.setAttribute("columns", "60");
+        fib.setAttribute("rows", "1");
+        fib.setAttribute("columns", "40");
         fib.setAttribute("prompt", "Box");
         fib.setAttribute("fibtype", "String");
 
-        response_label.setAttribute("ident", randID + "_ANS");
+        response_label.setAttribute("ident", randID + "_A" + questionNumber + "_ANS");
 
         Element resprocessing = doc.createElement("resprocessing");
         Element outcomes = doc.createElement("outcomes");
@@ -81,6 +81,8 @@ public class ShortAnswerQuestion extends BrainhoneyQuestion {
             varequal.setAttribute("case", "no");
 
             varequal.setTextContent(rightAnswer);
+            
+            conditionvar.appendChild(varequal);
 
             Element setvar = doc.createElement("setvar");
             respcondition.appendChild(setvar);
