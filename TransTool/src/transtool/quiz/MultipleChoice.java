@@ -19,20 +19,27 @@ public class MultipleChoice extends BrainhoneyQuestion {
     public MultipleChoice(BrainhoneyContents brain, Document document, int id, int item, Element root) {
         super(brain, document, id, item, root);
         writeHeader();
-        
-        Element material = (Element)root.getElementsByTagName("material").item(0);
-        Element resprocessing = (Element)root.getElementsByTagName("resprocessing").item(0);
-        
+
+        Element presentation = (Element) rootItem.getElementsByTagName("presentation").item(0);
+        Element flow = doc.createElement("flow");
+        presentation.appendChild(flow);
+
+        Element resprocessing = doc.createElement("resprocessing");
+        rootItem.appendChild(resprocessing);
+        // Carrying on from the other thingamajig.  I don't know what I am trying to say.
+        Element material = doc.createElement("material");
+        Element extension = doc.createElement("response_extension");
+        Element lid = doc.createElement("response_lid");
+
+        flow.appendChild(material);
+        flow.appendChild(extension);
+        flow.appendChild(lid);
 
         //Field entries are very question specific.  Well... for the question type.
         Element fieldEntry2 = doc.createElement("fieldentry");
         fieldEntry2.appendChild(doc.createTextNode("Multiple Choice"));
-        Element qtiDataField2 = (Element) root.getElementsByTagName("qtimetadata").item(0);
+        Element qtiDataField2 = (Element) rootItem.getElementsByTagName("qti_metadatafield").item(1);
         qtiDataField2.appendChild(fieldEntry2);
-
-        // Carrying on from the other thingamajig.  I don't know what I am trying to say.
-        Element extension = doc.createElement("response_extension");
-        Element lid = doc.createElement("response_lid");
 
         Element matText = doc.createElement("mattext");
         material.appendChild(matText);
@@ -94,8 +101,8 @@ public class MultipleChoice extends BrainhoneyQuestion {
             Element conditionvar = doc.createElement("conditionvar");
             Element varequal = doc.createElement("varequal");
             Element decVar = doc.createElement("decvar");
-
             Element setVariable = doc.createElement("setvar");
+
             respCondition.setAttribute("title", "Response Condition " + Integer.toString(j + 1));
             varequal.setAttribute("respident", randID + "_LID");
             varequal.appendChild(doc.createTextNode(randID + "_A" + questionNumber));
@@ -113,8 +120,8 @@ public class MultipleChoice extends BrainhoneyQuestion {
             displayFeedback.setAttribute("feedbacktype", "Response");
             displayFeedback.setAttribute("linkrefid", randID + "_IF" + questionNumber);
             questionNumber++;
-            respCondition.appendChild(displayFeedback);
 
+            respCondition.appendChild(displayFeedback);
             resprocessing.appendChild(respCondition);
             respCondition.appendChild(conditionvar);
             conditionvar.appendChild(varequal);
@@ -122,7 +129,7 @@ public class MultipleChoice extends BrainhoneyQuestion {
 
         }
 
-                    // Right here holds item feedback for the questions.  They
+        // Right here holds item feedback for the questions.  They
         // are associated with each question via feedback ID.
         for (String qChoice : brainhoney.getqChoice()) {
             Element itemFeedback = doc.createElement("itemfeedback");
@@ -131,13 +138,10 @@ public class MultipleChoice extends BrainhoneyQuestion {
             Element mattext = doc.createElement("mattext");
             mattext.setAttribute("texttype", "text/html");
 
-            item.appendChild(itemFeedback);
+            rootItem.appendChild(itemFeedback);
             itemFeedback.appendChild(fMaterial);
             fMaterial.appendChild(mattext);
             feedbackNumber++;
         }
     }
-
-    
-    
 }

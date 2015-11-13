@@ -6,27 +6,18 @@
 package transtool.quiz;
 
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import transtool.questions.BrainhoneyContents;
 
 /**
  *
  * @author hallm8
  */
-public class MultiSelect {
-        private BrainhoneyContents brainhoney;
-    private Document doc;
-    int itemNumber;
-    int questionNumber;
-    int feedbackNumber;
-    int idNumber;
-    
-    public MultiSelect(BrainhoneyContents brain, Document document, int id, int item){
-    brainhoney = brain;    
-    doc = document;
-    idNumber = id;
-    questionNumber = item;
-    feedbackNumber = item;
-    itemNumber     = item; 
+public class MultiSelect extends BrainhoneyQuestion{
+ 
+    public MultiSelect(BrainhoneyContents brain, Document document, int id, int item, Element root) {
+        super(brain, document, id, item, root);
     }
+ 
     
 }

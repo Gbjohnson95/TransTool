@@ -13,10 +13,10 @@ import transtool.questions.BrainhoneyContents;
  *
  * @author hallm8
  */
-public class LongAnswerQuestion extends BrainhoneyQuestion{
-   
-    public LongAnswerQuestion(BrainhoneyContents brain, Document document, int id, int item, Element root) {
+public class MatchingQuestion extends BrainhoneyQuestion{
+    
+    public MatchingQuestion(BrainhoneyContents brain, Document document, int id, int item, Element root) {
         super(brain, document, id, item, root);
     }
-   
+    
 }
