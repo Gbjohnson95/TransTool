@@ -126,14 +126,14 @@ public class QuestionDB {
                             section.appendChild(multipleChoice.getItem());
                             break;
                         case "text":
-                            /*
+
                             ShortAnswerQuestion shortAnswer = new ShortAnswerQuestion(brainhoneyContent, doc, idNumber, itemNumber, section);
                             idNumber = shortAnswer.getIdNumber();
                             itemNumber = shortAnswer.getItemNumber();
                             feedbackNumber = shortAnswer.getItemNumber();
                             questionNumber = shortAnswer.getItemNumber();
                             section.appendChild(shortAnswer.getItem());
-                            */
+
                             break;
                         case "essay":
                             LongAnswerQuestion longAnswer = new LongAnswerQuestion(brainhoneyContent, doc, idNumber, itemNumber, section);
@@ -145,24 +145,24 @@ public class QuestionDB {
 
                             break;
                         case "match":
-/*
+                            /*
                             MatchingQuestion matchingQuestion = new MatchingQuestion(brainhoneyContent, doc, idNumber, itemNumber, section);
                             idNumber = matchingQuestion.getIdNumber();
                             itemNumber = matchingQuestion.getItemNumber();
                             feedbackNumber = matchingQuestion.getItemNumber();
                             questionNumber = matchingQuestion.getItemNumber();
                             section.appendChild(matchingQuestion.getItem());
-                            */
+                             */
                             break;
                         case "order":
-/*
+                            /*
                             OrderQuestion orderQuestion = new OrderQuestion(brainhoneyContent, doc, idNumber, itemNumber, section);
                             idNumber = orderQuestion.getIdNumber();
                             itemNumber = orderQuestion.getItemNumber();
                             feedbackNumber = orderQuestion.getItemNumber();
                             questionNumber = orderQuestion.getItemNumber();
                             section.appendChild(orderQuestion.getItem());
-                            */
+                             */
                             break;
 
                         case "answer":
@@ -188,7 +188,7 @@ public class QuestionDB {
             DOMSource source = new DOMSource(doc);
             StreamResult result = new StreamResult(new File(toSave + "\\questiondb.xml"));
 
-		// Output to console for testing
+            // Output to console for testing
             // StreamResult result = new StreamResult(System.out);
             transformer.transform(source, result);
 

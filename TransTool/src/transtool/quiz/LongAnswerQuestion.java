@@ -42,7 +42,7 @@ public class LongAnswerQuestion extends BrainhoneyQuestion {
         matText.setAttribute("texttype", "text/html");
         matText.appendChild(doc.createTextNode(brainhoney.getBody()));
 
-        Element hasSigned = doc.createElement("questiondb.xml");
+        Element hasSigned = doc.createElement("d2l_2p0:has_signed_comments");
         Element htmlEditor = doc.createElement("d2l_2p0:has_htmleditor");
 
         hasSigned.setTextContent("no");
