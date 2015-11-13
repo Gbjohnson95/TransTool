@@ -166,14 +166,14 @@ public class QuestionDB {
                             break;
 
                         case "answer":
-                            /*
+                            
                             MultiSelect multiSelect = new MultiSelect(brainhoneyContent, doc, idNumber, itemNumber, section);
                             idNumber = multiSelect.getIdNumber();
                             itemNumber = multiSelect.getItemNumber();
                             feedbackNumber = multiSelect.getItemNumber();
                             questionNumber = multiSelect.getItemNumber();
                             section.appendChild(multiSelect.getItem());
-                             */
+                             
                             break;
 
                         case "custom":
