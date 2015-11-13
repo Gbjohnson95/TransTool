@@ -44,12 +44,10 @@ public class BrainhoneyQuestion {
         Element metaData = doc.createElement("itemmetadata");
         Element itemproc = doc.createElement("itemproc_extension");
         Element presentation = doc.createElement("presentation");
-        Element resprocessing = doc.createElement("resprocessing");
         //section.appendChild(item);
         rootItem.appendChild(metaData);
         rootItem.appendChild(itemproc);
         rootItem.appendChild(presentation);
-        rootItem.appendChild(resprocessing);
 
         Attr id = doc.createAttribute("d2l_2p0:id");
         id.setValue(Integer.toString(idNumber));
