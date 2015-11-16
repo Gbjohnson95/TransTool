@@ -56,7 +56,7 @@ public class MultiSelect extends BrainhoneyQuestion {
 
         dStyle.appendChild(doc.createTextNode("2"));
         enumeration.appendChild(doc.createTextNode("5"));
-        gType.appendChild(doc.createTextNode("1"));
+        gType.appendChild(doc.createTextNode("0"));
 
         Attr identity = doc.createAttribute("ident");
         Attr rcardinality = doc.createAttribute("rcardinality");
