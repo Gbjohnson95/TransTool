@@ -11,7 +11,7 @@ import org.w3c.dom.Element;
  *
  * @author hallm8
  */
-public class Quiz extends Item{
+public class QuizItem extends Item{
     private String category;
     private String gradeable;
     private String weight;

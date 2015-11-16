@@ -56,12 +56,12 @@ public class MultiSelect extends BrainhoneyQuestion {
 
         dStyle.appendChild(doc.createTextNode("2"));
         enumeration.appendChild(doc.createTextNode("5"));
-        gType.appendChild(doc.createTextNode("0"));
+        gType.appendChild(doc.createTextNode("2"));
 
         Attr identity = doc.createAttribute("ident");
         Attr rcardinality = doc.createAttribute("rcardinality");
         identity.setValue(randID + "_LID");
-        rcardinality.setValue("Single");
+        rcardinality.setValue("Multiple");
         lid.setAttributeNode(identity);
         lid.setAttributeNode(rcardinality);
 
@@ -120,7 +120,7 @@ public class MultiSelect extends BrainhoneyQuestion {
         outcomes.appendChild(decVar2);
         outcomes.appendChild(decVar3);
 
-        for (String qChoice : brainhoney.getqChoice()) {
+        for (int i = 0; i < brainhoney.getqChoice().size(); i++) {
             Element respcondition = doc.createElement("respcondition");
             Element conditionvar = doc.createElement("conditionvar");
             Element varequal = doc.createElement("varequal");
@@ -140,7 +140,9 @@ public class MultiSelect extends BrainhoneyQuestion {
 
             setvar.setAttribute("action", "Add");
             setvar.setTextContent("1");
-            if (brainhoney.getRightAnswer().contains(qChoice)) {
+            
+            if (brainhoney.getRightAnswer().contains(Integer.toString(i + 1))) {
+                System.out.println("Woohoo!!!");
                 setvar.setAttribute("varname", "D2L_Correct");
             } else {
                 setvar.setAttribute("varname", "D2L_Incorrect");

@@ -20,6 +20,13 @@ public class MultipleChoice extends BrainhoneyQuestion {
         super(brain, document, id, item, root);
         writeHeader();
 
+        //Field entries are very question specific.  Well... for the question type.
+        Element fieldEntry2 = doc.createElement("fieldentry");
+        fieldEntry2.appendChild(doc.createTextNode("Multiple Choice"));
+        Element qtiDataField2 = (Element) rootItem.getElementsByTagName("qti_metadatafield").item(1);
+        qtiDataField2.appendChild(fieldEntry2);
+        
+        
         Element presentation = (Element) rootItem.getElementsByTagName("presentation").item(0);
         Element flow = doc.createElement("flow");
         presentation.appendChild(flow);
@@ -35,11 +42,7 @@ public class MultipleChoice extends BrainhoneyQuestion {
         flow.appendChild(extension);
         flow.appendChild(lid);
 
-        //Field entries are very question specific.  Well... for the question type.
-        Element fieldEntry2 = doc.createElement("fieldentry");
-        fieldEntry2.appendChild(doc.createTextNode("Multiple Choice"));
-        Element qtiDataField2 = (Element) rootItem.getElementsByTagName("qti_metadatafield").item(1);
-        qtiDataField2.appendChild(fieldEntry2);
+        
 
         Element matText = doc.createElement("mattext");
         material.appendChild(matText);

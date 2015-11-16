@@ -24,15 +24,18 @@ public class BrainhoneyQuestion {
     protected int idNumber;
     protected Element rootItem;
     protected String randID;
+    
+    
 
     public BrainhoneyQuestion(BrainhoneyContents brain, Document document, int id, int item, Element root) {
         brainhoney = brain;
-        doc = document;
-        idNumber = id;
+        
         questionNumber = item;
         feedbackNumber = item;
         itemNumber = item;
-
+        
+        doc = document;
+        idNumber = id;
         rootItem = doc.createElement("item");
     }
 
