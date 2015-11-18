@@ -26,6 +26,10 @@ public class BrainhoneyQuestion {
     protected String randID;
     
     
+    BrainhoneyQuestion(){
+        brainhoney = new BrainhoneyContents();
+    }
+    
 
     public BrainhoneyQuestion(BrainhoneyContents brain, Document document, int id, int item, Element root) {
         brainhoney = brain;

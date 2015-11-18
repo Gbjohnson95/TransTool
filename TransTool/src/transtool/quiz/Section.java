@@ -35,10 +35,8 @@ public class Section {
         this.rootItem = rootItem;
     }
 
-
-
     Element createSection() {
-        
+
         ArrayList<BrainhoneyContents> brainhoney = quiz.getBrainhoney();
         Element section = doc.createElement("section");
         section.setAttribute("d2l_2p0:id", Integer.toString(idNumber));
@@ -62,74 +60,51 @@ public class Section {
         // each Brainhoney class is actually a single question
         for (BrainhoneyContents brainhoneyContent : brainhoney) {
 
+            boolean didChoose = false;
+            BrainhoneyQuestion question = new BrainhoneyQuestion();
+
             switch (brainhoneyContent.getInteractionType()) {
                 case "choice":
-                    MultipleChoice multipleChoice = new MultipleChoice(brainhoneyContent, doc, idNumber, itemNumber, section);
-                    idNumber = multipleChoice.getIdNumber();
-                    itemNumber = multipleChoice.getItemNumber();
-                    feedbackNumber = multipleChoice.getItemNumber();
-                    questionNumber = multipleChoice.getItemNumber();
-                    section.appendChild(multipleChoice.getItem());
+                    question = new MultipleChoice(brainhoneyContent, doc, idNumber, itemNumber, section);
+                    didChoose = true;
                     break;
+
                 case "text":
-
-                    ShortAnswerQuestion shortAnswer = new ShortAnswerQuestion(brainhoneyContent, doc, idNumber, itemNumber, section);
-                    idNumber = shortAnswer.getIdNumber();
-                    itemNumber = shortAnswer.getItemNumber();
-                    feedbackNumber = shortAnswer.getItemNumber();
-                    questionNumber = shortAnswer.getItemNumber();
-                    section.appendChild(shortAnswer.getItem());
-
+                    question = new ShortAnswerQuestion(brainhoneyContent, doc, idNumber, itemNumber, section);
+                    didChoose = true;
                     break;
+
                 case "essay":
-                    LongAnswerQuestion longAnswer = new LongAnswerQuestion(brainhoneyContent, doc, idNumber, itemNumber, section);
-                    idNumber = longAnswer.getIdNumber();
-                    itemNumber = longAnswer.getItemNumber();
-                    feedbackNumber = longAnswer.getItemNumber();
-                    questionNumber = longAnswer.getItemNumber();
-                    section.appendChild(longAnswer.getItem());
+                    question = new LongAnswerQuestion(brainhoneyContent, doc, idNumber, itemNumber, section);
+                    didChoose = true;
+                    break;
 
-                    break;
                 case "match":
-                    /*
-                            MatchingQuestion matchingQuestion = new MatchingQuestion(brainhoneyContent, doc, idNumber, itemNumber, section);
-                            idNumber = matchingQuestion.getIdNumber();
-                            itemNumber = matchingQuestion.getItemNumber();
-                            feedbackNumber = matchingQuestion.getItemNumber();
-                            questionNumber = matchingQuestion.getItemNumber();
-                            section.appendChild(matchingQuestion.getItem());
-                     */
+                    System.out.println("matching");
+                    question = new MatchingQuestion(brainhoneyContent, doc, idNumber, itemNumber, section);
+                    didChoose = true;
                     break;
+
                 case "order":
-                    /*
-                            OrderQuestion orderQuestion = new OrderQuestion(brainhoneyContent, doc, idNumber, itemNumber, section);
-                            idNumber = orderQuestion.getIdNumber();
-                            itemNumber = orderQuestion.getItemNumber();
-                            feedbackNumber = orderQuestion.getItemNumber();
-                            questionNumber = orderQuestion.getItemNumber();
-                            section.appendChild(orderQuestion.getItem());
-                     */
+                    //question = new OrderQuestion(brainhoneyContent, doc, idNumber, itemNumber, section);
                     break;
 
                 case "answer":
-
-                    System.out.println("M-S Size: " + brainhoneyContent.getRightAnswer().size());
-            for (String rightAnswer : brainhoneyContent.getRightAnswer()) {
-                System.out.println(rightAnswer);
-            }
-                    MultiSelect multiSelect = new MultiSelect(brainhoneyContent, doc, idNumber, itemNumber, section);
-                    
-                    idNumber = multiSelect.getIdNumber();
-                    itemNumber = multiSelect.getItemNumber();
-                    feedbackNumber = multiSelect.getItemNumber();
-                    questionNumber = multiSelect.getItemNumber();
-                    section.appendChild(multiSelect.getItem());
-
+                    question = new MultiSelect(brainhoneyContent, doc, idNumber, itemNumber, section);
+                    didChoose = true;
                     break;
 
                 case "custom":
                 case "composite":
+                    System.out.println("Custom/Composite Question selected!");
                     break;
+            }
+            if (didChoose == true) {
+                idNumber = question.getIdNumber();
+                itemNumber = question.getItemNumber();
+                feedbackNumber = question.getItemNumber();
+                questionNumber = question.getItemNumber();
+                section.appendChild(question.getItem());
             }
         }
 
@@ -192,8 +167,4 @@ public class Section {
         this.rootItem = rootItem;
     }
 
-
-
-    
-    
 }

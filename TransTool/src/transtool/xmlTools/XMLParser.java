@@ -123,42 +123,39 @@ public class XMLParser {
                         for (int i = 0; i < eElement.getElementsByTagName("value").getLength(); i++) {
                             rightAnswer.add(eElement.getElementsByTagName("value").item(i).getTextContent());
                         }
-                       // } else {
 
-                       // }
                         brain.setBody(eElement.getElementsByTagName("body").item(0).getTextContent());
                         // Last, we push everything together and finally on brain.
-                        if (param.getLength() > 0){
-                        if (tElement.getElementsByTagName("value").getLength() < 2) {
-                            // Do nothing.
-                        } else {
-                            Element pValues = (Element) param.item(0);
-                            NodeList values = pValues.getElementsByTagName("value");
+                        if (param.getLength() > 0) {
+                            if (tElement.getElementsByTagName("value").getLength() < 2) {
+                                // Do nothing.
+                            } else {
+                                Element pValues = (Element) param.item(0);
+                                NodeList values = pValues.getElementsByTagName("value");
 
-                            for (int i = 0; i < values.getLength(); i++) {
-                                ArrayList<String> pChoice = new ArrayList<>();
-                                ArrayList<String> pRightAnswer = new ArrayList<>();
-                                BrainhoneyContents multi = new BrainhoneyContents();
+                                for (int i = 0; i < values.getLength(); i++) {
+                                    ArrayList<String> pChoice = new ArrayList<>();
+                                    ArrayList<String> pRightAnswer = new ArrayList<>();
+                                    BrainhoneyContents multi = new BrainhoneyContents();
 
-                                multi.setPartial(eElement.getAttribute("partial"));
-                                multi.setScore(eElement.getAttribute("score"));
-                                multi.setInteractionType(eElement.getElementsByTagName("interaction").item(0).getAttributes().getNamedItem("type").getTextContent());
-                                multi.setQuestionID(eElement.getAttribute("questionid"));
+                                    multi.setPartial(eElement.getAttribute("partial"));
+                                    multi.setScore(eElement.getAttribute("score"));
+                                    multi.setInteractionType(eElement.getElementsByTagName("interaction").item(0).getAttributes().getNamedItem("type").getTextContent());
+                                    multi.setQuestionID(eElement.getAttribute("questionid"));
 
-                                multi.setRightAnswer(pRightAnswer);
-                                multi.setqChoice(pChoice);
-                                multi.setBody(eElement.getElementsByTagName("body").item(0).getTextContent());
+                                    multi.setRightAnswer(pRightAnswer);
+                                    multi.setqChoice(pChoice);
+                                    multi.setBody(eElement.getElementsByTagName("body").item(0).getTextContent());
 
-                                ArrayList<Element> eList = new ArrayList<>();
+                                    ArrayList<Element> eList = new ArrayList<>();
 
-                                for (int j = 0; j < param.getLength(); j++) {
-                                    System.out.println(j + " = J");
+                                    for (int j = 0; j < param.getLength(); j++) {
+                                        System.out.println(j + " = J");
+                                    }
+
                                 }
-
                             }
-                        }
-                        }
-                        else{
+                        } else {
                             for (int i = 1; i < eElement.getElementsByTagName("body").getLength(); i++) {
                                 qChoice.add(eElement.getElementsByTagName("body").item(i).getTextContent());
                             }
@@ -167,6 +164,12 @@ public class XMLParser {
 
                                 for (int i = 0; i < rightAnswer.size(); i++) {
                                     qChoice.add(rightAnswer.get(i));
+                                }
+                            }
+                            if (brain.getInteractionType().equals("match")) {
+                                NodeList answer = eElement.getElementsByTagName("answer");
+                                for (int i = 0; i < answer.getLength(); i++){
+                                    rightAnswer.add(answer.item(i).getTextContent());
                                 }
                             }
                             brain.setRightAnswer(rightAnswer);
