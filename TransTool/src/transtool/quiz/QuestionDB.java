@@ -5,6 +5,7 @@
  */
 package transtool.quiz;
 
+import Manifest.Manifest;
 import java.io.File;
 import java.util.ArrayList;
 import javax.xml.parsers.DocumentBuilder;
@@ -58,7 +59,7 @@ public class QuestionDB {
 
             // This is a manifest builder that links to each quiz, including 
             // this question bank.
-            WriteManifest manifest = new WriteManifest(toSave);
+            Manifest manifest = new Manifest(toSave);
             manifest.buildManifest();
 
             // Standard DOM procedures

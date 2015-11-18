@@ -10,11 +10,13 @@ package Items;
  * @author hallm8
  */
 public class Item {
-    private String name;
-    private String path;
-    private String parent;
-    private int itemID;
-    
+    protected String name;
+    protected String savePath;
+    protected String parent;
+    protected int itemID;
+    protected String ident;
+    protected String ref;
+    protected String resourceCode;
     
     
     public void writeItem(){
@@ -30,11 +32,11 @@ public class Item {
     }
 
     public String getPath() {
-        return path;
+        return savePath;
     }
 
     public void setPath(String path) {
-        this.path = path;
+        this.savePath = path;
     }
 
     public String getParent() {
@@ -51,6 +53,38 @@ public class Item {
 
     public void setItemID(int itemID) {
         this.itemID = itemID;
+    }
+
+    public String getSavePath() {
+        return savePath;
+    }
+
+    public void setSavePath(String savePath) {
+        this.savePath = savePath;
+    }
+
+    public String getIdent() {
+        return ident;
+    }
+
+    public void setIdent(String ident) {
+        this.ident = ident;
+    }
+
+    public String getRef() {
+        return ref;
+    }
+
+    public void setRef(String ref) {
+        this.ref = ref;
+    }
+
+    public String getResourceCode() {
+        return resourceCode;
+    }
+
+    public void setResourceCode(String resourceCode) {
+        this.resourceCode = resourceCode;
     }
     
     
