@@ -13,7 +13,7 @@ public class Item {
     protected String name;
     protected String savePath;
     protected String parent;
-    protected int itemID;
+    protected String itemID;
     protected String ident;
     protected String ref;
     protected String resourceCode;
@@ -47,11 +47,11 @@ public class Item {
         this.parent = parent;
     }
 
-    public int getItemID() {
+    public String getItemID() {
         return itemID;
     }
 
-    public void setItemID(int itemID) {
+    public void setItemID(String itemID) {
         this.itemID = itemID;
     }
 

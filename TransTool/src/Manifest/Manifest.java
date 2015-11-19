@@ -20,22 +20,24 @@ import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import transtool.quiz.QuestionDB;
+import transtool.xmlTools.BrainhoneyItemParse;
+import transtool.xmlTools.XMLParser;
 
 /**
  *
  * @author hallm8
  */
 public class Manifest {
+
     private ArrayList<String> manifestList;
     private String savePath;
-    
-    
-    public Manifest(String toSave){
+
+    public Manifest(String toSave) {
         manifestList = new ArrayList<>();
         savePath = toSave;
     }
-    
-    public void buildManifest(){
+
+    public void buildManifest() {
         try {
 
             DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
@@ -50,28 +52,41 @@ public class Manifest {
             rootElement.setAttribute("xmlns", "http://www.imsglobal.org/xsd/imscp_v1p1");
 
             Element resources = doc.createElement("resources");
-            Element resource = doc.createElement("resource");
 
+            // create organizations, resources, append them and attach
+            // standard attributes
+            Element organizations = doc.createElement("organizations");
+            Element organization = doc.createElement("organization");
+            Element resource = doc.createElement("resource");
+            rootElement.appendChild(resources);
+            rootElement.appendChild(organizations);
+            rootElement.appendChild(organization);
+            organizations.setAttribute("default", "d2l_orgs");
+            organization.setAttribute("identifier", "d2l_org");
+
+            // Create the question database and write the xml
+            XMLParser toParse = new XMLParser(savePath);
+
+            // Create a list of Items
+            BrainhoneyItemParse quiz = new BrainhoneyItemParse(savePath, toParse.getBrainhoney());
+            
+            
+            // for loop, creating content items
+            
+            
+            
+            // Creating the question library
             resource.setAttribute("identifier", "res_question_library");
             resource.setAttribute("type", "webcontent");
             resource.setAttribute("d2l_2p0:material_type", "d2lquestionlibrary");
             resource.setAttribute("d2l_2p0:link_target", "");
             resource.setAttribute("href", "questiondb.xml");
             resource.setAttribute("title", "Question Library");
-
-            rootElement.appendChild(resources);
             resources.appendChild(resource);
 
-            Element resource1 = doc.createElement("resource");
+            // pull each section off, so they can be sent to a reference later
+            // for loop through each Item and create a reference
 
-            resources.setAttribute("identifier", "res_grades");
-            resources.setAttribute("type", "webcontent");
-            resources.setAttribute("d2l_2p0:material_type", "d2lgrades");
-            resources.setAttribute("d2l_2p0:link_target", "");
-            resources.setAttribute("href", "grades_d2l.xml");
-            resources.setAttribute("title", "");
-
-            resources.appendChild(resource1);
 
             // write the content into xml file
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
@@ -92,5 +107,5 @@ public class Manifest {
         }
 
     }
-    
+
 }

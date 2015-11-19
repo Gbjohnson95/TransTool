@@ -70,7 +70,7 @@ public class QuizItem extends Item {
             assessment.setAttribute("d2l_2p0:resource_code", "byui_produ-114352");
             assessment.setAttribute("ident", ident);
             assessment.setAttribute("title", sections.get(0).getQuiz().getQuizName());
-            assessment.setAttribute("d2l_2p0:id", Integer.toString(itemID));
+            assessment.setAttribute("d2l_2p0:id", itemID);
 
             Element rubric = doc.createElement("rubric");
             Element flow_mat = doc.createElement("flow_mat");

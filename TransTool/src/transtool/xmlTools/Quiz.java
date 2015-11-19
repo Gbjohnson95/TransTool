@@ -9,29 +9,29 @@ import java.util.ArrayList;
 import transtool.questions.BrainhoneyContents;
 
 /**
- *  QUIZ
- *      Quiz holds a quiz name, questions, and the associated ID to each 
- *  question.
- * 
- * Contents:
- *  Quiz Name      - Contains the name of the quiz
- *  Quiz Questions - Contains the ID of the quiz questions
- *  Brainhoney     - Contains the actual quiz info
- * 
+ * QUIZ Quiz holds a quiz name, questions, and the associated ID to each
+ * question.
+ *
+ * Contents: Quiz Name - Contains the name of the quiz Quiz Questions - Contains
+ * the ID of the quiz questions Brainhoney - Contains the actual quiz info
+ *
  * @author hallm8
- * 
- * 
+ *
+ *
  */
 public class Quiz {
+
     private String quizName;
     private ArrayList<String> quizQuestions;
     private ArrayList<BrainhoneyContents> brainhoney;
+    
+    private String quizID;
 
     /**
      * QUIZ NAME
-     * 
-     *  Contains the Quiz Name
-     * 
+     *
+     * Contains the Quiz Name
+     *
      * @return Name of the quiz
      */
     public String getQuizName() {
@@ -40,9 +40,9 @@ public class Quiz {
 
     /**
      * QUIZ NAME
-     * 
-     *  Contains the quiz name
-     * 
+     *
+     * Contains the quiz name
+     *
      * @param quizName Name of the quiz
      */
     public void setQuizName(String quizName) {
@@ -51,9 +51,9 @@ public class Quiz {
 
     /**
      * QUIZ QUESTIONS
-     * 
-     *  Contains the ID for all the quiz questions to link back to the items.
-     * 
+     *
+     * Contains the ID for all the quiz questions to link back to the items.
+     *
      * @return Quiz question ID
      */
     public ArrayList<String> getQuizQuestions() {
@@ -62,9 +62,9 @@ public class Quiz {
 
     /**
      * QUIZ QUESTIONS
-     * 
-     *  Contains the ID for all the quiz questions to link back to the items.
-     * 
+     *
+     * Contains the ID for all the quiz questions to link back to the items.
+     *
      * @param quizQuestions Quiz question ID
      */
     public void setQuizQuestions(ArrayList<String> quizQuestions) {
@@ -73,10 +73,10 @@ public class Quiz {
 
     /**
      * Brainhoney
-     * 
-     *  Each Brainhoney class is a single quiz question.  
-     * 
-     * @return 
+     *
+     * Each Brainhoney class is a single quiz question.
+     *
+     * @return
      */
     public ArrayList<BrainhoneyContents> getBrainhoney() {
         return brainhoney;
@@ -84,12 +84,22 @@ public class Quiz {
 
     /**
      * Brainhoney
-     * 
-     *  Each Brainhoney class is a single quiz question.  
-     * 
+     *
+     * Each Brainhoney class is a single quiz question.
+     *
      * @param brainhoney
      */
     public void setBrainhoney(ArrayList<BrainhoneyContents> brainhoney) {
         this.brainhoney = brainhoney;
-    }  
+    }
+
+    public String getQuizID() {
+        return quizID;
+    }
+
+    public void setQuizID(String quizID) {
+        this.quizID = quizID;
+    }
+    
+    
 }
