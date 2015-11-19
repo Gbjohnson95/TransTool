@@ -8,6 +8,8 @@ package transtool.quiz;
 import Manifest.Manifest;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -41,7 +43,6 @@ public class QuestionDB {
     int questionNumber = 50000;
     int feedbackNumber = 50000;
     int idNumber = 1;
-
     String toSave;
 
     /**
@@ -52,15 +53,10 @@ public class QuestionDB {
      * @throws TransformerConfigurationException
      * @throws TransformerException
      */
-    public QuestionDB(ArrayList<transtool.xmlTools.Quiz> quiz, String savePath) throws TransformerConfigurationException, TransformerException {
+    public QuestionDB(ArrayList<transtool.xmlTools.Quiz> quiz, String savePath) {
         try {
             // Save file path.
             toSave = savePath;
-
-            // This is a manifest builder that links to each quiz, including 
-            // this question bank.
-            Manifest manifest = new Manifest(toSave);
-            manifest.buildManifest();
 
             // Standard DOM procedures
             DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
@@ -115,6 +111,8 @@ public class QuestionDB {
 
         } catch (ParserConfigurationException ex) {
             System.out.println("Error!!! Unable to save file! Something wrong!!");
+        } catch (TransformerException ex) {
+            Logger.getLogger(QuestionDB.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }

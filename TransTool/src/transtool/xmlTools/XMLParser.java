@@ -3,6 +3,7 @@
  */
 package transtool.xmlTools;
 
+import Items.Item;
 import Parameter.Parameter;
 import transtool.questions.BrainhoneyContents;
 import java.util.ArrayList;
@@ -36,6 +37,7 @@ public class XMLParser {
 
     // name of XML document to be parsed.
     private String nameOfXML;
+    
 
     /*
      * default constructor; takes a String from the user and parses the XML doc.

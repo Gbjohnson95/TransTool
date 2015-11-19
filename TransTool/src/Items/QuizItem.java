@@ -20,6 +20,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import transtool.questions.BrainhoneyContents;
 import transtool.quiz.Section;
 
 /**
@@ -28,20 +29,23 @@ import transtool.quiz.Section;
  */
 public class QuizItem extends Item {
 
-    private String category;
+    //private String category;
     private String gradeable;
     private String weight;
     private String attemptLimit;
     private String securityLevel;
     private String password;
     private Element quizItem;
-    private String fillLater;
 
-    ArrayList<Section> sections;
+    Section section;
 
-    public QuizItem(ArrayList<Section> sections, String toSave) {
-        this.sections = sections;
-        toSave = savePath;
+    private String quizName;
+    private ArrayList<String> quizQuestions;
+    private ArrayList<BrainhoneyContents> brainhoney;
+
+    private String quizID;
+
+    public QuizItem() {
 
     }
 
@@ -68,8 +72,8 @@ public class QuizItem extends Item {
             root.appendChild(assessment);
 
             assessment.setAttribute("d2l_2p0:resource_code", "byui_produ-114352");
-            assessment.setAttribute("ident", ident);
-            assessment.setAttribute("title", sections.get(0).getQuiz().getQuizName());
+            assessment.setAttribute("ident", "res_quiz_" + ident);
+            assessment.setAttribute("title", section.getQuiz().getQuizName());
             assessment.setAttribute("d2l_2p0:id", itemID);
 
             Element rubric = doc.createElement("rubric");
@@ -82,8 +86,8 @@ public class QuizItem extends Item {
             flow_mat.appendChild(material);
             material.appendChild(mattext);
 
-            material.setAttribute("d2l_2p0:isdisplayed", "yes");
-            material.setAttribute("texttype", "text/html");
+            mattext.setAttribute("d2l_2p0:isdisplayed", "no");
+            mattext.setAttribute("texttype", "text/html");
 
             Element presentation_material = doc.createElement("presentation_material");
             Element flow_mat2 = doc.createElement("flow_mat");
@@ -126,11 +130,6 @@ public class QuizItem extends Item {
             Element calcType = doc.createElement("d2l_2p0:mark_calculation_type");
             Element forward = doc.createElement("d2l_2p0:is_forward_only");
 
-            introMessage.setAttribute("d2l_2p0:isdisplayed", "no");
-            introMessage.setAttribute("texttype", "text/html");
-            grade_item.setAttribute("d2l_2p0:is_autoexport", "yes");
-            grade_item.setAttribute("resource_code", fillLater);
-
             assessment.appendChild(assess_procextension);
             assess_procextension.appendChild(introMessage);
             assess_procextension.appendChild(category1);
@@ -152,6 +151,26 @@ public class QuizItem extends Item {
             assess_procextension.appendChild(restrictions);
             assess_procextension.appendChild(calcType);
             assess_procextension.appendChild(forward);
+
+            introMessage.setAttribute("d2l_2p0:isdisplayed", "no");
+            introMessage.setAttribute("texttype", "text/html");
+            grade_item.setAttribute("resource_code", gradeAssociation);
+            grade_item.setAttribute("d2l_2p0:is_autoexport", "yes");
+            grade_item.setTextContent(gradeAssociation);
+            dRightClick.setTextContent("no");
+            dPager.setTextContent("no");
+            is_active.setTextContent("yes");
+            hasSchedule.setTextContent("no");
+            attRldb.setTextContent("no");
+            subRldb.setTextContent("no");
+            tLimit.setTextContent("120");
+            showClock.setTextContent("no");
+            enforceTime.setTextContent("no");
+            grace.setTextContent("5");
+            late.setTextContent("0");
+            attempts.setTextContent(attemptLimit);
+            calcType.setTextContent("1");
+            forward.setTextContent("no");
 
             Element assessfeedback = doc.createElement("assessfeedback");
             Element rubric2 = doc.createElement("rubric");
@@ -176,9 +195,21 @@ public class QuizItem extends Item {
             rubric2.appendChild(restrictIP);
             rubric2.appendChild(average);
             rubric2.appendChild(scoreDistr);
-
-            for (Section section : sections) {
-            }
+            
+            assessfeedback.setAttribute("title", "");
+            mattext4.setAttribute("texttype", "yes");
+            mattext4.setTextContent("<p>Your quiz has been submitted successfully.</p>");
+            duration.setTextContent("0");
+            displayID.setTextContent("1");
+            showAnswers.setTextContent("no");
+            restrictIP.setTextContent("no");
+            average.setTextContent("no");
+            scoreDistr.setTextContent("no");
+            
+            
+            
+            
+            
 
             // write the content into xml file
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
@@ -202,6 +233,7 @@ public class QuizItem extends Item {
 
     }
 
+    /*
     public String getCategory() {
         return category;
     }
@@ -209,7 +241,7 @@ public class QuizItem extends Item {
     public void setCategory(String category) {
         this.category = category;
     }
-
+     */
     public String getGradeable() {
         return gradeable;
     }

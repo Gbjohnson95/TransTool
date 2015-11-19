@@ -21,6 +21,7 @@ import javax.xml.transform.TransformerException;
 import transtool.quiz.QuestionDB;
 import transtool.xmlTools.BrainhoneyItemParse;
 import GradeItems.WriteGradeItems;
+import Manifest.Manifest;
 import transtool.xmlTools.XMLParser;
 
 /**
@@ -31,6 +32,7 @@ public class TransToolUI extends javax.swing.JFrame {
 
     private String filePath;
     private String savePath;
+    private Manifest manifest;
 
     /**
      * Creates new form Window3
@@ -290,31 +292,19 @@ public class TransToolUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        try {
-            System.out.println("1");
-            XMLParser toParse = new XMLParser(filePath);
 
-             System.out.println("2");
-            BrainhoneyItemParse quiz = new BrainhoneyItemParse(filePath, toParse.getBrainhoney());
+            manifest = new Manifest(savePath, filePath);
+            manifest.buildManifest();
             
-             System.out.println("3");
-            QuestionDB test2 = new QuestionDB(quiz.getQuiz(), savePath);
-            
-             System.out.println("4");
-            WriteGradeItems categories = new WriteGradeItems(savePath, quiz.getGradeCategories());
-        } catch (TransformerException ex) {
-            Logger.getLogger(TransToolUI.class.getName()).log(Level.SEVERE, null, ex);
-        }
 
-        zipFile();
-        File file;
-        file = new File(savePath);
+            /*
         Desktop desktop = Desktop.getDesktop();
         try {
             desktop.open(file);
-        } catch (IOException ex) {
+       } catch (IOException ex) {
             Logger.getLogger(TransToolUI.class.getName()).log(Level.SEVERE, null, ex);
         }
+            */
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -395,34 +385,5 @@ public class TransToolUI extends javax.swing.JFrame {
     private javax.swing.JLabel pathFileText;
     // End of variables declaration//GEN-END:variables
 
-    private void zipFile() {
-        byte[] buffer = new byte[1024];
-        try {
 
-            String[] sourceFiles = {savePath + "\\imsmanifest.xml", savePath + "\\questiondb.xml"};
-
-            FileOutputStream fos = new FileOutputStream(savePath + "\\import.zip");
-            ZipOutputStream zos = new ZipOutputStream(fos);
-
-            for (String sourceFile : sourceFiles) {
-                File srcFile = new File(sourceFile);
-                FileInputStream fis;
-                fis = new FileInputStream(srcFile);
-                zos.putNextEntry(new ZipEntry(srcFile.getName()));
-                int length;
-                while ((length = fis.read(buffer)) > 0) {
-                    zos.write(buffer, 0, length);
-                }
-                zos.closeEntry();
-                fis.close();
-            }
-            zos.close();
-
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(TransToolUI.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(TransToolUI.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-    }
 }

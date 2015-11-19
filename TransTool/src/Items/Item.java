@@ -5,6 +5,8 @@
  */
 package Items;
 
+import org.w3c.dom.Element;
+
 /**
  *
  * @author hallm8
@@ -17,6 +19,8 @@ public class Item {
     protected String ident;
     protected String ref;
     protected String resourceCode;
+    protected String location;
+    protected String gradeAssociation;
     
     
     public void writeItem(){
@@ -86,6 +90,37 @@ public class Item {
     public void setResourceCode(String resourceCode) {
         this.resourceCode = resourceCode;
     }
+    
+    
+    
+    
+    //public Element getElement(){
+        
+        
+        // Fill this out in a bit.
+        
+        
+        
+        
+    //}
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public String getGradeAssociation() {
+        return gradeAssociation;
+    }
+
+    public void setGradeAssociation(String gradeAssociation) {
+        this.gradeAssociation = gradeAssociation;
+    }
+    
+    
     
     
 }

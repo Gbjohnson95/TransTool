@@ -24,6 +24,11 @@ public class BrainhoneyQuestion {
     protected int idNumber;
     protected Element rootItem;
     protected String randID;
+    protected String bID;
+    
+    
+    
+    
     
     
     BrainhoneyQuestion(){
@@ -222,6 +227,22 @@ public class BrainhoneyQuestion {
 
     public void setRandID(String randID) {
         this.randID = randID;
+    }
+
+    public Element getRootItem() {
+        return rootItem;
+    }
+
+    public void setRootItem(Element rootItem) {
+        this.rootItem = rootItem;
+    }
+
+    public String getbID() {
+        return bID;
+    }
+
+    public void setbID(String bID) {
+        this.bID = bID;
     }
 
 }

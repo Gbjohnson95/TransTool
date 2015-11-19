@@ -7,6 +7,7 @@ package transtool.xmlTools;
 
 import GradeItems.GradeCategories;
 import Items.Item;
+import Items.QuizItem;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -162,51 +163,6 @@ public class BrainhoneyItemParse {
 
         }
         assignSections();
-    }
-
-    public void populateItems() {
-        DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder dBuilder;
-
-        try {
-            dBuilder = dbFactory.newDocumentBuilder();
-
-            Document doc = dBuilder.parse(nameOfXML);
-
-            // Normalize the document.  
-            doc.getDocumentElement().normalize();
-
-            NodeList node = doc.getElementsByTagName("item");
-
-            for (int i = 0; i < node.getLength(); i++) {
-                Element data = (Element) node.item(0);
-
-                if (data.getChildNodes().getLength() <= 15) {
-                    
-                }
-                else{
-                    String type = data.getElementsByTagName("type").item(0).getTextContent();
-                    
-                    switch (type){
-                        case ("Assessment"):
-                        case ("Homework"):
-                            break;
-                        case ("Assignment"):
-                            break;
-                        case ("Discussion"):
-                            break;
-                        case ("Resource"):
-                            break;
-                            
-                    }
-                }
-
-            }
-
-        } catch (SAXException | IOException | ParserConfigurationException ex) {
-            Logger.getLogger(BrainhoneyItemParse.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
     }
 
     /**
