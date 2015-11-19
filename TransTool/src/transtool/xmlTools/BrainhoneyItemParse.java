@@ -51,13 +51,12 @@ public class BrainhoneyItemParse {
         items = new ArrayList<>();
         this.quiz = new ArrayList<>();
         brainhoneyContents = brainhoney;
-        
+
         createQuizzes();
     }
-    
-    
-    public void createQuizzes(){
-                //Standard opening procedures for DOM.
+
+    public void createQuizzes() {
+        //Standard opening procedures for DOM.
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder;
 
@@ -86,14 +85,13 @@ public class BrainhoneyItemParse {
             for (int temp = 0; temp < testList.getLength(); temp++) {
                 Element eElement = (Element) testList.item(temp).getParentNode();
                 Element pElement = (Element) eElement.getParentNode();
-                
 
                 if (testList.item(temp).getTextContent().equals("Assessment") && eElement.getElementsByTagName("title").getLength() != 0
                         || testList.item(temp).getTextContent().equals("Homework") && eElement.getElementsByTagName("title").getLength() != 0) {
                     System.out.println(eElement.getElementsByTagName("title").item(0).getTextContent());
                     quizName.add(eElement.getElementsByTagName("title").item(0).getTextContent());
                     quizID.add(pElement.getAttribute("id"));
-                    
+
                 } else if (testList.item(temp).getTextContent().equals("Assessment") && eElement.getElementsByTagName("title").getLength() == 0
                         || testList.item(temp).getTextContent().equals("Homework") && eElement.getElementsByTagName("title").getLength() == 0) {
                     quizName.add("Blank Test");
@@ -165,11 +163,11 @@ public class BrainhoneyItemParse {
         }
         assignSections();
     }
-    
-    public void populateItems(){
+
+    public void populateItems() {
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder;
-        
+
         try {
             dBuilder = dbFactory.newDocumentBuilder();
 
@@ -177,27 +175,38 @@ public class BrainhoneyItemParse {
 
             // Normalize the document.  
             doc.getDocumentElement().normalize();
-            
+
             NodeList node = doc.getElementsByTagName("item");
-            
-            for (int i = 0; i < node.getLength(); i++){
+
+            for (int i = 0; i < node.getLength(); i++) {
                 Element data = (Element) node.item(0);
-                
-                
+
+                if (data.getChildNodes().getLength() <= 15) {
+                    
+                }
+                else{
+                    String type = data.getElementsByTagName("type").item(0).getTextContent();
+                    
+                    switch (type){
+                        case ("Assessment"):
+                        case ("Homework"):
+                            break;
+                        case ("Assignment"):
+                            break;
+                        case ("Discussion"):
+                            break;
+                        case ("Resource"):
+                            break;
+                            
+                    }
+                }
+
             }
-            
-            
-            
-            
-            
-            
-            
-            
-            
-        }catch (SAXException | IOException | ParserConfigurationException ex) {
+
+        } catch (SAXException | IOException | ParserConfigurationException ex) {
             Logger.getLogger(BrainhoneyItemParse.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
     }
 
     /**
