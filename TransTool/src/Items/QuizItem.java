@@ -22,6 +22,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import transtool.questions.BrainhoneyContents;
 import transtool.quiz.Section;
+import transtool.xmlTools.Quiz;
 
 /**
  *
@@ -36,6 +37,10 @@ public class QuizItem extends Item {
     private String securityLevel;
     private String password;
     private Element quizItem;
+    private int itemNumber;
+    private int questionNumber;
+    private int feedbackNumber;
+    private int idNumber;
 
     Section section;
 
@@ -195,7 +200,7 @@ public class QuizItem extends Item {
             rubric2.appendChild(restrictIP);
             rubric2.appendChild(average);
             rubric2.appendChild(scoreDistr);
-            
+
             assessfeedback.setAttribute("title", "");
             mattext4.setAttribute("texttype", "yes");
             mattext4.setTextContent("<p>Your quiz has been submitted successfully.</p>");
@@ -205,11 +210,14 @@ public class QuizItem extends Item {
             restrictIP.setTextContent("no");
             average.setTextContent("no");
             scoreDistr.setTextContent("no");
-            
-            
-            
-            
-            
+
+    
+            section  = new Section(itemNumber, idNumber, assessment, this);
+            assessment.appendChild(section.createSection());
+            itemNumber = section.getItemNumber();
+            questionNumber = section.getItemNumber();
+            feedbackNumber = section.getItemNumber();
+            idNumber = section.getIdNumber();
 
             // write the content into xml file
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
@@ -297,5 +305,79 @@ public class QuizItem extends Item {
             System.out.println("Object not initialized!  Please initialize!");
         }
     }
+
+    public int getItemNumber() {
+        return itemNumber;
+    }
+
+    public void setItemNumber(int itemNumber) {
+        this.itemNumber = itemNumber;
+    }
+
+    public int getQuestionNumber() {
+        return questionNumber;
+    }
+
+    public void setQuestionNumber(int questionNumber) {
+        this.questionNumber = questionNumber;
+    }
+
+    public int getFeedbackNumber() {
+        return feedbackNumber;
+    }
+
+    public void setFeedbackNumber(int feedbackNumber) {
+        this.feedbackNumber = feedbackNumber;
+    }
+
+    public int getIdNumber() {
+        return idNumber;
+    }
+
+    public void setIdNumber(int idNumber) {
+        this.idNumber = idNumber;
+    }
+
+    public Section getSection() {
+        return section;
+    }
+
+    public void setSection(Section section) {
+        this.section = section;
+    }
+
+    public String getQuizName() {
+        return quizName;
+    }
+
+    public void setQuizName(String quizName) {
+        this.quizName = quizName;
+    }
+
+    public ArrayList<String> getQuizQuestions() {
+        return quizQuestions;
+    }
+
+    public void setQuizQuestions(ArrayList<String> quizQuestions) {
+        this.quizQuestions = quizQuestions;
+    }
+
+    public ArrayList<BrainhoneyContents> getBrainhoney() {
+        return brainhoney;
+    }
+
+    public void setBrainhoney(ArrayList<BrainhoneyContents> brainhoney) {
+        this.brainhoney = brainhoney;
+    }
+
+    public String getQuizID() {
+        return quizID;
+    }
+
+    public void setQuizID(String quizID) {
+        this.quizID = quizID;
+    }
+    
+    
 
 }

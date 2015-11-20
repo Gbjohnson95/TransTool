@@ -5,6 +5,7 @@
  */
 package transtool.quiz;
 
+import Items.QuizItem;
 import java.util.ArrayList;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -24,25 +25,26 @@ public class Section {
     private int feedbackNumber;
     private int idNumber;
     private Element rootItem;
+    private QuizItem quizItem;
+    
 
-    public Section(Quiz quiz, Document doc, int itemNumber, int idNumber, Element rootItem) {
-        this.quiz = quiz;
-        this.doc = doc;
+    public Section(int itemNumber, int idNumber, Element rootItem, QuizItem quizItem) {
         this.itemNumber = itemNumber;
-        questionNumber = itemNumber;
-        feedbackNumber = itemNumber;
         this.idNumber = idNumber;
         this.rootItem = rootItem;
+        this.quizItem = quizItem;
+        questionNumber = itemNumber;
+        feedbackNumber = itemNumber;
     }
 
-    Element createSection() {
+    public Element createSection() {
 
-        ArrayList<BrainhoneyContents> brainhoney = quiz.getBrainhoney();
+        ArrayList<BrainhoneyContents> brainhoney = quizItem.getBrainhoney();
         Element section = doc.createElement("section");
         section.setAttribute("d2l_2p0:id", Integer.toString(idNumber));
         idNumber++;
         section.setAttribute("ident", "SECT_" + (idNumber + 1));
-        section.setAttribute("title", quiz.getQuizName());
+        section.setAttribute("title", quizItem.getQuizName());
         Element sectionproc = doc.createElement("sectionproc_extension");
         Element displaySectionName = doc.createElement("d2l_2p0:display_section_name");
         displaySectionName.appendChild(doc.createTextNode("no"));

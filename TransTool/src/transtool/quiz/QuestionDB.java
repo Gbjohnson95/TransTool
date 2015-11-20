@@ -90,12 +90,12 @@ public class QuestionDB {
             // parse through each quiz and pull them out.  This has been done
             // so that we can separate them in the quiz bank.
             for (int l = 0; l < quiz.size(); l++) {
-                Section section = new Section(quiz.get(l), doc, itemNumber, idNumber, staff);
-                staff.appendChild(section.createSection());
-                itemNumber = section.getItemNumber();
-                questionNumber = section.getItemNumber();
-                feedbackNumber = section.getItemNumber();
-                idNumber = section.getIdNumber();
+                //Section section = new Section(quiz.get(l), doc, itemNumber, idNumber, staff);
+                //staff.appendChild(section.createSection());
+                //itemNumber = section.getItemNumber();
+               // questionNumber = section.getItemNumber();
+                //feedbackNumber = section.getItemNumber();
+                //idNumber = section.getIdNumber();
             }
             // write the content into xml file
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
