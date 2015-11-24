@@ -22,7 +22,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import transtool.questions.BrainhoneyContents;
 import transtool.quiz.Section;
-import transtool.xmlTools.Quiz;
 
 /**
  *
@@ -74,7 +73,7 @@ public class QuizItem extends Item {
             Element assessment = doc.createElement("assessment");
             root.appendChild(assessment);
 
-            assessment.setAttribute("d2l_2p0:resource_code", "byui_produ-114352");
+            assessment.setAttribute("d2l_2p0:resource_code", "byui_produ-" + ident);
             assessment.setAttribute("ident", "res_quiz_" + ident);
             ident = "res_quiz_" + ident;
             assessment.setAttribute("title", name);

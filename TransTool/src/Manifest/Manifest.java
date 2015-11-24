@@ -47,8 +47,10 @@ public class Manifest {
     private String savePath;
     private String brainhoneyPath;
     private ArrayList<String> fileNames = new ArrayList<>();
+    private String title;
 
     public Manifest(String toSave, String brainhoneyPath) {
+        title = "import";
         manifestList = new ArrayList<>();
         savePath = toSave;
         this.brainhoneyPath = brainhoneyPath;
@@ -132,7 +134,7 @@ public class Manifest {
             ArrayList<Item> theItem = gather.getItems();
 
             System.out.println("Item size: " + gather.getItems().size() + " And DropBox Size: " + dBox.size());
-            
+
             for (Item item1 : theItem) {
                 for (DropBox dB : dBox) {
                     if (item1.getItemID().equals(dB.getItemID())) {
@@ -156,18 +158,18 @@ public class Manifest {
 
             // for loop through each item, adding them to the manifest.
             for (Item item : gather.getItems()) {
-                if (!item.getItemType().equals("Dropbox")){
-                fileNames.add(item.getHref());
+                if (!item.getItemType().equals("Dropbox")) {
+                    fileNames.add(item.getHref());
 
-                Element qResource = doc.createElement("resource");
-                resources.appendChild(qResource);
+                    Element qResource = doc.createElement("resource");
+                    resources.appendChild(qResource);
 
-                qResource.setAttribute("title", item.getName());
-                qResource.setAttribute("href", item.getHref());
-                qResource.setAttribute("d2l_2p0:link_target", item.getLinkTarget());
-                qResource.setAttribute("d2l_2p0:material_type", item.getMaterialType());
-                qResource.setAttribute("type", "webcontent");
-                qResource.setAttribute("identifier", item.getIdent());
+                    qResource.setAttribute("title", item.getName());
+                    qResource.setAttribute("href", item.getHref());
+                    qResource.setAttribute("d2l_2p0:link_target", item.getLinkTarget());
+                    qResource.setAttribute("d2l_2p0:material_type", item.getMaterialType());
+                    qResource.setAttribute("type", "webcontent");
+                    qResource.setAttribute("identifier", item.getIdent());
                 }
             }
 
@@ -186,7 +188,6 @@ public class Manifest {
             grades.setAttribute("identifier", "res_grades");
             resources.appendChild(grades);
 
-            
             // writing the dropbox folder path into the manifest.
             Element dElement = doc.createElement("resource");
             dElement.setAttribute("title", "Dropbox Folders");
@@ -196,24 +197,7 @@ public class Manifest {
             dElement.setAttribute("type", "webcontent");
             dElement.setAttribute("identifier", "res_dropbox");
             resources.appendChild(dElement);
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
+
             System.out.println("Write contents to XML");
             // write the content into xml file
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
@@ -224,14 +208,6 @@ public class Manifest {
             System.out.println("Saving manifest.");
             // Save the file to the opened file.
             transformer.transform(source, result);
-            
-            
-            
-            
-            
-            
-            
-            
 
             fileNames.add("imsmanifest.xml");
             fileNames.add("dropbox_d2l.xml");
@@ -250,7 +226,7 @@ public class Manifest {
         try {
 
             //String[] sourceFiles = {savePath + "\\imsmanifest.xml", savePath + "\\questiondb.xml"};
-            FileOutputStream fos = new FileOutputStream(savePath + "\\import.zip");
+            FileOutputStream fos = new FileOutputStream(savePath + "\\" + title + ".zip");
             ZipOutputStream zos = new ZipOutputStream(fos);
 
             for (String fileName : fileNames) {
@@ -267,6 +243,8 @@ public class Manifest {
                 }
                 zos.closeEntry();
                 fis.close();
+
+                boolean success = (new File(fileName)).delete();
             }
             zos.close();
 

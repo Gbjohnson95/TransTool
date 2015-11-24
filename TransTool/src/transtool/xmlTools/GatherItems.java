@@ -7,6 +7,7 @@ package transtool.xmlTools;
 
 import GradeItems.GradeCategories;
 import GradeItems.WriteGradeItems;
+import Items.DiscussionBoard;
 import Items.DropBox;
 import Items.Item;
 import Items.QuizItem;
@@ -57,7 +58,7 @@ public class GatherItems {
             for (int i = 0; i < node.getLength(); i++) {
                 Element nodes = (Element) node.item(i);
                 Element dataStructure = (Element) nodes.getElementsByTagName("data").item(0);
-                NodeList data = dataStructure.getChildNodes();
+                //NodeList data = dataStructure.getChildNodes();
 
                 NodeList testing = dataStructure.getElementsByTagName("type");
 
@@ -71,7 +72,6 @@ public class GatherItems {
                     switch (type) {
                         case ("Assessment"):
                         case ("Homework"):
-                            System.out.println("Creating a quiz item now: " + dataStructure.getElementsByTagName("title").item(0).getTextContent());
 
                             createQuizItem(dataStructure, doc);
                             break;
@@ -80,6 +80,7 @@ public class GatherItems {
                             createDropBox(dataStructure, doc);
                             break;
                         case ("Discussion"):
+                            createDiscussionBoard(dataStructure, doc);
                             break;
                         case ("Resource"):
                             break;
@@ -312,6 +313,32 @@ public class GatherItems {
             identifier++;
             id++;
         }
+    }
+
+    public void createDiscussionBoard(Element data, Document doc) {
+        DiscussionBoard discussionBoard = new DiscussionBoard();
+
+        discussionBoard.setSavePath(savePath);
+        discussionBoard.setParent(data.getElementsByTagName("parent").item(0).getTextContent());
+        discussionBoard.setName(data.getElementsByTagName("title").item(0).getTextContent());
+        discussionBoard.setLocation(data.getElementsByTagName("href").item(0).getTextContent());
+        if (data.getElementsByTagName("gradable").getLength() > 0) {
+            discussionBoard.setGradeable(data.getElementsByTagName("gradable").item(0).getTextContent());
+            discussionBoard.setWeight(data.getElementsByTagName("weight").item(0).getTextContent());
+            discussionBoard.setCategory(data.getElementsByTagName("category").item(0).getTextContent());
+        } else {
+            discussionBoard.setGradeable("false");
+        }
+        discussionBoard.setItemID(Integer.toString(id));
+        discussionBoard.setIdent(Integer.toString(identifier));
+        discussionBoard.setDid(Integer.toString(id + 1));
+        discussionBoard.setDident(Integer.toString(identifier + 1));
+
+        items.add(discussionBoard);
+        identifier++;
+        identifier++;
+        id++;
+        id++;
     }
 
     public void writeItems() {
