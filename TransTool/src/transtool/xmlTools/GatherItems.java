@@ -6,7 +6,6 @@
 package transtool.xmlTools;
 
 import GradeItems.GradeCategories;
-import GradeItems.WriteGradeItems;
 import Items.DiscussionBoard;
 import Items.DropBox;
 import Items.Item;
@@ -291,28 +290,30 @@ public class GatherItems {
     public void createDropBox(Element data, Document doc) {
 
         NodeList isDropBox = data.getElementsByTagName("dropbox");
-        if (isDropBox.getLength() > 0) {
-            DropBox dropBox = new DropBox();
 
-            dropBox.setSavePath(savePath);
-            dropBox.setParent(data.getElementsByTagName("parent").item(0).getTextContent());
-            dropBox.setName(data.getElementsByTagName("title").item(0).getTextContent());
-            dropBox.setLocation(data.getElementsByTagName("href").item(0).getTextContent());
-            if (data.getElementsByTagName("gradable").getLength() > 0) {
-                dropBox.setGradeable(data.getElementsByTagName("gradable").item(0).getTextContent());
-                dropBox.setWeight(data.getElementsByTagName("weight").item(0).getTextContent());
-                dropBox.setCategory(data.getElementsByTagName("category").item(0).getTextContent());
-            } else {
-                dropBox.setGradeable("false");
-            }
-            dropBox.setItemID(Integer.toString(id));
-            dropBox.setIdent(Integer.toString(identifier));
+        DropBox dropBox = new DropBox();
 
-            items.add(dropBox);
-            dropBoxes.add(dropBox);
-            identifier++;
-            id++;
+        dropBox.setSavePath(savePath);
+        dropBox.setParent(data.getElementsByTagName("parent").item(0).getTextContent());
+        dropBox.setName(data.getElementsByTagName("title").item(0).getTextContent());
+        dropBox.setLocation(data.getElementsByTagName("href").item(0).getTextContent());
+        if (data.getElementsByTagName("gradable").getLength() > 0) {
+            dropBox.setGradeable(data.getElementsByTagName("gradable").item(0).getTextContent());
+            dropBox.setWeight(data.getElementsByTagName("weight").item(0).getTextContent());
+            dropBox.setCategory(data.getElementsByTagName("category").item(0).getTextContent());
+        } else {
+            dropBox.setGradeable("false");
         }
+        dropBox.setItemID(Integer.toString(id));
+        dropBox.setIdent(Integer.toString(identifier));
+
+        items.add(dropBox);
+        if (isDropBox.getLength() > 0) {
+            dropBoxes.add(dropBox);
+        }
+        identifier++;
+        id++;
+
     }
 
     public void createDiscussionBoard(Element data, Document doc) {
