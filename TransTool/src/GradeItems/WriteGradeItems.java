@@ -5,7 +5,6 @@
  */
 package GradeItems;
 
-import GradeItems.GradeCategories;
 import Items.Item;
 import java.io.File;
 import java.util.ArrayList;
@@ -44,14 +43,18 @@ public class WriteGradeItems {
     }
 
     public void writeToXML() {
-        // Standard DOM procedures
-        DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder docBuilder;
+
         try {
+
+            // Standard DOM procedures
+            DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder docBuilder;
+
             docBuilder = docFactory.newDocumentBuilder();
 
             // root elements
             Document doc = docBuilder.newDocument();
+
             Element rootElement = doc.createElement("grades");
             doc.appendChild(rootElement);
 
@@ -65,7 +68,7 @@ public class WriteGradeItems {
             rootElement.appendChild(gradingScheme);
             gradingScheme.appendChild(scheme);
 
-            ArrayList<Element> range = new ArrayList();
+            ArrayList<Element> range = new ArrayList<>();
 
             for (int i = 0; i < 12; i++) {
                 range.add(doc.createElement("range"));
@@ -187,7 +190,7 @@ public class WriteGradeItems {
                 name.appendChild(doc.createTextNode(gradeCategories.get(i).getCatName()));
                 sName.appendChild(doc.createTextNode(replaceIfShName));
                 sOrder.appendChild(doc.createTextNode(Integer.toString(sortOrder)));
-                
+
                 sortOrder++;
 
                 sAverage.appendChild(doc.createTextNode("false"));
@@ -220,17 +223,16 @@ public class WriteGradeItems {
                     if (item.getGradeable().equals("true")) {
                         Element gItem = doc.createElement("item");
                         gItems.appendChild(gItem);
-                        
-                       gItem.setAttribute("id", Integer.toString(id));
-                       gItem.setAttribute("identifier", Integer.toString(categoryID));
-                       gItem.setAttribute("resource_code", "byui_produ-" + Integer.toString(categoryID));
-                       item.setGradeAssociation("byui_produ-" + Integer.toString(categoryID));
-                       item.setGradeItem(Integer.toString(categoryID));
-                       
-                       System.out.println("Category ID is:  " + item.getGradeAssociation() + " And : " + item.getGradeItem());
-                       categoryID++;
-                       id++;
-                        
+
+                        gItem.setAttribute("id", Integer.toString(id));
+                        gItem.setAttribute("identifier", Integer.toString(categoryID));
+                        gItem.setAttribute("resource_code", "byui_produ-" + Integer.toString(categoryID));
+                        item.setGradeAssociation("byui_produ-" + Integer.toString(categoryID));
+                        item.setGradeItem(Integer.toString(categoryID));
+
+                        System.out.println("Category ID is:  " + item.getGradeAssociation() + " And : " + item.getGradeItem());
+                        categoryID++;
+                        id++;
 
                         Element category_id = doc.createElement("category_id");
                         Element name = doc.createElement("name");
@@ -250,7 +252,7 @@ public class WriteGradeItems {
 
                         for (GradeCategories gradeCategory : gradeCategories) {
                             System.out.println(gradeCategory.getCatID());
-                            if (item.getCategory().equals(gradeCategory.getCatID())){
+                            if (item.getCategory().equals(gradeCategory.getCatID())) {
                                 System.out.println("Category found successfully.");
                                 category_id.setTextContent(gradeCategory.getCatIdentifier());
                             }
@@ -293,12 +295,13 @@ public class WriteGradeItems {
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
             DOMSource source = new DOMSource(doc);
-            StreamResult result = new StreamResult(new File(filePath) + "\\grades_d2l.xml");
+            StreamResult result = new StreamResult(new File((filePath) + "\\grades_d2l.xml"));
 
             // Output to console for testing
             // StreamResult result = new StreamResult(System.out);
-            transformer.transform(source, result);
-
+            transformer.transform(source, result);          
+            
+            
             System.out.println("File saved!");
 
         } catch (ParserConfigurationException ex) {

@@ -64,10 +64,6 @@ public class WriteDropBox {
                 folder.setAttribute("resource_code", "byui_produ-" + dropBox.getIdent());
             }
             
-            
-            // Writing the dropbox file into the manifest.
-            
-
             // write the content into xml file
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
@@ -81,13 +77,9 @@ public class WriteDropBox {
 
             System.out.println("File saved!");
 
-        } catch (ParserConfigurationException ex) {
-            System.out.println("Error!!! Unable to save file! Something wrong!!");
-        } catch (TransformerConfigurationException ex) {
-            Logger.getLogger(QuizItem.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (TransformerException ex) {
-            Logger.getLogger(QuizItem.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        } catch (ParserConfigurationException | TransformerException ex) {
+            Logger.getLogger(WriteDropBox.class.getName()).log(Level.SEVERE, null, ex);
+        } 
     }
 
 }

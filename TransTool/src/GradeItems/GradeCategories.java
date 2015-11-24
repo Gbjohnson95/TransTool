@@ -10,38 +10,40 @@ package GradeItems;
  * @author hallm8
  */
 public class GradeCategories {
+
     private String catID;
     private String catIdentifier;
     private String catName;
     private String catWeight;
     private String dropLowest;
-    
 
-    
-    public void outputAll(){
+    public void outputAll() {
         System.out.println("Category ID: " + catID);
         System.out.println("Category Weight: " + catWeight);
         System.out.println("Category Name: " + catName);
     }
+
     /**
+     *
+     * Gets the category ID
      * 
-     * @return 
+     * @return
      */
     public String getCatID() {
         return catID;
     }
 
     /**
-     * 
-     * @param catID 
+     *
+     * @param catID
      */
     public void setCatID(String catID) {
         this.catID = catID;
     }
 
     /**
-     * 
-     * @return 
+     *
+     * @return
      */
     public String getCatName() {
         return catName;
@@ -54,48 +56,45 @@ public class GradeCategories {
     public void setCatIdentifier(String catIdentifier) {
         this.catIdentifier = catIdentifier;
     }
-    
-    
 
     /**
-     * 
-     * @param catName 
+     *
+     * @param catName
      */
     public void setCatName(String catName) {
         this.catName = catName;
     }
 
     /**
-     * 
-     * @return 
+     *
+     * @return
      */
     public String getCatWeight() {
         return catWeight;
     }
 
     /**
-     * 
-     * @param catWeight 
+     *
+     * @param catWeight
      */
     public void setCatWeight(String catWeight) {
         this.catWeight = catWeight;
     }
 
     /**
-     * 
-     * @return 
+     *
+     * @return
      */
     public String getDropLowest() {
         return dropLowest;
     }
 
     /**
-     * 
-     * @param dropLowest 
+     *
+     * @param dropLowest
      */
     public void setDropLowest(String dropLowest) {
         this.dropLowest = dropLowest;
     }
-    
-    
+
 }

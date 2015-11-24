@@ -34,7 +34,6 @@ import transtool.quiz.QuestionDB;
 import transtool.quiz.Section;
 import transtool.ui.TransToolUI;
 import transtool.xmlTools.GatherItems;
-import transtool.xmlTools.XMLParser;
 
 /**
  *
@@ -85,8 +84,6 @@ public class Manifest {
             organization.setAttribute("identifier", "d2l_org");
 
             System.out.println("Running the XML parser...");
-            // Create the question database and write the xml
-            XMLParser toParse = new XMLParser(brainhoneyPath);
 
             // Creating the question library in the XML
             resource.setAttribute("identifier", "res_question_library");

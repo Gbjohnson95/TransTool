@@ -5,7 +5,6 @@
  */
 package transtool.questions;
 
-import Parameter.Parameter;
 import java.util.ArrayList;
 
 /**
@@ -26,7 +25,6 @@ import java.util.ArrayList;
 public class BrainhoneyContents {
 
     private ArrayList<String> rightAnswer;
-    private ArrayList <Parameter> parameter;
     private String body;
     private ArrayList<String> qChoice;
     private String interactionType;
@@ -75,13 +73,6 @@ public class BrainhoneyContents {
         this.rightAnswer = rightAnswer;
     }
 
-    public ArrayList<Parameter> getParameter() {
-        return parameter;
-    }
-
-    public void setParameter(ArrayList<Parameter> parameter) {
-        this.parameter = parameter;
-    }
 
     
     /**
