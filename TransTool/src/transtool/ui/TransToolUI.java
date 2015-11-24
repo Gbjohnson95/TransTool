@@ -7,22 +7,12 @@ package transtool.ui;
 
 import java.awt.Desktop;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.xml.transform.TransformerException;
-import transtool.quiz.QuestionDB;
-import transtool.xmlTools.BrainhoneyItemParse;
-import GradeItems.WriteGradeItems;
 import Manifest.Manifest;
-import transtool.xmlTools.XMLParser;
 
 /**
  *
@@ -293,14 +283,14 @@ public class TransToolUI extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
 
-            manifest = new Manifest(savePath, filePath);
-            manifest.buildManifest();
+        manifest = new Manifest(savePath, filePath);
+        manifest.buildManifest();
         try {
             Desktop.getDesktop().open(new File(savePath));
         } catch (IOException ex) {
             Logger.getLogger(TransToolUI.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -380,6 +370,5 @@ public class TransToolUI extends javax.swing.JFrame {
     private javax.swing.JTextPane jTextPane1;
     private javax.swing.JLabel pathFileText;
     // End of variables declaration//GEN-END:variables
-
 
 }

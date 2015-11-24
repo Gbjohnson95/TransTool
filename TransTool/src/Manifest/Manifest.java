@@ -33,7 +33,6 @@ import org.w3c.dom.Element;
 import transtool.quiz.QuestionDB;
 import transtool.quiz.Section;
 import transtool.ui.TransToolUI;
-import transtool.xmlTools.BrainhoneyItemParse;
 import transtool.xmlTools.GatherItems;
 import transtool.xmlTools.XMLParser;
 
@@ -89,11 +88,6 @@ public class Manifest {
             // Create the question database and write the xml
             XMLParser toParse = new XMLParser(brainhoneyPath);
 
-            System.out.println("Creating a list of items");
-            // Create a list of Items
-            BrainhoneyItemParse quiz = new BrainhoneyItemParse(brainhoneyPath, toParse.getBrainhoney());
-
-            System.out.println("Creating the question library");
             // Creating the question library in the XML
             resource.setAttribute("identifier", "res_question_library");
             resource.setAttribute("type", "webcontent");
@@ -116,14 +110,13 @@ public class Manifest {
             GatherItems gather = new GatherItems();
             gather.setNameOfXML(brainhoneyPath);
             gather.setSavePath(savePath);
-            gather.setGradeCategories(quiz.getGradeCategories());
             gather.populateItems();
 
             // pull each section off, so they can be sent to a reference later
             // for loop through each Item and create a reference
             // Now, let's create the grading categories and items in an XML
             // and link the file up.
-            WriteGradeItems categories = new WriteGradeItems(savePath, quiz.getGradeCategories());
+            WriteGradeItems categories = new WriteGradeItems(savePath, gather.getGradeCategories());
             categories.setItems(gather.getItems());
             categories.writeToXML();
 

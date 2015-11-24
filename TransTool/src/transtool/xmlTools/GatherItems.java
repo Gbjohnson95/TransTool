@@ -19,6 +19,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import transtool.questions.BrainhoneyContents;
@@ -89,8 +90,9 @@ public class GatherItems {
 
             }
 
+            parseGradingCategories(doc.getElementsByTagName("categories"));
+            
         } catch (ParserConfigurationException ex) {
-            Logger.getLogger(BrainhoneyItemParse.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SAXException ex) {
             Logger.getLogger(GatherItems.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
@@ -343,9 +345,26 @@ public class GatherItems {
     }
 
     public void writeItems() {
-        for (Item item : items) {
+        items.stream().forEach((item) -> {
             item.writeItem();
-        }
+        });
     }
 
+    public void parseGradingCategories(NodeList nodeList) {
+        NodeList categories = nodeList.item(0).getChildNodes();
+
+        // Go through each category and drop it in the ArrayList.
+        for (int i = 0; i < categories.getLength(); i++) {
+            GradeCategories category = new GradeCategories();
+            if (categories.item(i).getNodeType() == Node.ELEMENT_NODE) {
+                Element element = (Element) categories.item(i);
+                category.setCatID(element.getAttribute("id"));
+                category.setCatName(element.getAttribute("name"));
+                category.setCatWeight(element.getAttribute("weight"));
+                category.setDropLowest(element.getAttribute("droplowest"));
+                gradeCategories.add(category);
+            }
+        }
+
+    }
 }
