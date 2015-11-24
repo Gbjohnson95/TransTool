@@ -24,8 +24,17 @@ public class Quiz {
     private String quizName;
     private ArrayList<String> quizQuestions;
     private ArrayList<BrainhoneyContents> brainhoney;
-    
     private String quizID;
+    
+    public Quiz () {
+        brainhoney = new ArrayList<>();
+        quizQuestions = new ArrayList<>();
+    }
+    
+    
+    
+    
+    
 
     /**
      * QUIZ NAME

@@ -10,10 +10,11 @@ package GradeItems;
  * @author hallm8
  */
 public class GradeCategories {
-    String catID;
-    String catName;
-    String catWeight;
-    String dropLowest;
+    private String catID;
+    private String catIdentifier;
+    private String catName;
+    private String catWeight;
+    private String dropLowest;
     
 
     
@@ -45,6 +46,16 @@ public class GradeCategories {
     public String getCatName() {
         return catName;
     }
+
+    public String getCatIdentifier() {
+        return catIdentifier;
+    }
+
+    public void setCatIdentifier(String catIdentifier) {
+        this.catIdentifier = catIdentifier;
+    }
+    
+    
 
     /**
      * 

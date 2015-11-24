@@ -5,7 +5,6 @@
  */
 package Items;
 
-import org.w3c.dom.Element;
 
 /**
  *
@@ -21,6 +20,85 @@ public class Item {
     protected String resourceCode;
     protected String location;
     protected String gradeAssociation;
+    protected String category;
+    
+    protected String pathAndName;
+    protected String materialType;
+    protected String linkTarget;
+    protected String href;
+    
+    protected String gradeable;
+    protected String weight;
+    
+    protected String gradeItem;
+
+    public String getGradeable() {
+        return gradeable;
+    }
+
+    public void setGradeable(String gradeable) {
+        this.gradeable = gradeable;
+    }
+
+    public String getWeight() {
+        return weight;
+    }
+
+    public void setWeight(String weight) {
+        this.weight = weight;
+    }
+
+    public String getGradeItem() {
+        return gradeItem;
+    }
+
+    public void setGradeItem(String gradeItem) {
+        this.gradeItem = gradeItem;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    
+    
+    public String getHref() {
+        return href;
+    }
+
+    public void setHref(String href) {
+        this.href = href;
+    }
+    
+
+    public String getLinkTarget() {
+        return linkTarget;
+    }
+
+    public void setLinkTarget(String linkTarget) {
+        this.linkTarget = linkTarget;
+    }
+
+    
+    public String getMaterialType() {
+        return materialType;
+    }
+
+    public void setMaterialType(String materialType) {
+        this.materialType = materialType;
+    }
+
+    public String getPathAndName() {
+        return pathAndName;
+    }
+
+    public void setPathAndName(String pathAndName) {
+        this.pathAndName = pathAndName;
+    }
     
     
     public void writeItem(){

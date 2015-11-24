@@ -5,6 +5,8 @@
  */
 package transtool.xmlTools;
 
+import GradeItems.GradeCategories;
+import GradeItems.WriteGradeItems;
 import Items.Item;
 import Items.QuizItem;
 import java.io.IOException;
@@ -29,10 +31,13 @@ public class GatherItems {
     private String nameOfXML;
     private int identifier = 10000;
     private int id = 3;
-    private DocumentBuilder doc;
     private ArrayList<Item> items = new ArrayList<>();
     private String savePath;
-    private int gradeAssociation = 20000;
+    private int gradeAssociation;
+    private ArrayList<GradeCategories> gradeCategories = new ArrayList<>();
+
+    private int itemID = 10000;
+    private int quizID = 1;
 
     public void populateItems() {
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -40,29 +45,35 @@ public class GatherItems {
 
         try {
             dBuilder = dbFactory.newDocumentBuilder();
-
             Document doc = dBuilder.parse(nameOfXML);
 
             // Normalize the document.  
             doc.getDocumentElement().normalize();
-
             NodeList node = doc.getElementsByTagName("item");
 
             for (int i = 0; i < node.getLength(); i++) {
+                Element nodes = (Element) node.item(i);
+                Element dataStructure = (Element) nodes.getElementsByTagName("data").item(0);
+                NodeList data = dataStructure.getChildNodes();
 
-                Element data = (Element) node.item(0);
+                NodeList testing = dataStructure.getElementsByTagName("type");
 
-                if (data.getChildNodes().getLength() <= 15) {
+                if (testing.getLength() < 1) {
+
+                } else if (testing.item(0).getTextContent().isEmpty()) {
 
                 } else {
-                    String type = data.getElementsByTagName("type").item(0).getTextContent();
+                    String type = dataStructure.getElementsByTagName("type").item(0).getTextContent();
 
                     switch (type) {
                         case ("Assessment"):
                         case ("Homework"):
-                            createQuizItem(data, doc);
+                            System.out.println("Creating a quiz item now: " + dataStructure.getElementsByTagName("title").item(0).getTextContent());
+
+                            createQuizItem(dataStructure, doc);
                             break;
                         case ("Assignment"):
+                            System.out.println("Creating a DropBox now.");
                             break;
                         case ("Discussion"):
                             break;
@@ -108,14 +119,6 @@ public class GatherItems {
         this.id = id;
     }
 
-    public DocumentBuilder getDoc() {
-        return doc;
-    }
-
-    public void setDoc(DocumentBuilder doc) {
-        this.doc = doc;
-    }
-
     public ArrayList<Item> getItems() {
         return items;
     }
@@ -128,6 +131,38 @@ public class GatherItems {
         return savePath;
     }
 
+    public int getGradeAssociation() {
+        return gradeAssociation;
+    }
+
+    public void setGradeAssociation(int gradeAssociation) {
+        this.gradeAssociation = gradeAssociation;
+    }
+
+    public ArrayList<GradeCategories> getGradeCategories() {
+        return gradeCategories;
+    }
+
+    public void setGradeCategories(ArrayList<GradeCategories> gradeCategories) {
+        this.gradeCategories = gradeCategories;
+    }
+
+    public int getItemID() {
+        return itemID;
+    }
+
+    public void setItemID(int itemID) {
+        this.itemID = itemID;
+    }
+
+    public int getQuizID() {
+        return quizID;
+    }
+
+    public void setQuizID(int quizID) {
+        this.quizID = quizID;
+    }
+
     public void setSavePath(String savePath) {
         this.savePath = savePath;
     }
@@ -138,25 +173,31 @@ public class GatherItems {
         quiz.setParent(data.getElementsByTagName("parent").item(0).getTextContent());
         quiz.setName(data.getElementsByTagName("title").item(0).getTextContent());
         quiz.setLocation(data.getElementsByTagName("href").item(0).getTextContent());
-        quiz.setGradeable(data.getElementsByTagName("gradable").item(0).getTextContent());
-
-        if (quiz.getGradeable().equals("true")) {
+        if (data.getElementsByTagName("gradable").getLength() > 0) {
+            quiz.setGradeable(data.getElementsByTagName("gradable").item(0).getTextContent());
             quiz.setWeight(data.getElementsByTagName("weight").item(0).getTextContent());
-            quiz.setGradeAssociation(Integer.toString(gradeAssociation));
-            gradeAssociation++;
+            quiz.setCategory(data.getElementsByTagName("category").item(0).getTextContent());
+            //gradeAssociation++;
+        } else {
+            quiz.setGradeable("false");
         }
 
-        quiz.setAttemptLimit(data.getElementsByTagName("attemptLimit").item(0).getTextContent());
+        quiz.setAttemptLimit(data.getElementsByTagName("attemptlimit").item(0).getTextContent());
 
         NodeList question = data.getElementsByTagName("question");
 
         ArrayList<BrainhoneyContents> quizQuestions = new ArrayList<>();
 
         for (int j = 0; j < question.getLength(); j++) {
+
             BrainhoneyContents quizQuestion = new BrainhoneyContents();
             Element quizElement = (Element) question.item(j);
-            quizQuestion.setQuestionID(quizElement.getAttribute("id"));
-            quizQuestions.add(quizQuestion);
+            if (quizElement.hasAttribute("id")) {
+                if (quizElement.getAttribute("id").length() > 5) {
+                    quizQuestion.setQuestionID(quizElement.getAttribute("id"));
+                    quizQuestions.add(quizQuestion);
+                }
+            }
         }
 
         quiz.setItemID(Integer.toString(id));
@@ -170,17 +211,33 @@ public class GatherItems {
                 for (BrainhoneyContents quizQuestion : quizQuestions) {
                     if (quizQuestion.getQuestionID().equals(bQuestion.getAttribute("questionid"))) {
                         quizQuestion.setBody(bQuestion.getElementsByTagName("body").item(0).getTextContent());
-                        quizQuestion.setScore(bQuestion.getElementsByTagName("value").item(0).getTextContent());
+                        quizQuestion.setScore(bQuestion.getAttribute("score"));
+                        if (bQuestion.getElementsByTagName("value").getLength() > 0) {
+                            quizQuestion.setScore(bQuestion.getElementsByTagName("value").item(0).getTextContent());
+                        }
                         quizQuestion.setInteractionType(bQuestion.getElementsByTagName("interaction").item(0).getAttributes().getNamedItem("type").getTextContent());
                         quizQuestion.setPartial(bQuestion.getAttribute("partial"));
 
                         if (bQuestion.getElementsByTagName("value").getLength() > 0) {
-                            NodeList values = bQuestion.getElementsByTagName("value");
+                            NodeList values;
+                            values = bQuestion.getElementsByTagName("value");
                             ArrayList<String> value = new ArrayList<>();
                             for (int k = 0; k < values.getLength(); k++) {
                                 value.add(values.item(k).getTextContent());
+                                System.out.println("Correct Answer: " + values.item(k).getTextContent()+ " is this spacing?");
                             }
                             quizQuestion.setRightAnswer(value);
+                            
+                            
+                        } else if (quizQuestion.getInteractionType().equals("match")) {
+                            NodeList answers;
+                            answers = bQuestion.getElementsByTagName("answer");
+                            ArrayList<String> answer = new ArrayList<>();
+                            for (int k = 0; k < answers.getLength(); k++) {
+                                answer.add(answers.item(k).getTextContent());
+                            }
+                            quizQuestion.setRightAnswer(answer);
+
                         }
 
                         if (bQuestion.getElementsByTagName("body").getLength() > 1) {
@@ -191,18 +248,27 @@ public class GatherItems {
                                 bText.add(body.getTextContent());
                             }
                             quizQuestion.setqChoice(bText);
+                            
                         }
                     }
                 }
             }
         }
 
-        quiz.populateClass();
+        quiz.setItemQuizFeed(itemID, quizID);
+        quiz.setBrainhoney(quizQuestions);
+
         items.add(quiz);
 
         identifier++;
         id++;
 
+    }
+
+    public void writeItems() {
+        for (Item item : items) {
+            item.writeItem();
+        }
     }
 
 }

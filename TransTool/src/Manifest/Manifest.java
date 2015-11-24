@@ -27,10 +27,10 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import transtool.questions.BrainhoneyContents;
 import transtool.quiz.QuestionDB;
 import transtool.ui.TransToolUI;
 import transtool.xmlTools.BrainhoneyItemParse;
+import transtool.xmlTools.GatherItems;
 import transtool.xmlTools.XMLParser;
 
 /**
@@ -42,13 +42,13 @@ public class Manifest {
     private ArrayList<String> manifestList;
     private String savePath;
     private String brainhoneyPath;
-    private ArrayList<String> fileNames;
-    private ArrayList<Item> items;
+    private ArrayList<String> fileNames = new ArrayList<>();
 
     public Manifest(String toSave, String brainhoneyPath) {
         manifestList = new ArrayList<>();
         savePath = toSave;
         this.brainhoneyPath = brainhoneyPath;
+        System.out.println(savePath);
     }
 
     public void buildManifest() {
@@ -67,6 +67,7 @@ public class Manifest {
 
             Element resources = doc.createElement("resources");
 
+            System.out.println("creating organizations, resources, etc...");
             // create organizations, resources, append them and attach
             // standard attributes
             Element organizations = doc.createElement("organizations");
@@ -78,12 +79,15 @@ public class Manifest {
             organizations.setAttribute("default", "d2l_orgs");
             organization.setAttribute("identifier", "d2l_org");
 
+            System.out.println("Running the XML parser...");
             // Create the question database and write the xml
             XMLParser toParse = new XMLParser(brainhoneyPath);
 
+            System.out.println("Creating a list of items");
             // Create a list of Items
-            BrainhoneyItemParse quiz = new BrainhoneyItemParse(savePath, toParse.getBrainhoney());
+            BrainhoneyItemParse quiz = new BrainhoneyItemParse(brainhoneyPath, toParse.getBrainhoney());
 
+            System.out.println("Creating the question library");
             // Creating the question library in the XML
             resource.setAttribute("identifier", "res_question_library");
             resource.setAttribute("type", "webcontent");
@@ -93,30 +97,55 @@ public class Manifest {
             resource.setAttribute("title", "Question Library");
             resources.appendChild(resource);
 
+            System.out.println("Creating the sections and writing them.");
             // Now creating the actual sections themselves.
             QuestionDB qDatabase = new QuestionDB(quiz.getQuiz(), savePath);
             fileNames.add("questiondb.xml");
-            
-            
-            
-            
-            
-            
-            
-            
 
+            System.out.println("Creating the content items themselves");
             // for loop, creating content items
             // while going through the loop, we are also pulling out the 
             // XML names to add to the file zipper
-            BrainhoneyItemParse bParse = new BrainhoneyItemParse(brainhoneyPath, quiz.getBrainhoneyContents());
+            //BrainhoneyItemParse bParse = new BrainhoneyItemParse(brainhoneyPath, quiz.getBrainhoneyContents());
+            GatherItems gather = new GatherItems();
+            gather.setNameOfXML(brainhoneyPath);
+            gather.setSavePath(savePath);
+            gather.setGradeCategories(quiz.getGradeCategories());
+            gather.populateItems();
+            
 
             // pull each section off, so they can be sent to a reference later
             // for loop through each Item and create a reference
             // Now, let's create the grading categories and items in an XML
             // and link the file up.
             WriteGradeItems categories = new WriteGradeItems(savePath, quiz.getGradeCategories());
+            categories.setItems(gather.getItems());
+            categories.writeToXML();
+
+            gather.setItems(categories.getItems());
+            gather.writeItems();
+
+            // for loop through each item, adding them to the manifest.
+            for (Item item : gather.getItems()) {
+                fileNames.add(item.getHref());
+
+                Element qResource = doc.createElement("resource");
+                resources.appendChild(qResource);
+
+                qResource.setAttribute("title", item.getName());
+                qResource.setAttribute("href", item.getHref());
+                qResource.setAttribute("d2l_2p0:link_target", item.getLinkTarget());
+                qResource.setAttribute("d2l_2p0:material_type", item.getMaterialType());
+                qResource.setAttribute("type", "webcontent");
+                qResource.setAttribute("identifier", item.getIdent());
+            }
+
+            System.out.println("writing the grade items.");
+
+            System.out.println("number of items is: " + categories.getItems().size());
             fileNames.add("grades_d2l.xml");
 
+            System.out.println("Writing XML.  This shouldn't fail, but you never know.");
             Element grades = doc.createElement("resource");
             grades.setAttribute("title", "Grade Items and Categories");
             grades.setAttribute("href", "grades_d2l.xml");
@@ -124,19 +153,22 @@ public class Manifest {
             grades.setAttribute("d2l_2p0:material_type", "d2lgrades");
             grades.setAttribute("type", "webcontent");
             grades.setAttribute("identifier", "res_grades");
-            resources.appendChild(resource);
+            resources.appendChild(grades);
 
+            System.out.println("Write contents to XML");
             // write the content into xml file
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
             DOMSource source = new DOMSource(doc);
             StreamResult result = new StreamResult(new File(savePath) + "\\imsmanifest.xml");
 
+            System.out.println("Saving.");
             // Save the file to the opened file.
             transformer.transform(source, result);
 
-            fileNames.add("imsManifest.xml");
+            fileNames.add("imsmanifest.xml");
 
+            zipFiles();
         } catch (ParserConfigurationException pce) {
             System.out.println("Oops!  Error!!");
         } catch (TransformerException ex) {
@@ -170,6 +202,7 @@ public class Manifest {
 
         } catch (FileNotFoundException ex) {
             Logger.getLogger(TransToolUI.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("File not found!");
         } catch (IOException ex) {
             Logger.getLogger(TransToolUI.class.getName()).log(Level.SEVERE, null, ex);
         }

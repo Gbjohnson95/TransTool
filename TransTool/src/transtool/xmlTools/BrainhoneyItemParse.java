@@ -7,7 +7,6 @@ package transtool.xmlTools;
 
 import GradeItems.GradeCategories;
 import Items.Item;
-import Items.QuizItem;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -89,7 +88,6 @@ public class BrainhoneyItemParse {
 
                 if (testList.item(temp).getTextContent().equals("Assessment") && eElement.getElementsByTagName("title").getLength() != 0
                         || testList.item(temp).getTextContent().equals("Homework") && eElement.getElementsByTagName("title").getLength() != 0) {
-                    System.out.println(eElement.getElementsByTagName("title").item(0).getTextContent());
                     quizName.add(eElement.getElementsByTagName("title").item(0).getTextContent());
                     quizID.add(pElement.getAttribute("id"));
 
@@ -144,6 +142,8 @@ public class BrainhoneyItemParse {
 
             }
         } catch (SAXException | IOException | ParserConfigurationException ex) {
+            System.out.println("Error!!  Cannot read file!");
+            System.out.println(nameOfXML + "Not found!!");
             Logger.getLogger(BrainhoneyItemParse.class.getName()).log(Level.SEVERE, null, ex);
         }
         System.out.println(quiz.size() + " and question size: " + quizName.size());
@@ -157,7 +157,6 @@ public class BrainhoneyItemParse {
             size = quiz.size();
         }
         for (int i = 0; i < size; i++) {
-            System.out.println("Quiz name is: " + quizName.get(i) + ". Index: " + i);
             quiz.get(i).setQuizName(quizName.get(i));
             quiz.get(i).setQuizID(quizID.get(i));
 
@@ -273,4 +272,21 @@ public class BrainhoneyItemParse {
         this.gradeCategories = gradeCategories;
     }
 
+    public ArrayList<String> getQuizID() {
+        return quizID;
+    }
+
+    public void setQuizID(ArrayList<String> quizID) {
+        this.quizID = quizID;
+    }
+
+    public ArrayList<Item> getItems() {
+        return items;
+    }
+
+    public void setItems(ArrayList<Item> items) {
+        this.items = items;
+    }
+
+    
 }

@@ -31,8 +31,6 @@ import transtool.xmlTools.Quiz;
 public class QuizItem extends Item {
 
     //private String category;
-    private String gradeable;
-    private String weight;
     private String attemptLimit;
     private String securityLevel;
     private String password;
@@ -41,17 +39,16 @@ public class QuizItem extends Item {
     private int questionNumber;
     private int feedbackNumber;
     private int idNumber;
-
     Section section;
-
-    private String quizName;
     private ArrayList<String> quizQuestions;
     private ArrayList<BrainhoneyContents> brainhoney;
-
     private String quizID;
 
     public QuizItem() {
-
+        brainhoney = new ArrayList<>();
+        quizQuestions = new ArrayList<>();
+        materialType = "d2lquiz";
+        linkTarget = "";
     }
 
     @Override
@@ -78,13 +75,14 @@ public class QuizItem extends Item {
 
             assessment.setAttribute("d2l_2p0:resource_code", "byui_produ-114352");
             assessment.setAttribute("ident", "res_quiz_" + ident);
-            assessment.setAttribute("title", section.getQuiz().getQuizName());
+            ident = "res_quiz_" + ident;
+            assessment.setAttribute("title", name);
             assessment.setAttribute("d2l_2p0:id", itemID);
 
             Element rubric = doc.createElement("rubric");
             Element flow_mat = doc.createElement("flow_mat");
             Element material = doc.createElement("material");
-            Element mattext = doc.createElement("mattext ");
+            Element mattext = doc.createElement("mattext");
 
             assessment.appendChild(rubric);
             rubric.appendChild(flow_mat);
@@ -96,7 +94,7 @@ public class QuizItem extends Item {
 
             Element presentation_material = doc.createElement("presentation_material");
             Element flow_mat2 = doc.createElement("flow_mat");
-            Element material2 = doc.createElement("material ");
+            Element material2 = doc.createElement("material");
             Element mattext2 = doc.createElement("mattext");
             Element material3 = doc.createElement("material");
             Element mattext3 = doc.createElement("mattext");
@@ -157,11 +155,12 @@ public class QuizItem extends Item {
             assess_procextension.appendChild(calcType);
             assess_procextension.appendChild(forward);
 
+            category1.setTextContent(parent);
             introMessage.setAttribute("d2l_2p0:isdisplayed", "no");
             introMessage.setAttribute("texttype", "text/html");
             grade_item.setAttribute("resource_code", gradeAssociation);
             grade_item.setAttribute("d2l_2p0:is_autoexport", "yes");
-            grade_item.setTextContent(gradeAssociation);
+            grade_item.setTextContent(gradeItem);
             dRightClick.setTextContent("no");
             dPager.setTextContent("no");
             is_active.setTextContent("yes");
@@ -211,8 +210,8 @@ public class QuizItem extends Item {
             average.setTextContent("no");
             scoreDistr.setTextContent("no");
 
-    
-            section  = new Section(itemNumber, idNumber, assessment, this);
+            section = new Section(itemNumber, idNumber, assessment, this, doc);
+
             assessment.appendChild(section.createSection());
             itemNumber = section.getItemNumber();
             questionNumber = section.getItemNumber();
@@ -223,7 +222,9 @@ public class QuizItem extends Item {
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
             DOMSource source = new DOMSource(doc);
-            StreamResult result = new StreamResult(new File(savePath + "\\quiz_d2l_" + itemID));
+            href = "quiz_d2l_" + itemID + ".xml";
+            pathAndName = savePath + "\\quiz_d2l_" + itemID + ".xml";
+            StreamResult result = new StreamResult(new File(pathAndName));
 
             // Output to console for testing
             // StreamResult result = new StreamResult(System.out);
@@ -346,14 +347,6 @@ public class QuizItem extends Item {
         this.section = section;
     }
 
-    public String getQuizName() {
-        return quizName;
-    }
-
-    public void setQuizName(String quizName) {
-        this.quizName = quizName;
-    }
-
     public ArrayList<String> getQuizQuestions() {
         return quizQuestions;
     }
@@ -377,7 +370,14 @@ public class QuizItem extends Item {
     public void setQuizID(String quizID) {
         this.quizID = quizID;
     }
-    
-    
+
+    public void setItemQuizFeed(int toSet, int theID) {
+
+        itemNumber = toSet;
+        questionNumber = toSet;
+        feedbackNumber = toSet;
+        idNumber = theID;
+
+    }
 
 }

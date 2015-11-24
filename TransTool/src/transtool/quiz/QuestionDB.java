@@ -104,7 +104,6 @@ public class QuestionDB {
             StreamResult result = new StreamResult(new File(toSave + "\\questiondb.xml"));
 
             // Output to console for testing
-            // StreamResult result = new StreamResult(System.out);
             transformer.transform(source, result);
 
             System.out.println("File saved!");

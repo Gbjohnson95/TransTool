@@ -25,6 +25,7 @@ public class BrainhoneyQuestion {
     protected Element rootItem;
     protected String randID;
     protected String bID;
+    protected int qScore;
     
     
     

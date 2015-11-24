@@ -26,15 +26,15 @@ public class Section {
     private int idNumber;
     private Element rootItem;
     private QuizItem quizItem;
-    
 
-    public Section(int itemNumber, int idNumber, Element rootItem, QuizItem quizItem) {
+    public Section(int itemNumber, int idNumber, Element rootItem, QuizItem quizItem, Document doc) {
         this.itemNumber = itemNumber;
         this.idNumber = idNumber;
         this.rootItem = rootItem;
         this.quizItem = quizItem;
         questionNumber = itemNumber;
         feedbackNumber = itemNumber;
+        this.doc = doc;
     }
 
     public Element createSection() {
@@ -44,7 +44,7 @@ public class Section {
         section.setAttribute("d2l_2p0:id", Integer.toString(idNumber));
         idNumber++;
         section.setAttribute("ident", "SECT_" + (idNumber + 1));
-        section.setAttribute("title", quizItem.getQuizName());
+        section.setAttribute("title", quizItem.getName());
         Element sectionproc = doc.createElement("sectionproc_extension");
         Element displaySectionName = doc.createElement("d2l_2p0:display_section_name");
         displaySectionName.appendChild(doc.createTextNode("no"));
@@ -60,11 +60,12 @@ public class Section {
         sectionproc.appendChild(typeDisplaySection);
 
         // each Brainhoney class is actually a single question
+        
         for (BrainhoneyContents brainhoneyContent : brainhoney) {
-
             boolean didChoose = false;
             BrainhoneyQuestion question = new BrainhoneyQuestion();
 
+            
             switch (brainhoneyContent.getInteractionType()) {
                 case "choice":
                     question = new MultipleChoice(brainhoneyContent, doc, idNumber, itemNumber, section);
@@ -82,7 +83,6 @@ public class Section {
                     break;
 
                 case "match":
-                    System.out.println("matching");
                     question = new MatchingQuestion(brainhoneyContent, doc, idNumber, itemNumber, section);
                     didChoose = true;
                     break;
@@ -98,9 +98,11 @@ public class Section {
 
                 case "custom":
                 case "composite":
+                default:
                     System.out.println("Custom/Composite Question selected!");
                     break;
             }
+
             if (didChoose == true) {
                 idNumber = question.getIdNumber();
                 itemNumber = question.getItemNumber();
@@ -108,6 +110,7 @@ public class Section {
                 questionNumber = question.getItemNumber();
                 section.appendChild(question.getItem());
             }
+
         }
 
         return section;

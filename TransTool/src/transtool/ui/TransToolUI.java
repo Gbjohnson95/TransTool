@@ -295,16 +295,6 @@ public class TransToolUI extends javax.swing.JFrame {
 
             manifest = new Manifest(savePath, filePath);
             manifest.buildManifest();
-            
-
-            /*
-        Desktop desktop = Desktop.getDesktop();
-        try {
-            desktop.open(file);
-       } catch (IOException ex) {
-            Logger.getLogger(TransToolUI.class.getName()).log(Level.SEVERE, null, ex);
-        }
-            */
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed

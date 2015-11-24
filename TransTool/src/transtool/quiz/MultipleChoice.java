@@ -25,8 +25,7 @@ public class MultipleChoice extends BrainhoneyQuestion {
         fieldEntry2.appendChild(doc.createTextNode("Multiple Choice"));
         Element qtiDataField2 = (Element) rootItem.getElementsByTagName("qti_metadatafield").item(1);
         qtiDataField2.appendChild(fieldEntry2);
-        
-        
+
         Element presentation = (Element) rootItem.getElementsByTagName("presentation").item(0);
         Element flow = doc.createElement("flow");
         presentation.appendChild(flow);
@@ -42,12 +41,10 @@ public class MultipleChoice extends BrainhoneyQuestion {
         flow.appendChild(extension);
         flow.appendChild(lid);
 
-        
-
         Element matText = doc.createElement("mattext");
         material.appendChild(matText);
 
-        matText.setAttribute("texttype","text/html");
+        matText.setAttribute("texttype", "text/html");
         matText.appendChild(doc.createTextNode(brainhoney.getBody()));
 
         Element dStyle = doc.createElement("d2l_2p0:display_style");
@@ -109,6 +106,8 @@ public class MultipleChoice extends BrainhoneyQuestion {
             varequal.appendChild(doc.createTextNode(randID + "_A" + questionNumber));
             setVariable.setAttribute("action", "Set");
 
+
+            
             if (!brainhoney.getRightAnswer().isEmpty()) {
                 if (brainhoney.getRightAnswer().get(0).equals(Integer.toString(j + 1))) {
                     setVariable.appendChild(doc.createTextNode("100.000000000"));

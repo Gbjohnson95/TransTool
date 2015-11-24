@@ -101,13 +101,11 @@ public class MatchingQuestion extends BrainhoneyQuestion {
             renderChoice.appendChild(flowL);
             flowL.setAttribute("class", "Block");
 
-            System.out.println(brainhoney.getRightAnswer().size() + " = Size of right answers.");
 
             for (int i = 0; i < brainhoney.getRightAnswer().size(); i++) {
 
                 Element responseLabel = doc.createElement("response_label");
                 flowL.appendChild(responseLabel);
-                System.out.println(brainhoney.getRightAnswer().get(i));
                 responseLabel.setAttribute("ident", randID + "_M" + itemNumber);
 
                 Element flowMat = doc.createElement("flow_mat");
@@ -138,7 +136,6 @@ public class MatchingQuestion extends BrainhoneyQuestion {
                 setvar.setAttribute("action", "Add");
                 setvar.setTextContent("1");
 
-                System.out.println("Right answer is: " + brainhoney.getRightAnswer().get(i));
                 if (i == j) {
                     setvar.setAttribute("varname", "D2L_Correct");
                 } else {

@@ -152,7 +152,6 @@ public class XMLParser {
                                     ArrayList<Element> eList = new ArrayList<>();
 
                                     for (int j = 0; j < param.getLength(); j++) {
-                                        System.out.println(j + " = J");
                                     }
 
                                 }

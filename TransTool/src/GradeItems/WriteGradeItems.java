@@ -6,6 +6,7 @@
 package GradeItems;
 
 import GradeItems.GradeCategories;
+import Items.Item;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -31,14 +32,18 @@ public class WriteGradeItems {
     private ArrayList<GradeCategories> gradeCategories = new ArrayList<>();
     private String filePath;
     private int sortOrder = 1;
-    private int categoryID = 50000;
+    private int id = 1;
+    private int categoryID = 70000;
     private String replaceIfShName = "";
+    private ArrayList<Item> items;
 
     public WriteGradeItems(String savePath, ArrayList<GradeCategories> gCategories) {
         // Save file path.
         filePath = savePath;
         gradeCategories = gCategories;
+    }
 
+    public void writeToXML() {
         // Standard DOM procedures
         DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder docBuilder;
@@ -108,10 +113,10 @@ public class WriteGradeItems {
             rootElement.appendChild(configuration);
 
             Element categories = doc.createElement("categories");
-            Element items = doc.createElement("items");
+            Element gItems = doc.createElement("items");
 
             rootElement.appendChild(categories);
-            rootElement.appendChild(items);
+            rootElement.appendChild(gItems);
 
             Element autoUpdate = doc.createElement("auto_update_final_grade");
             Element gradeSystem = doc.createElement("grading_system");
@@ -173,13 +178,16 @@ public class WriteGradeItems {
                 scoring.appendChild(lowDrop);
                 scoring.appendChild(maxPoints);
 
-                category.setAttribute("id", Integer.toString(i + 1));
+                category.setAttribute("id", Integer.toString(id));
                 category.setAttribute("identifier", Integer.toString(categoryID));
+                gradeCategories.get(i).setCatIdentifier(Integer.toString(categoryID));
                 categoryID++;
+                id++;
 
                 name.appendChild(doc.createTextNode(gradeCategories.get(i).getCatName()));
                 sName.appendChild(doc.createTextNode(replaceIfShName));
                 sOrder.appendChild(doc.createTextNode(Integer.toString(sortOrder)));
+                
                 sortOrder++;
 
                 sAverage.appendChild(doc.createTextNode("false"));
@@ -207,6 +215,81 @@ public class WriteGradeItems {
 
             }
 
+            for (Item item : items) {
+                if (!item.getGradeable().isEmpty()) {
+                    if (item.getGradeable().equals("true")) {
+                        Element gItem = doc.createElement("item");
+                        gItems.appendChild(gItem);
+                        
+                       gItem.setAttribute("id", Integer.toString(id));
+                       gItem.setAttribute("identifier", Integer.toString(categoryID));
+                       gItem.setAttribute("resource_code", "byui_produ-" + Integer.toString(categoryID));
+                       item.setGradeAssociation("byui_produ-" + Integer.toString(categoryID));
+                       item.setGradeItem(Integer.toString(categoryID));
+                       
+                       System.out.println("Category ID is:  " + item.getGradeAssociation() + " And : " + item.getGradeItem());
+                       categoryID++;
+                       id++;
+                        
+
+                        Element category_id = doc.createElement("category_id");
+                        Element name = doc.createElement("name");
+                        Element short_name = doc.createElement("short_name");
+                        Element sort_order = doc.createElement("sort_order");
+                        Element show_average = doc.createElement("show_average");
+                        Element show_distribution = doc.createElement("show_distribution");
+                        Element description = doc.createElement("description");
+                        Element type_id = doc.createElement("type_id");
+                        Element is_active = doc.createElement("is_active");
+                        Element scoring = doc.createElement("scoring");
+                        Element canExceed = doc.createElement("can_exceed_weight");
+                        Element out_of = doc.createElement("out_of");
+                        Element isBonus = doc.createElement("is_bonus");
+                        Element max_grade = doc.createElement("max_grade");
+                        Element exclude = doc.createElement("exclude_from_final_grade_calc");
+
+                        for (GradeCategories gradeCategory : gradeCategories) {
+                            System.out.println(gradeCategory.getCatID());
+                            if (item.getCategory().equals(gradeCategory.getCatID())){
+                                System.out.println("Category found successfully.");
+                                category_id.setTextContent(gradeCategory.getCatIdentifier());
+                            }
+                        }
+                        name.setTextContent(item.getName());
+                        sort_order.setTextContent(Integer.toString(sortOrder));
+                        sortOrder++;
+                        show_average.setTextContent("false");
+                        show_distribution.setTextContent("false");
+                        description.setAttribute("text_type", "text/html");
+                        description.setAttribute("is_displayed", "false");
+                        type_id.setTextContent("1");
+                        is_active.setTextContent("true");
+                        canExceed.setTextContent("false");
+                        out_of.setTextContent(item.getWeight());
+                        isBonus.setTextContent("false");
+                        max_grade.setTextContent(item.getWeight());
+                        exclude.setTextContent("false");
+
+                        gItem.appendChild(category_id);
+                        gItem.appendChild(name);
+                        gItem.appendChild(short_name);
+                        gItem.appendChild(sort_order);
+                        gItem.appendChild(show_average);
+                        gItem.appendChild(show_distribution);
+                        gItem.appendChild(description);
+                        gItem.appendChild(type_id);
+                        gItem.appendChild(is_active);
+                        gItem.appendChild(scoring);
+
+                        scoring.appendChild(canExceed);
+                        scoring.appendChild(out_of);
+                        scoring.appendChild(isBonus);
+                        scoring.appendChild(max_grade);
+                        scoring.appendChild(exclude);
+                    }
+                }
+            }
+
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
             DOMSource source = new DOMSource(doc);
@@ -226,6 +309,14 @@ public class WriteGradeItems {
             Logger.getLogger(WriteGradeItems.class.getName()).log(Level.SEVERE, null, ex);
         }
 
+    }
+
+    public ArrayList<Item> getItems() {
+        return items;
+    }
+
+    public void setItems(ArrayList<Item> items) {
+        this.items = items;
     }
 
     public ArrayList<GradeCategories> getGradeCategories() {
