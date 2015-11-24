@@ -6,7 +6,10 @@
 package Manifest;
 
 import GradeItems.WriteGradeItems;
+import Items.DropBox;
 import Items.Item;
+import Items.QuizItem;
+import Items.WriteDropBox;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -28,6 +31,7 @@ import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import transtool.quiz.QuestionDB;
+import transtool.quiz.Section;
 import transtool.ui.TransToolUI;
 import transtool.xmlTools.BrainhoneyItemParse;
 import transtool.xmlTools.GatherItems;
@@ -99,7 +103,7 @@ public class Manifest {
 
             System.out.println("Creating the sections and writing them.");
             // Now creating the actual sections themselves.
-            QuestionDB qDatabase = new QuestionDB(quiz.getQuiz(), savePath);
+
             fileNames.add("questiondb.xml");
 
             System.out.println("Creating the content items themselves");
@@ -112,7 +116,6 @@ public class Manifest {
             gather.setSavePath(savePath);
             gather.setGradeCategories(quiz.getGradeCategories());
             gather.populateItems();
-            
 
             // pull each section off, so they can be sent to a reference later
             // for loop through each Item and create a reference
@@ -125,8 +128,35 @@ public class Manifest {
             gather.setItems(categories.getItems());
             gather.writeItems();
 
+            ArrayList<DropBox> dBox = gather.getDropBoxes();
+            ArrayList<Item> theItem = gather.getItems();
+
+            System.out.println("Item size: " + gather.getItems().size() + " And DropBox Size: " + dBox.size());
+            
+            for (Item item1 : theItem) {
+                for (DropBox dB : dBox) {
+                    if (item1.getItemID().equals(dB.getItemID())) {
+
+                        System.out.println("successfully matched a dropbox!");
+                        dB = (DropBox) item1;
+                    }
+                }
+            }
+
+            WriteDropBox dropBox = new WriteDropBox(dBox, savePath);
+
+            ArrayList<QuizItem> quizItems = gather.getQuizItem();
+            ArrayList<Section> sections = new ArrayList<>();
+
+            for (QuizItem quizItem : quizItems) {
+                sections.add(quizItem.getSection());
+            }
+
+            QuestionDB questionDB = new QuestionDB(sections, savePath);
+
             // for loop through each item, adding them to the manifest.
             for (Item item : gather.getItems()) {
+                if (!item.getItemType().equals("Dropbox")){
                 fileNames.add(item.getHref());
 
                 Element qResource = doc.createElement("resource");
@@ -138,6 +168,7 @@ public class Manifest {
                 qResource.setAttribute("d2l_2p0:material_type", item.getMaterialType());
                 qResource.setAttribute("type", "webcontent");
                 qResource.setAttribute("identifier", item.getIdent());
+                }
             }
 
             System.out.println("writing the grade items.");
@@ -155,6 +186,34 @@ public class Manifest {
             grades.setAttribute("identifier", "res_grades");
             resources.appendChild(grades);
 
+            
+            // writing the dropbox folder path into the manifest.
+            Element dElement = doc.createElement("resource");
+            dElement.setAttribute("title", "Dropbox Folders");
+            dElement.setAttribute("href", "dropbox_d2l.xml");
+            dElement.setAttribute("d2l_2p0:link_target", "");
+            dElement.setAttribute("d2l_2p0:material_type", "d2ldropbox");
+            dElement.setAttribute("type", "webcontent");
+            dElement.setAttribute("identifier", "res_dropbox");
+            resources.appendChild(dElement);
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
             System.out.println("Write contents to XML");
             // write the content into xml file
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
@@ -162,11 +221,20 @@ public class Manifest {
             DOMSource source = new DOMSource(doc);
             StreamResult result = new StreamResult(new File(savePath) + "\\imsmanifest.xml");
 
-            System.out.println("Saving.");
+            System.out.println("Saving manifest.");
             // Save the file to the opened file.
             transformer.transform(source, result);
+            
+            
+            
+            
+            
+            
+            
+            
 
             fileNames.add("imsmanifest.xml");
+            fileNames.add("dropbox_d2l.xml");
 
             zipFiles();
         } catch (ParserConfigurationException pce) {
@@ -186,6 +254,8 @@ public class Manifest {
             ZipOutputStream zos = new ZipOutputStream(fos);
 
             for (String fileName : fileNames) {
+
+                System.out.println("zipping file: " + fileName);
                 fileName = savePath + "\\" + fileName;
                 File srcFile = new File(fileName);
                 FileInputStream fis;

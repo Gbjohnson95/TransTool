@@ -21,6 +21,7 @@ public class Item {
     protected String location;
     protected String gradeAssociation;
     protected String category;
+    protected String itemType;
     
     protected String pathAndName;
     protected String materialType;
@@ -62,6 +63,14 @@ public class Item {
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    public String getItemType() {
+        return itemType;
+    }
+
+    public void setItemType(String itemType) {
+        this.itemType = itemType;
     }
 
     

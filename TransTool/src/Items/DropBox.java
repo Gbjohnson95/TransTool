@@ -9,6 +9,10 @@ package Items;
  *
  * @author hallm8
  */
-public class DropBox {
+public class DropBox extends Item{
+    
+    public DropBox(){
+        itemType = "Dropbox";
+    }
     
 }

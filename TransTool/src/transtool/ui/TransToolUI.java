@@ -295,6 +295,7 @@ public class TransToolUI extends javax.swing.JFrame {
 
             manifest = new Manifest(savePath, filePath);
             manifest.buildManifest();
+        
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed

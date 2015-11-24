@@ -7,6 +7,7 @@ package transtool.xmlTools;
 
 import GradeItems.GradeCategories;
 import GradeItems.WriteGradeItems;
+import Items.DropBox;
 import Items.Item;
 import Items.QuizItem;
 import java.io.IOException;
@@ -32,12 +33,14 @@ public class GatherItems {
     private int identifier = 10000;
     private int id = 3;
     private ArrayList<Item> items = new ArrayList<>();
+    private ArrayList<QuizItem> quizItem = new ArrayList<>();
     private String savePath;
     private int gradeAssociation;
     private ArrayList<GradeCategories> gradeCategories = new ArrayList<>();
 
     private int itemID = 10000;
     private int quizID = 1;
+    private ArrayList<DropBox> dropBoxes = new ArrayList<>();
 
     public void populateItems() {
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -74,6 +77,7 @@ public class GatherItems {
                             break;
                         case ("Assignment"):
                             System.out.println("Creating a DropBox now.");
+                            createDropBox(dataStructure, doc);
                             break;
                         case ("Discussion"):
                             break;
@@ -167,6 +171,22 @@ public class GatherItems {
         this.savePath = savePath;
     }
 
+    public ArrayList<QuizItem> getQuizItem() {
+        return quizItem;
+    }
+
+    public void setQuizItem(ArrayList<QuizItem> quizItem) {
+        this.quizItem = quizItem;
+    }
+
+    public ArrayList<DropBox> getDropBoxes() {
+        return dropBoxes;
+    }
+
+    public void setDropBoxes(ArrayList<DropBox> dropBoxes) {
+        this.dropBoxes = dropBoxes;
+    }
+
     void createQuizItem(Element data, Document doc) {
         QuizItem quiz = new QuizItem();
         quiz.setSavePath(savePath);
@@ -177,12 +197,14 @@ public class GatherItems {
             quiz.setGradeable(data.getElementsByTagName("gradable").item(0).getTextContent());
             quiz.setWeight(data.getElementsByTagName("weight").item(0).getTextContent());
             quiz.setCategory(data.getElementsByTagName("category").item(0).getTextContent());
-            //gradeAssociation++;
         } else {
             quiz.setGradeable("false");
         }
 
-        quiz.setAttemptLimit(data.getElementsByTagName("attemptlimit").item(0).getTextContent());
+        NodeList attemptLimit = data.getElementsByTagName("attemptlimit");
+        if (attemptLimit.getLength() > 0) {
+            quiz.setAttemptLimit(data.getElementsByTagName("attemptlimit").item(0).getTextContent());
+        }
 
         NodeList question = data.getElementsByTagName("question");
 
@@ -224,11 +246,10 @@ public class GatherItems {
                             ArrayList<String> value = new ArrayList<>();
                             for (int k = 0; k < values.getLength(); k++) {
                                 value.add(values.item(k).getTextContent());
-                                System.out.println("Correct Answer: " + values.item(k).getTextContent()+ " is this spacing?");
+                                System.out.println("Correct Answer: " + values.item(k).getTextContent() + " is this spacing?");
                             }
                             quizQuestion.setRightAnswer(value);
-                            
-                            
+
                         } else if (quizQuestion.getInteractionType().equals("match")) {
                             NodeList answers;
                             answers = bQuestion.getElementsByTagName("answer");
@@ -248,7 +269,7 @@ public class GatherItems {
                                 bText.add(body.getTextContent());
                             }
                             quizQuestion.setqChoice(bText);
-                            
+
                         }
                     }
                 }
@@ -259,10 +280,38 @@ public class GatherItems {
         quiz.setBrainhoney(quizQuestions);
 
         items.add(quiz);
+        quizItem.add(quiz);
 
         identifier++;
         id++;
 
+    }
+
+    public void createDropBox(Element data, Document doc) {
+
+        NodeList isDropBox = data.getElementsByTagName("dropbox");
+        if (isDropBox.getLength() > 0) {
+            DropBox dropBox = new DropBox();
+
+            dropBox.setSavePath(savePath);
+            dropBox.setParent(data.getElementsByTagName("parent").item(0).getTextContent());
+            dropBox.setName(data.getElementsByTagName("title").item(0).getTextContent());
+            dropBox.setLocation(data.getElementsByTagName("href").item(0).getTextContent());
+            if (data.getElementsByTagName("gradable").getLength() > 0) {
+                dropBox.setGradeable(data.getElementsByTagName("gradable").item(0).getTextContent());
+                dropBox.setWeight(data.getElementsByTagName("weight").item(0).getTextContent());
+                dropBox.setCategory(data.getElementsByTagName("category").item(0).getTextContent());
+            } else {
+                dropBox.setGradeable("false");
+            }
+            dropBox.setItemID(Integer.toString(id));
+            dropBox.setIdent(Integer.toString(identifier));
+
+            items.add(dropBox);
+            dropBoxes.add(dropBox);
+            identifier++;
+            id++;
+        }
     }
 
     public void writeItems() {

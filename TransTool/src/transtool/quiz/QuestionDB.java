@@ -53,7 +53,7 @@ public class QuestionDB {
      * @throws TransformerConfigurationException
      * @throws TransformerException
      */
-    public QuestionDB(ArrayList<transtool.xmlTools.Quiz> quiz, String savePath) {
+    public QuestionDB(ArrayList<Section> sections, String savePath) {
         try {
             // Save file path.
             toSave = savePath;
@@ -86,16 +86,20 @@ public class QuestionDB {
             attr2.setValue("QLIB_1000");
             staff.setAttributeNode(attr2);
 
+            
+            
+            
             // Each quiz question has been separated into quizzes.  So now, we
             // parse through each quiz and pull them out.  This has been done
             // so that we can separate them in the quiz bank.
-            for (int l = 0; l < quiz.size(); l++) {
-                //Section section = new Section(quiz.get(l), doc, itemNumber, idNumber, staff);
-                //staff.appendChild(section.createSection());
-                //itemNumber = section.getItemNumber();
-               // questionNumber = section.getItemNumber();
-                //feedbackNumber = section.getItemNumber();
-                //idNumber = section.getIdNumber();
+            for (Section section : sections) {
+                section.setDoc(doc);
+                section.setRootItem(rootElement);
+                staff.appendChild(section.createSection());
+                itemNumber = section.getItemNumber();
+                questionNumber = section.getItemNumber();
+                feedbackNumber = section.getItemNumber();
+                idNumber = section.getIdNumber();
             }
             // write the content into xml file
             TransformerFactory transformerFactory = TransformerFactory.newInstance();

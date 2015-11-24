@@ -49,6 +49,7 @@ public class QuizItem extends Item {
         quizQuestions = new ArrayList<>();
         materialType = "d2lquiz";
         linkTarget = "";
+        itemType = "Quiz";
     }
 
     @Override
