@@ -16,6 +16,14 @@ import transtool.questions.BrainhoneyContents;
  */
 public class MultipleChoice extends BrainhoneyQuestion {
 
+    /**
+     * 
+     * @param brain
+     * @param document
+     * @param id
+     * @param item
+     * @param root 
+     */
     public MultipleChoice(BrainhoneyContents brain, Document document, int id, int item, Element root) {
         super(brain, document, id, item, root);
         writeHeader();

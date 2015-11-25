@@ -13,7 +13,6 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
@@ -27,9 +26,18 @@ import org.w3c.dom.Element;
  */
 public class WriteDropBox {
 
+    /**
+     * 
+     */
     public WriteDropBox(){
         
     }
+    
+    /**
+     * 
+     * @param dropBoxes
+     * @param savePath 
+     */
     public WriteDropBox(ArrayList<DropBox> dropBoxes, String savePath) {
         try {
 
@@ -72,7 +80,6 @@ public class WriteDropBox {
             StreamResult result = new StreamResult(new File(savePath + "//dropbox_d2l.xml"));
 
             // Output to console for testing
-            // StreamResult result = new StreamResult(System.out);
             transformer.transform(source, result);
 
             System.out.println("File saved!");

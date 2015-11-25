@@ -21,7 +21,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 /**
- *
+ * Discussion Board
+ *  Takes in information and outputs a discussion board with that information.
  * @author hallm8
  */
 public class DiscussionBoard extends Item {
@@ -160,18 +161,40 @@ public class DiscussionBoard extends Item {
 
     }
 
+    /**
+     * D ID
+     *  Identification number of the Discussion Board
+     * @return 
+     */
     public String getDid() {
         return did;
     }
 
+    /**
+     * D ID
+     *  Identification number of the Discussion Board
+     * @param did 
+     */
     public void setDid(String did) {
         this.did = did;
     }
 
+    /**
+     * D Ident
+     *  Each item is attached to an ID# and an Identification.  I don't know why.
+     * But each one is different, so this is the reference number for it.
+     * @return 
+     */
     public String getDident() {
         return dident;
     }
 
+    /**
+     * D Ident
+     *  Each item is attached to an ID# and an Identification.  I don't know why.
+     * But each one is different, so this is the reference number for it.
+     * @param dident 
+     */
     public void setDident(String dident) {
         this.dident = dident;
     }

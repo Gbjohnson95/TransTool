@@ -5,6 +5,10 @@
  */
 package transtool.quiz;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import transtool.questions.BrainhoneyContents;
@@ -68,6 +72,8 @@ public class ShortAnswerQuestion extends BrainhoneyQuestion {
         decvar.setAttribute("maxvalue", "100");
         decvar.setAttribute("varname", "Question_" + itemNumber);
 
+        answerCheck();
+
         for (String rightAnswer : brainhoney.getRightAnswer()) {
             Element respcondition = doc.createElement("respcondition");
             resprocessing.appendChild(respcondition);
@@ -81,7 +87,7 @@ public class ShortAnswerQuestion extends BrainhoneyQuestion {
             varequal.setAttribute("case", "no");
 
             varequal.setTextContent(rightAnswer);
-            
+
             conditionvar.appendChild(varequal);
 
             Element setvar = doc.createElement("setvar");
@@ -94,6 +100,72 @@ public class ShortAnswerQuestion extends BrainhoneyQuestion {
         itemNumber++;
         questionNumber++;
         feedbackNumber++;
+    }
+
+    public void answerCheck() {
+
+        ArrayList<String> correctAnswer = new ArrayList<>();
+        ArrayList<String> brainhoneyAnswer = brainhoney.getRightAnswer();
+
+        for (String rightAnswer : brainhoneyAnswer) {
+            if (rightAnswer.contains("..")) {
+                String lAnswer = "";
+                String hAnswer = "";
+
+                double high;
+                double low;
+
+                boolean isHigh = false;
+
+                int precision = 0;
+                boolean isPrecision = false;
+
+                System.out.println("Regex item discovered!!! Simplifying!");
+                for (int i = 0; i < rightAnswer.length(); i++) {
+                    if (rightAnswer.charAt(i) == '.' && rightAnswer.charAt(i + 1) == '.') {
+                        i++;
+                        isHigh = true;
+                    } else if (isHigh == false) {
+                        lAnswer = lAnswer + rightAnswer.charAt(i);
+                    } else {
+                        hAnswer = hAnswer + rightAnswer.charAt(i);
+                    }
+                    if (rightAnswer.charAt(i) == '.' && rightAnswer.charAt(i + 1) != '.') {
+                        isPrecision = true;
+                    } else if (isPrecision == true && isHigh == false) {
+                        precision++;
+                    }
+                }
+                low = Double.valueOf(lAnswer);
+                high = Double.valueOf(hAnswer);
+
+                String itemPrecision = ".";
+                for (int i = 0; i < precision; i++) {
+                    if (i + 1 >= precision) {
+                        itemPrecision = itemPrecision + "1";
+                    } else {
+                        itemPrecision = itemPrecision + "0";
+                    }
+                }
+
+                System.out.println(Double.valueOf(itemPrecision));
+                System.out.println("quesiton is: " + Double.valueOf(itemPrecision));
+
+                DecimalFormat df = new DecimalFormat("#.####");
+                df.setRoundingMode(RoundingMode.CEILING);
+
+                for (double i = low; i <= Double.valueOf(hAnswer); i = i + Double.valueOf(itemPrecision)) {
+                    DecimalFormat format = new DecimalFormat("#");
+                    format.setMinimumFractionDigits(precision);
+                    System.out.println(i);
+                    i = new BigDecimal(i).setScale(precision, BigDecimal.ROUND_HALF_UP).doubleValue();
+                    correctAnswer.add(format.format(i));
+                }
+                
+
+                brainhoney.setRightAnswer(correctAnswer);
+            }
+        }
     }
 
 }

@@ -116,58 +116,114 @@ public class Section {
         return section;
     }
 
+    /**
+     * 
+     * @return 
+     */
     public Quiz getQuiz() {
         return quiz;
     }
 
+    /**
+     * 
+     * @param quiz 
+     */
     public void setQuiz(Quiz quiz) {
         this.quiz = quiz;
     }
 
+    /**
+     * 
+     * @return 
+     */
     public Document getDoc() {
         return doc;
     }
 
+    /**
+     * 
+     * @param doc 
+     */
     public void setDoc(Document doc) {
         this.doc = doc;
     }
 
+    /**
+     * 
+     * @return 
+     */
     public int getItemNumber() {
         return itemNumber;
     }
 
+    /**
+     * 
+     * @param itemNumber 
+     */
     public void setItemNumber(int itemNumber) {
         this.itemNumber = itemNumber;
     }
 
+    /**
+     * 
+     * @return 
+     */
     public int getQuestionNumber() {
         return questionNumber;
     }
 
+    /**
+     * 
+     * @param questionNumber 
+     */
     public void setQuestionNumber(int questionNumber) {
         this.questionNumber = questionNumber;
     }
 
+    /**
+     * 
+     * @return 
+     */
     public int getFeedbackNumber() {
         return feedbackNumber;
     }
 
+    /**
+     * 
+     * @param feedbackNumber 
+     */
     public void setFeedbackNumber(int feedbackNumber) {
         this.feedbackNumber = feedbackNumber;
     }
 
+    /**
+     * 
+     * @return 
+     */
     public int getIdNumber() {
         return idNumber;
     }
 
+    /**
+     * 
+     * @param idNumber 
+     */
     public void setIdNumber(int idNumber) {
         this.idNumber = idNumber;
     }
 
+    /**
+     * 
+     * @return 
+     */
     public Element getRootItem() {
         return rootItem;
     }
 
+    /**
+     * 
+     * @param rootItem 
+     */
     public void setRootItem(Element rootItem) {
         this.rootItem = rootItem;
     }

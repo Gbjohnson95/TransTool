@@ -5,7 +5,6 @@
  */
 package transtool.quiz;
 
-import Manifest.Manifest;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -22,7 +21,6 @@ import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import transtool.questions.BrainhoneyContents;
 
 /**
  * OTHER QUIZ Titled "Other Quiz" because Grant was working on another quiz

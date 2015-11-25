@@ -15,6 +15,14 @@ import transtool.questions.BrainhoneyContents;
  */
 public class LongAnswerQuestion extends BrainhoneyQuestion {
 
+    /**
+     * 
+     * @param brain
+     * @param document
+     * @param id
+     * @param item
+     * @param root 
+     */
     public LongAnswerQuestion(BrainhoneyContents brain, Document document, int id, int item, Element root) {
         super(brain, document, id, item, root);
         writeHeader();

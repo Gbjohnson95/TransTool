@@ -43,6 +43,9 @@ public class QuizItem extends Item {
     private ArrayList<BrainhoneyContents> brainhoney;
     private String quizID;
 
+    /**
+     * 
+     */
     public QuizItem() {
         brainhoney = new ArrayList<>();
         quizQuestions = new ArrayList<>();
@@ -51,6 +54,10 @@ public class QuizItem extends Item {
         itemType = "Quiz";
     }
 
+
+    /**
+     * 
+     */
     @Override
     public void writeItem() {
 
@@ -242,63 +249,73 @@ public class QuizItem extends Item {
 
     }
 
-    /*
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
+    /**
+     * 
+     * @return 
      */
-    public String getGradeable() {
-        return gradeable;
-    }
-
-    public void setGradeable(String gradeable) {
-        this.gradeable = gradeable;
-    }
-
-    public String getWeight() {
-        return weight;
-    }
-
-    public void setWeight(String weight) {
-        this.weight = weight;
-    }
-
     public String getAttemptLimit() {
         return attemptLimit;
     }
 
+    /**
+     * 
+     * @param attemptLimit 
+     */
     public void setAttemptLimit(String attemptLimit) {
         this.attemptLimit = attemptLimit;
     }
 
+    /**
+     * 
+     * @return 
+     */
     public String getSecurityLevel() {
         return securityLevel;
     }
 
+    /**
+     * 
+     * @param securityLevel 
+     */
     public void setSecurityLevel(String securityLevel) {
         this.securityLevel = securityLevel;
     }
 
+    /**
+     * 
+     * @return 
+     */
     public String getPassword() {
         return password;
     }
 
+    /**
+     * 
+     * @param password 
+     */
     public void setPassword(String password) {
         this.password = password;
     }
 
+    /**
+     * 
+     * @return 
+     */
     public Element getQuizItem() {
         return quizItem;
     }
 
+    /**
+     * 
+     * @param quizItem 
+     */
     public void setQuizItem(Element quizItem) {
         this.quizItem = quizItem;
     }
 
+    /**
+     * 
+     */
     public void populateClass() {
         if (quizItem != null) {
 
@@ -307,70 +324,139 @@ public class QuizItem extends Item {
         }
     }
 
+    /**
+     * 
+     * @return 
+     */
     public int getItemNumber() {
         return itemNumber;
     }
-
+    
+/**
+ * 
+ * @param itemNumber 
+ */
     public void setItemNumber(int itemNumber) {
         this.itemNumber = itemNumber;
     }
 
+    /**
+     * 
+     * @return 
+     */
     public int getQuestionNumber() {
         return questionNumber;
     }
 
+    /**
+     * 
+     * @param questionNumber 
+     */
     public void setQuestionNumber(int questionNumber) {
         this.questionNumber = questionNumber;
     }
 
+    /**
+     * 
+     * @return 
+     */
     public int getFeedbackNumber() {
         return feedbackNumber;
     }
 
+    /**
+     * 
+     * @param feedbackNumber 
+     */
     public void setFeedbackNumber(int feedbackNumber) {
         this.feedbackNumber = feedbackNumber;
     }
 
+    /**
+     * 
+     * @return 
+     */
     public int getIdNumber() {
         return idNumber;
     }
 
+    /**
+     * 
+     * @param idNumber 
+     */
     public void setIdNumber(int idNumber) {
         this.idNumber = idNumber;
     }
 
+    /**
+     * 
+     * @return 
+     */
     public Section getSection() {
         return section;
     }
 
+    /**
+     * 
+     * @param section 
+     */
     public void setSection(Section section) {
         this.section = section;
     }
 
+    /**
+     * 
+     * @return 
+     */
     public ArrayList<String> getQuizQuestions() {
         return quizQuestions;
     }
 
+    /**
+     * 
+     * @param quizQuestions 
+     */
     public void setQuizQuestions(ArrayList<String> quizQuestions) {
         this.quizQuestions = quizQuestions;
     }
 
+    /**
+     * 
+     * @return 
+     */
     public ArrayList<BrainhoneyContents> getBrainhoney() {
         return brainhoney;
     }
 
+    /**
+     * 
+     * @param brainhoney 
+     */
     public void setBrainhoney(ArrayList<BrainhoneyContents> brainhoney) {
         this.brainhoney = brainhoney;
     }
 
+    /**
+     * 
+     * @return 
+     */
     public String getQuizID() {
         return quizID;
     }
 
+    /**
+     * 
+     * @param quizID 
+     */
     public void setQuizID(String quizID) {
         this.quizID = quizID;
     }
 
+    /**
+     * 
+     * @param toSet
+     * @param theID 
+     */
     public void setItemQuizFeed(int toSet, int theID) {
 
         itemNumber = toSet;

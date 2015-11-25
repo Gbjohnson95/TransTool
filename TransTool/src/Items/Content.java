@@ -9,6 +9,6 @@ package Items;
  *
  * @author hallm8
  */
-public class Content {
+public class Content extends Item{
     
 }

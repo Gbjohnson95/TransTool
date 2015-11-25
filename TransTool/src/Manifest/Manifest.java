@@ -5,7 +5,7 @@
  */
 package Manifest;
 
-import GradeItems.WriteGradeItems;
+import GradeItems.WriteGrades;
 import Items.DropBox;
 import Items.Item;
 import Items.QuizItem;
@@ -55,6 +55,9 @@ public class Manifest {
         System.out.println(savePath);
     }
 
+    /**
+     *
+     */
     public void buildManifest() {
         try {
 
@@ -113,7 +116,7 @@ public class Manifest {
             // for loop through each Item and create a reference
             // Now, let's create the grading categories and items in an XML
             // and link the file up.
-            WriteGradeItems categories = new WriteGradeItems(savePath, gather.getGradeCategories());
+            WriteGrades categories = new WriteGrades(savePath, gather.getGradeCategories());
             categories.setItems(gather.getItems());
             categories.writeToXML();
 
@@ -163,12 +166,8 @@ public class Manifest {
                 }
             }
 
-            System.out.println("writing the grade items.");
-
-            System.out.println("number of items is: " + categories.getItems().size());
             fileNames.add("grades_d2l.xml");
 
-            System.out.println("Writing XML.  This shouldn't fail, but you never know.");
             Element grades = doc.createElement("resource");
             grades.setAttribute("title", "Grade Items and Categories");
             grades.setAttribute("href", "grades_d2l.xml");
@@ -188,14 +187,12 @@ public class Manifest {
             dElement.setAttribute("identifier", "res_dropbox");
             resources.appendChild(dElement);
 
-            System.out.println("Write contents to XML");
             // write the content into xml file
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
             DOMSource source = new DOMSource(doc);
             StreamResult result = new StreamResult(new File(savePath) + "\\imsmanifest.xml");
 
-            System.out.println("Saving manifest.");
             // Save the file to the opened file.
             transformer.transform(source, result);
 
@@ -211,6 +208,10 @@ public class Manifest {
 
     }
 
+    /**
+     * ZIP FILES
+     *  Zips the files up.  Also, deletes the files after zipping them up.  
+     */
     public void zipFiles() {
         byte[] buffer = new byte[1024];
         try {

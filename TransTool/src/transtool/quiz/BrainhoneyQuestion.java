@@ -26,24 +26,29 @@ public class BrainhoneyQuestion {
     protected String randID;
     protected String bID;
     protected int qScore;
-    
-    
-    
-    
-    
-    
-    BrainhoneyQuestion(){
+
+    /**
+     * 
+     */
+    BrainhoneyQuestion() {
         brainhoney = new BrainhoneyContents();
     }
-    
 
+    /**
+     * 
+     * @param brain
+     * @param document
+     * @param id
+     * @param item
+     * @param root 
+     */
     public BrainhoneyQuestion(BrainhoneyContents brain, Document document, int id, int item, Element root) {
         brainhoney = brain;
-        
+
         questionNumber = item;
         feedbackNumber = item;
         itemNumber = item;
-        
+
         doc = document;
         idNumber = id;
         rootItem = doc.createElement("item");
@@ -115,13 +120,14 @@ public class BrainhoneyQuestion {
 
         Element fieldEntry3 = doc.createElement("fieldentry");
 
-                    // Some scores in Brainhoney aren't given a point value,
+        // Some scores in Brainhoney aren't given a point value,
         // because they are only worth 1 point.  This just says
         // if they don't have a point value, we give it one point.
         if (brainhoney.getScore().isEmpty()) {
             fieldEntry3.appendChild(doc.createTextNode("1.000000000"));
         } else {
             fieldEntry3.appendChild(doc.createTextNode(brainhoney.getScore() + ".000000000"));
+            System.out.println("Brainhoney score is!  " + brainhoney.getScore());
         }
         qtiDataField3.appendChild(fieldEntry3);
 
@@ -166,82 +172,162 @@ public class BrainhoneyQuestion {
 
     }
 
+    /**
+     * 
+     * @return 
+     */
     public BrainhoneyContents getBrainhoney() {
         return brainhoney;
     }
 
+    /**
+     * 
+     * @param brainhoney 
+     */
     public void setBrainhoney(BrainhoneyContents brainhoney) {
         this.brainhoney = brainhoney;
     }
 
+    /**
+     * 
+     * @return 
+     */
     public Document getDoc() {
         return doc;
     }
 
+    /**
+     * 
+     * @param doc 
+     */
     public void setDoc(Document doc) {
         this.doc = doc;
     }
 
+    /**
+     * 
+     * @return 
+     */
     public int getItemNumber() {
         return itemNumber;
     }
 
+    /**
+     * 
+     * @param itemNumber 
+     */
     public void setItemNumber(int itemNumber) {
         this.itemNumber = itemNumber;
     }
 
+    /**
+     * 
+     * @return 
+     */
     public int getQuestionNumber() {
         return questionNumber;
     }
 
+    /**
+     * 
+     * @param questionNumber 
+     */
     public void setQuestionNumber(int questionNumber) {
         this.questionNumber = questionNumber;
     }
 
+    /**
+     * 
+     * @return 
+     */
     public int getFeedbackNumber() {
         return feedbackNumber;
     }
 
+    /**
+     * 
+     * @param feedbackNumber 
+     */
     public void setFeedbackNumber(int feedbackNumber) {
         this.feedbackNumber = feedbackNumber;
     }
 
+    /**
+     * 
+     * @return 
+     */
     public int getIdNumber() {
         return idNumber;
     }
 
+    /**
+     * 
+     * @param idNumber 
+     */
     public void setIdNumber(int idNumber) {
         this.idNumber = idNumber;
     }
 
+    /**
+     * 
+     * @return 
+     */
     public Element getItem() {
         return rootItem;
     }
 
+    /**
+     * 
+     * @param section 
+     */
     public void setItem(Element section) {
         this.rootItem = section;
     }
 
+    /**
+     * 
+     * @return 
+     */
     public String getRandID() {
         return randID;
     }
 
+    /**
+     * 
+     * @param randID 
+     */
     public void setRandID(String randID) {
         this.randID = randID;
     }
 
+    /**
+     * 
+     * @return 
+     */
     public Element getRootItem() {
         return rootItem;
     }
 
+    /**
+     * 
+     * @param rootItem 
+     */
     public void setRootItem(Element rootItem) {
         this.rootItem = rootItem;
     }
 
+    /**
+     * 
+     * @return 
+     */
     public String getbID() {
         return bID;
     }
 
+    /**
+     * 
+     * @param bID 
+     */
     public void setbID(String bID) {
         this.bID = bID;
     }

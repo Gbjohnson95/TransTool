@@ -102,10 +102,18 @@ public class Quiz {
         this.brainhoney = brainhoney;
     }
 
+    /**
+     * 
+     * @return 
+     */
     public String getQuizID() {
         return quizID;
     }
 
+    /**
+     * 
+     * @param quizID 
+     */
     public void setQuizID(String quizID) {
         this.quizID = quizID;
     }

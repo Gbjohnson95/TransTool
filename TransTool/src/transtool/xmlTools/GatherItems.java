@@ -43,6 +43,9 @@ public class GatherItems {
     private int quizID = 1;
     private ArrayList<DropBox> dropBoxes = new ArrayList<>();
 
+    /**
+     *
+     */
     public void populateItems() {
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder;
@@ -59,39 +62,39 @@ public class GatherItems {
                 Element nodes = (Element) node.item(i);
                 Element dataStructure = (Element) nodes.getElementsByTagName("data").item(0);
                 //NodeList data = dataStructure.getChildNodes();
+                NodeList dataS = nodes.getElementsByTagName("data");
+                if (dataS.getLength() > 0) {
+                    NodeList testing = dataStructure.getElementsByTagName("type");
 
-                NodeList testing = dataStructure.getElementsByTagName("type");
+                    if (testing.getLength() < 1) {
 
-                if (testing.getLength() < 1) {
+                    } else if (testing.item(0).getTextContent().isEmpty()) {
 
-                } else if (testing.item(0).getTextContent().isEmpty()) {
+                    } else {
+                        String type = dataStructure.getElementsByTagName("type").item(0).getTextContent();
 
-                } else {
-                    String type = dataStructure.getElementsByTagName("type").item(0).getTextContent();
+                        switch (type) {
+                            case ("Assessment"):
+                            case ("Homework"):
 
-                    switch (type) {
-                        case ("Assessment"):
-                        case ("Homework"):
-
-                            createQuizItem(dataStructure, doc);
-                            break;
-                        case ("Assignment"):
-                            System.out.println("Creating a DropBox now.");
-                            createDropBox(dataStructure, doc);
-                            break;
-                        case ("Discussion"):
-                            createDiscussionBoard(dataStructure, doc);
-                            break;
-                        case ("Resource"):
-                            break;
-
+                                createQuizItem(dataStructure, doc);
+                                break;
+                            case ("Assignment"):
+                                System.out.println("Creating a DropBox now.");
+                                createDropBox(dataStructure, doc);
+                                break;
+                            case ("Discussion"):
+                                createDiscussionBoard(dataStructure, doc);
+                                break;
+                            case ("Resource"):
+                                break;
+                        }
                     }
                 }
-
             }
 
             parseGradingCategories(doc.getElementsByTagName("categories"));
-            
+
         } catch (ParserConfigurationException ex) {
         } catch (SAXException ex) {
             Logger.getLogger(GatherItems.class.getName()).log(Level.SEVERE, null, ex);
@@ -101,94 +104,187 @@ public class GatherItems {
 
     }
 
+    /**
+     *
+     * @return
+     */
     public String getNameOfXML() {
         return nameOfXML;
     }
 
+    /**
+     *
+     * @param nameOfXML
+     */
     public void setNameOfXML(String nameOfXML) {
         this.nameOfXML = nameOfXML;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getIdentifier() {
         return identifier;
     }
 
+    /**
+     *
+     * @param identifier
+     */
     public void setIdentifier(int identifier) {
         this.identifier = identifier;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getId() {
         return id;
     }
 
+    /**
+     *
+     * @param id
+     */
     public void setId(int id) {
         this.id = id;
     }
 
+    /**
+     *
+     * @return
+     */
     public ArrayList<Item> getItems() {
         return items;
     }
 
+    /**
+     *
+     * @param items
+     */
     public void setItems(ArrayList<Item> items) {
         this.items = items;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getSavePath() {
         return savePath;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getGradeAssociation() {
         return gradeAssociation;
     }
 
+    /**
+     *
+     * @param gradeAssociation
+     */
     public void setGradeAssociation(int gradeAssociation) {
         this.gradeAssociation = gradeAssociation;
     }
 
+    /**
+     *
+     * @return
+     */
     public ArrayList<GradeCategories> getGradeCategories() {
         return gradeCategories;
     }
 
+    /**
+     *
+     * @param gradeCategories
+     */
     public void setGradeCategories(ArrayList<GradeCategories> gradeCategories) {
         this.gradeCategories = gradeCategories;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getItemID() {
         return itemID;
     }
 
+    /**
+     *
+     * @param itemID
+     */
     public void setItemID(int itemID) {
         this.itemID = itemID;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getQuizID() {
         return quizID;
     }
 
+    /**
+     *
+     * @param quizID
+     */
     public void setQuizID(int quizID) {
         this.quizID = quizID;
     }
 
+    /**
+     *
+     * @param savePath
+     */
     public void setSavePath(String savePath) {
         this.savePath = savePath;
     }
 
+    /**
+     *
+     * @return
+     */
     public ArrayList<QuizItem> getQuizItem() {
         return quizItem;
     }
 
+    /**
+     *
+     * @param quizItem
+     */
     public void setQuizItem(ArrayList<QuizItem> quizItem) {
         this.quizItem = quizItem;
     }
 
+    /**
+     *
+     * @return
+     */
     public ArrayList<DropBox> getDropBoxes() {
         return dropBoxes;
     }
 
+    /**
+     *
+     * @param dropBoxes
+     */
     public void setDropBoxes(ArrayList<DropBox> dropBoxes) {
         this.dropBoxes = dropBoxes;
     }
 
+    /**
+     *
+     * @param data
+     * @param doc
+     */
     void createQuizItem(Element data, Document doc) {
         QuizItem quiz = new QuizItem();
         quiz.setSavePath(savePath);
@@ -236,9 +332,7 @@ public class GatherItems {
                     if (quizQuestion.getQuestionID().equals(bQuestion.getAttribute("questionid"))) {
                         quizQuestion.setBody(bQuestion.getElementsByTagName("body").item(0).getTextContent());
                         quizQuestion.setScore(bQuestion.getAttribute("score"));
-                        if (bQuestion.getElementsByTagName("value").getLength() > 0) {
-                            quizQuestion.setScore(bQuestion.getElementsByTagName("value").item(0).getTextContent());
-                        }
+
                         quizQuestion.setInteractionType(bQuestion.getElementsByTagName("interaction").item(0).getAttributes().getNamedItem("type").getTextContent());
                         quizQuestion.setPartial(bQuestion.getAttribute("partial"));
 
@@ -289,6 +383,11 @@ public class GatherItems {
 
     }
 
+    /**
+     *
+     * @param data
+     * @param doc
+     */
     public void createDropBox(Element data, Document doc) {
 
         NodeList isDropBox = data.getElementsByTagName("dropbox");
@@ -318,6 +417,11 @@ public class GatherItems {
 
     }
 
+    /**
+     *
+     * @param data
+     * @param doc
+     */
     public void createDiscussionBoard(Element data, Document doc) {
         DiscussionBoard discussionBoard = new DiscussionBoard();
 
@@ -344,12 +448,19 @@ public class GatherItems {
         id++;
     }
 
+    /**
+     *
+     */
     public void writeItems() {
         items.stream().forEach((item) -> {
             item.writeItem();
         });
     }
 
+    /**
+     *
+     * @param nodeList
+     */
     public void parseGradingCategories(NodeList nodeList) {
         NodeList categories = nodeList.item(0).getChildNodes();
 
@@ -365,6 +476,5 @@ public class GatherItems {
                 gradeCategories.add(category);
             }
         }
-
     }
 }

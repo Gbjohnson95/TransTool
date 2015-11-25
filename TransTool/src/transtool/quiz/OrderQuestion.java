@@ -15,6 +15,14 @@ import transtool.questions.BrainhoneyContents;
  */
 public class OrderQuestion extends BrainhoneyQuestion{
     
+    /**
+     * 
+     * @param brain
+     * @param document
+     * @param id
+     * @param item
+     * @param root 
+     */
     public OrderQuestion(BrainhoneyContents brain, Document document, int id, int item, Element root) {
         super(brain, document, id, item, root);
     }
