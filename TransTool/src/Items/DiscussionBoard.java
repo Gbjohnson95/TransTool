@@ -146,7 +146,6 @@ public class DiscussionBoard extends Item {
             StreamResult result = new StreamResult(new File(pathAndName));
 
             // Output to console for testing
-            // StreamResult result = new StreamResult(System.out);
             transformer.transform(source, result);
 
             System.out.println("File saved!");

@@ -236,7 +236,6 @@ public class WriteGrades {
                         item.setGradeAssociation("byui_produ-" + Integer.toString(categoryID));
                         item.setGradeItem(Integer.toString(categoryID));
 
-                        System.out.println("Category ID is:  " + item.getGradeAssociation() + " And : " + item.getGradeItem());
                         categoryID++;
                         id++;
 
@@ -257,9 +256,7 @@ public class WriteGrades {
                         Element exclude = doc.createElement("exclude_from_final_grade_calc");
 
                         for (GradeCategories gradeCategory : gradeCategories) {
-                            System.out.println(gradeCategory.getCatID());
                             if (item.getCategory().equals(gradeCategory.getCatID())) {
-                                System.out.println("Category found successfully.");
                                 category_id.setTextContent(gradeCategory.getCatIdentifier());
                             }
                         }
@@ -304,7 +301,6 @@ public class WriteGrades {
             StreamResult result = new StreamResult(new File((filePath) + "\\grades_d2l.xml"));
 
             // Output to console for testing
-            // StreamResult result = new StreamResult(System.out);
             transformer.transform(source, result);          
             
             

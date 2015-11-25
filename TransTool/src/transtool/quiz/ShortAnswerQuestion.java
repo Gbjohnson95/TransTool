@@ -148,22 +148,27 @@ public class ShortAnswerQuestion extends BrainhoneyQuestion {
                     }
                 }
 
-                System.out.println(Double.valueOf(itemPrecision));
-                System.out.println("quesiton is: " + Double.valueOf(itemPrecision));
 
                 DecimalFormat df = new DecimalFormat("#.####");
                 df.setRoundingMode(RoundingMode.CEILING);
 
-                for (double i = low; i <= Double.valueOf(hAnswer); i = i + Double.valueOf(itemPrecision)) {
-                    DecimalFormat format = new DecimalFormat("#");
-                    format.setMinimumFractionDigits(precision);
-                    System.out.println(i);
-                    i = new BigDecimal(i).setScale(precision, BigDecimal.ROUND_HALF_UP).doubleValue();
-                    correctAnswer.add(format.format(i));
-                }
-                
+                if (precision > 0) {
+                    for (double i = low; i <= Double.valueOf(hAnswer); i = i + Double.valueOf(itemPrecision)) {
+                        DecimalFormat format = new DecimalFormat("#");
+                        format.setMinimumFractionDigits(precision);
+                        i = new BigDecimal(i).setScale(precision, BigDecimal.ROUND_HALF_UP).doubleValue();
+                        correctAnswer.add(format.format(i));
+                    }
+                } else {
+                    for (double i = low; i <= Double.valueOf(hAnswer); i++) {
+                        DecimalFormat format = new DecimalFormat("#");
+                        format.setMinimumFractionDigits(precision);
+                        i = new BigDecimal(i).setScale(precision, BigDecimal.ROUND_HALF_UP).doubleValue();
+                        correctAnswer.add(format.format(i));
 
-                brainhoney.setRightAnswer(correctAnswer);
+                        brainhoney.setRightAnswer(correctAnswer);
+                    }
+                }
             }
         }
     }

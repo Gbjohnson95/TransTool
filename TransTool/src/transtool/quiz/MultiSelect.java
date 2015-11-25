@@ -150,7 +150,6 @@ public class MultiSelect extends BrainhoneyQuestion {
             setvar.setTextContent("1");
             
             if (brainhoney.getRightAnswer().contains(Integer.toString(i + 1))) {
-                System.out.println("Woohoo!!!");
                 setvar.setAttribute("varname", "D2L_Correct");
             } else {
                 setvar.setAttribute("varname", "D2L_Incorrect");

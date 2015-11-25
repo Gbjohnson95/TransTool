@@ -42,6 +42,7 @@ public class GatherItems {
     private int itemID = 10000;
     private int quizID = 1;
     private ArrayList<DropBox> dropBoxes = new ArrayList<>();
+    private String courseTitle;
 
     /**
      *
@@ -56,6 +57,10 @@ public class GatherItems {
 
             // Normalize the document.  
             doc.getDocumentElement().normalize();
+            
+            Element title = (Element) doc.getElementsByTagName("course").item(0);
+            courseTitle = title.getAttribute("title");
+            
             NodeList node = doc.getElementsByTagName("item");
 
             for (int i = 0; i < node.getLength(); i++) {
@@ -80,7 +85,6 @@ public class GatherItems {
                                 createQuizItem(dataStructure, doc);
                                 break;
                             case ("Assignment"):
-                                System.out.println("Creating a DropBox now.");
                                 createDropBox(dataStructure, doc);
                                 break;
                             case ("Discussion"):
@@ -281,6 +285,24 @@ public class GatherItems {
     }
 
     /**
+     * 
+     * @return 
+     */
+    public String getCourseTitle() {
+        return courseTitle;
+    }
+
+    /**
+     * 
+     * @param courseTitle 
+     */
+    public void setCourseTitle(String courseTitle) {
+        this.courseTitle = courseTitle;
+    }
+
+    
+    
+    /**
      *
      * @param data
      * @param doc
@@ -342,7 +364,6 @@ public class GatherItems {
                             ArrayList<String> value = new ArrayList<>();
                             for (int k = 0; k < values.getLength(); k++) {
                                 value.add(values.item(k).getTextContent());
-                                System.out.println("Correct Answer: " + values.item(k).getTextContent() + " is this spacing?");
                             }
                             quizQuestion.setRightAnswer(value);
 
@@ -396,7 +417,13 @@ public class GatherItems {
 
         dropBox.setSavePath(savePath);
         dropBox.setParent(data.getElementsByTagName("parent").item(0).getTextContent());
+        if (data.getElementsByTagName("title").getLength() > 0){
         dropBox.setName(data.getElementsByTagName("title").item(0).getTextContent());
+        }
+        else {
+            dropBox.setName("Untitled DropBox");
+        }
+        
         dropBox.setLocation(data.getElementsByTagName("href").item(0).getTextContent());
         if (data.getElementsByTagName("gradable").getLength() > 0) {
             dropBox.setGradeable(data.getElementsByTagName("gradable").item(0).getTextContent());

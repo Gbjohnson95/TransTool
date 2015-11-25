@@ -74,7 +74,6 @@ public class Manifest {
 
             Element resources = doc.createElement("resources");
 
-            System.out.println("creating organizations, resources, etc...");
             // create organizations, resources, append them and attach
             // standard attributes
             Element organizations = doc.createElement("organizations");
@@ -86,7 +85,6 @@ public class Manifest {
             organizations.setAttribute("default", "d2l_orgs");
             organization.setAttribute("identifier", "d2l_org");
 
-            System.out.println("Running the XML parser...");
 
             // Creating the question library in the XML
             resource.setAttribute("identifier", "res_question_library");
@@ -97,12 +95,10 @@ public class Manifest {
             resource.setAttribute("title", "Question Library");
             resources.appendChild(resource);
 
-            System.out.println("Creating the sections and writing them.");
             // Now creating the actual sections themselves.
 
             fileNames.add("questiondb.xml");
 
-            System.out.println("Creating the content items themselves");
             // for loop, creating content items
             // while going through the loop, we are also pulling out the 
             // XML names to add to the file zipper
@@ -111,6 +107,7 @@ public class Manifest {
             gather.setNameOfXML(brainhoneyPath);
             gather.setSavePath(savePath);
             gather.populateItems();
+            title = gather.getCourseTitle();
 
             // pull each section off, so they can be sent to a reference later
             // for loop through each Item and create a reference
