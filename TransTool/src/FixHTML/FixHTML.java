@@ -1,14 +1,25 @@
 /**
- * 
- * 
+ *
+ *
  */
 package FixHTML;
+
+import Items.Item;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.jsoup.Jsoup;
+import org.w3c.dom.Document;
 
 /**
  *
  * @author hallm8
  */
 public class FixHTML {
+
+    private Item item;
 
     /**
      * FIX HTML
@@ -23,7 +34,16 @@ public class FixHTML {
      * engine.eval(new java.io.FileReader("welcome.js"));
      */
     public FixHTML() {
-        //Jsoup jsoup;
+
+    }
+
+    public void fixHTML() {
+        File input = new File(item.getLocation());
+        try {
+            Document doc = (Document) Jsoup.parse(input, "UTF-8");
+        } catch (IOException ex) {
+            System.out.println("Error!! Unable to open file!");
+        }
 
     }
 

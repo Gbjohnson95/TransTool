@@ -16,7 +16,6 @@ public class Item {
     protected String parent;
     protected String itemID;
     protected String ident;
-    protected String ref;
     protected String resourceCode;
     protected String location;
     protected String gradeAssociation;
@@ -271,22 +270,6 @@ public class Item {
      */
     public void setIdent(String ident) {
         this.ident = ident;
-    }
-
-    /**
-     *
-     * @return
-     */
-    public String getRef() {
-        return ref;
-    }
-
-    /**
-     *
-     * @param ref
-     */
-    public void setRef(String ref) {
-        this.ref = ref;
     }
 
     /**

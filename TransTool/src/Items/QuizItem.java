@@ -168,8 +168,8 @@ public class QuizItem extends Item {
             grade_item.setAttribute("resource_code", gradeAssociation);
             grade_item.setAttribute("d2l_2p0:is_autoexport", "yes");
             grade_item.setTextContent(gradeItem);
-            dRightClick.setTextContent("no");
-            dPager.setTextContent("no");
+            dRightClick.setTextContent("yes");
+            dPager.setTextContent("yes");
             is_active.setTextContent("yes");
             hasSchedule.setTextContent("no");
             attRldb.setTextContent("no");
@@ -211,7 +211,7 @@ public class QuizItem extends Item {
             mattext4.setAttribute("texttype", "yes");
             mattext4.setTextContent("<p>Your quiz has been submitted successfully.</p>");
             duration.setTextContent("0");
-            displayID.setTextContent("1");
+            displayID.setTextContent("3");
             showAnswers.setTextContent("no");
             restrictIP.setTextContent("no");
             average.setTextContent("no");

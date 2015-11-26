@@ -66,9 +66,9 @@ public class GatherItems {
             for (int i = 0; i < node.getLength(); i++) {
                 Element nodes = (Element) node.item(i);
                 Element dataStructure = (Element) nodes.getElementsByTagName("data").item(0);
-                //NodeList data = dataStructure.getChildNodes();
                 NodeList dataS = nodes.getElementsByTagName("data");
                 if (dataS.getLength() > 0) {
+                    
                     NodeList testing = dataStructure.getElementsByTagName("type");
 
                     if (testing.getLength() < 1) {
