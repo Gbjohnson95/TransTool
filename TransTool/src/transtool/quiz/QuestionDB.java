@@ -94,10 +94,10 @@ public class QuestionDB {
                 section.setDoc(doc);
                 section.setRootItem(rootElement);
                 staff.appendChild(section.createSection());
-                itemNumber = section.getItemNumber();
-                questionNumber = section.getItemNumber();
-                feedbackNumber = section.getItemNumber();
-                idNumber = section.getIdNumber();
+                itemNumber = section.getItemNumber() + 1;
+                questionNumber = section.getItemNumber() + 1;
+                feedbackNumber = section.getItemNumber() + 1;
+                idNumber = section.getIdNumber() + 1;
             }
             // write the content into xml file
             TransformerFactory transformerFactory = TransformerFactory.newInstance();

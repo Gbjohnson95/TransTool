@@ -25,7 +25,7 @@ public class MultiSelect extends BrainhoneyQuestion {
      * @param root 
      */
     public MultiSelect(BrainhoneyContents brain, Document document, int id, int item, Element root) {
-        super(brain, document, id, item, root);
+        super(brain, document, brain.getQuestionID(), item, root);
         writeHeader();
 
         //Field entries are very question specific.  Well... for the question type.
@@ -68,7 +68,7 @@ public class MultiSelect extends BrainhoneyQuestion {
 
         Attr identity = doc.createAttribute("ident");
         Attr rcardinality = doc.createAttribute("rcardinality");
-        identity.setValue(randID + "_LID");
+        identity.setValue(brain.getQuestionID() + "_LID");
         rcardinality.setValue("Multiple");
         lid.setAttributeNode(identity);
         lid.setAttributeNode(rcardinality);
@@ -87,7 +87,7 @@ public class MultiSelect extends BrainhoneyQuestion {
             flowLabel.setAttributeNode(classLabel);
 
             Element responseLabel = doc.createElement("response_label");
-            responseLabel.setAttribute("ident", randID + "_A" + itemNumber);
+            responseLabel.setAttribute("ident", brain.getQuestionID() + "_A" + itemNumber);
             Element flowMat = doc.createElement("flow_mat");
             Element mbody = doc.createElement("material");
             Element materialText = doc.createElement("mattext");
@@ -142,8 +142,8 @@ public class MultiSelect extends BrainhoneyQuestion {
             respcondition.setAttribute("title", "Response Condition");
             respcondition.setAttribute("continue", "yes");
 
-            varequal.setAttribute("respident", randID + "_LID");
-            varequal.setTextContent(randID + "_A" + questionNumber);
+            varequal.setAttribute("respident", brain.getQuestionID() + "_LID");
+            varequal.setTextContent(brain.getQuestionID() + "_A" + questionNumber);
             questionNumber++;
 
             setvar.setAttribute("action", "Add");
@@ -159,7 +159,7 @@ public class MultiSelect extends BrainhoneyQuestion {
 
         for (String qChoice : brainhoney.getqChoice()) {
             Element itemFeedback = doc.createElement("itemfeedback");
-            itemFeedback.setAttribute("ident", randID + "_IF" + feedbackNumber);
+            itemFeedback.setAttribute("ident", brain.getQuestionID() + "_IF" + feedbackNumber);
             Element fMaterial = doc.createElement("material");
             Element mattext = doc.createElement("mattext");
             mattext.setAttribute("texttype", "text/html");

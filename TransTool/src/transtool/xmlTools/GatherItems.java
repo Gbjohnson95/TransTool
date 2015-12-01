@@ -42,6 +42,9 @@ public class GatherItems {
     private int quizID = 1;
     private ArrayList<DropBox> dropBoxes = new ArrayList<>();
     private String courseTitle;
+    
+    
+    
 
     /**
      *
@@ -338,7 +341,6 @@ public class GatherItems {
                     if (quizQuestion.getQuestionID().equals(bQuestion.getAttribute("questionid"))) {
                         quizQuestion.setBody(bQuestion.getElementsByTagName("body").item(0).getTextContent());
                         quizQuestion.setScore(bQuestion.getAttribute("score"));
-
                         quizQuestion.setInteractionType(bQuestion.getElementsByTagName("interaction").item(0).getAttributes().getNamedItem("type").getTextContent());
                         quizQuestion.setPartial(bQuestion.getAttribute("partial"));
 
@@ -372,6 +374,9 @@ public class GatherItems {
                             quizQuestion.setqChoice(bText);
 
                         }
+                        System.out.println("Debugging: Question ID is: " + quizQuestion.getQuestionID());
+                        System.out.println("Debugging: Quiz name is: " + quiz.getName());
+                        System.out.println("Debugging: the quiz body says: " + quizQuestion.getBody());
                     }
                 }
             }

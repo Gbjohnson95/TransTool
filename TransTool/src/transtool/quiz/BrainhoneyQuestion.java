@@ -21,9 +21,9 @@ public class BrainhoneyQuestion {
     protected int itemNumber;
     protected int questionNumber;
     protected int feedbackNumber;
-    protected int idNumber;
+    protected String idNumber;
     protected Element rootItem;
-    protected String randID;
+    //protected String randID;
     protected String bID;
     protected int qScore;
 
@@ -42,7 +42,7 @@ public class BrainhoneyQuestion {
      * @param item
      * @param root 
      */
-    public BrainhoneyQuestion(BrainhoneyContents brain, Document document, int id, int item, Element root) {
+    public BrainhoneyQuestion(BrainhoneyContents brain, Document document, String id, int item, Element root) {
         brainhoney = brain;
 
         questionNumber = item;
@@ -68,19 +68,19 @@ public class BrainhoneyQuestion {
         rootItem.appendChild(presentation);
 
         Attr id = doc.createAttribute("d2l_2p0:id");
-        id.setValue(Integer.toString(idNumber));
+        id.setValue(idNumber);
 
         rootItem.setAttributeNode(id);
 
-        randID = "QUES_18115_10000";
-        String randQuestion = "OBJ_78306";
-        randQuestion = randQuestion.substring(0, randQuestion.length() - Integer.toString(idNumber).length());
+        //randID = "QUES_18115_10000";
+        String randQuestion = "OBJ_5000";
+        //randQuestion = randQuestion.substring(0, randQuestion.length() - Integer.toString(idNumber).length());
 
-        randID = randID.substring(0, randID.length() - Integer.toString(idNumber).length());
-        randID = randID + Integer.toString(idNumber);
+        //randID = randID.substring(0, randID.length() - Integer.toString(idNumber).length());
+        //randID = randID + Integer.toString(idNumber);
 
         rootItem.setAttribute("ident", randQuestion + idNumber);
-        rootItem.setAttribute("label", randID);
+        rootItem.setAttribute("label", idNumber);
 
         Attr page = doc.createAttribute("d2l_2p0:page");
         page.setValue("1");
@@ -135,18 +135,18 @@ public class BrainhoneyQuestion {
         qtiDataField4.appendChild(fieldLabel4);
 
         Element fieldEntry4 = doc.createElement("fieldentry");
-        String randVariable = "54e92f71-a948-44f1-83d1-71852872bef4";
-        randVariable = randVariable.substring(0, randVariable.length() - Integer.toString(idNumber).length());
-        fieldEntry4.appendChild(doc.createTextNode(randVariable + Integer.toString(idNumber)));
+        //String randVariable = "54e92f71-a948-44f1-83d1-71852872bef4";
+        //randVariable = randVariable.substring(0, randVariable.length() - Integer.toString(idNumber).length());
+        fieldEntry4.appendChild(doc.createTextNode(idNumber));
         qtiDataField4.appendChild(fieldEntry4);
-        idNumber++;
+        //idNumber++;
 
         Element fieldLabel5 = doc.createElement("fieldlabel");
         fieldLabel5.appendChild(doc.createTextNode("qmd_displayid"));
         qtiDataField5.appendChild(fieldLabel5);
 
         Element fieldEntry5 = doc.createElement("fieldentry");
-        fieldEntry5.appendChild(doc.createTextNode("D2LSIM-CO-" + Integer.toString(idNumber)));
+        fieldEntry5.appendChild(doc.createTextNode("D2LSIM-CO-" + idNumber));
         qtiDataField5.appendChild(fieldEntry5);
 
         Element difficulty = doc.createElement("d2l_2p0:difficulty");
@@ -255,7 +255,7 @@ public class BrainhoneyQuestion {
      * 
      * @return 
      */
-    public int getIdNumber() {
+    public String getIdNumber() {
         return idNumber;
     }
 
@@ -263,7 +263,7 @@ public class BrainhoneyQuestion {
      * 
      * @param idNumber 
      */
-    public void setIdNumber(int idNumber) {
+    public void setIdNumber(String idNumber) {
         this.idNumber = idNumber;
     }
 
@@ -283,21 +283,6 @@ public class BrainhoneyQuestion {
         this.rootItem = section;
     }
 
-    /**
-     * 
-     * @return 
-     */
-    public String getRandID() {
-        return randID;
-    }
-
-    /**
-     * 
-     * @param randID 
-     */
-    public void setRandID(String randID) {
-        this.randID = randID;
-    }
 
     /**
      * 

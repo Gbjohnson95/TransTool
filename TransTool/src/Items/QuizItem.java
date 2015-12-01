@@ -40,7 +40,7 @@ public class QuizItem extends Item {
     private int feedbackNumber;
     private int idNumber;
     Section section;
-    private ArrayList<String> quizQuestions;
+    //private ArrayList<String> quizQuestions;
     private ArrayList<BrainhoneyContents> brainhoney;
     private String quizID;
 
@@ -49,7 +49,6 @@ public class QuizItem extends Item {
      */
     public QuizItem() {
         brainhoney = new ArrayList<>();
-        quizQuestions = new ArrayList<>();
         materialType = "d2lquiz";
         linkTarget = "";
         itemType = "Quiz";
@@ -62,6 +61,8 @@ public class QuizItem extends Item {
     public void writeItem() {
         
         try {
+            
+            System.out.println("Question size is: " + brainhoney.size());
 
             // Standard DOM procedures
             DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
@@ -232,10 +233,10 @@ public class QuizItem extends Item {
             section = new Section(itemNumber, idNumber, assessment, this, doc);
             
             assessment.appendChild(section.createSection());
-            itemNumber = section.getItemNumber();
-            questionNumber = section.getItemNumber();
-            feedbackNumber = section.getItemNumber();
-            idNumber = section.getIdNumber();
+            itemNumber = section.getItemNumber() + 1;
+            questionNumber = section.getItemNumber() + 1;
+            feedbackNumber = section.getItemNumber() + 1;
+            idNumber = section.getIdNumber() + 1;
 
             // write the content into xml file
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
@@ -416,22 +417,10 @@ public class QuizItem extends Item {
         this.section = section;
     }
 
-    /**
-     *
-     * @return
-     */
-    public ArrayList<String> getQuizQuestions() {
-        return quizQuestions;
-    }
-
-    /**
-     *
-     * @param quizQuestions
-     */
-    public void setQuizQuestions(ArrayList<String> quizQuestions) {
-        this.quizQuestions = quizQuestions;
-    }
-
+    
+    
+    
+    
     /**
      *
      * @return

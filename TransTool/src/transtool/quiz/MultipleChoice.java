@@ -25,7 +25,7 @@ public class MultipleChoice extends BrainhoneyQuestion {
      * @param root 
      */
     public MultipleChoice(BrainhoneyContents brain, Document document, int id, int item, Element root) {
-        super(brain, document, id, item, root);
+        super(brain, document, brain.getQuestionID(), item, root);
         writeHeader();
 
         //Field entries are very question specific.  Well... for the question type.
@@ -68,7 +68,7 @@ public class MultipleChoice extends BrainhoneyQuestion {
 
         Attr identity = doc.createAttribute("ident");
         Attr rcardinality = doc.createAttribute("rcardinality");
-        identity.setValue(randID + "_LID");
+        identity.setValue(brain.getQuestionID() + "_LID");
         rcardinality.setValue("Single");
         lid.setAttributeNode(identity);
         lid.setAttributeNode(rcardinality);
@@ -87,7 +87,7 @@ public class MultipleChoice extends BrainhoneyQuestion {
             flowLabel.setAttributeNode(classLabel);
 
             Element responseLabel = doc.createElement("response_label");
-            responseLabel.setAttribute("ident", randID + "_A" + itemNumber);
+            responseLabel.setAttribute("ident", brain.getQuestionID() + "_A" + itemNumber);
             Element flowMat = doc.createElement("flow_mat");
             Element mbody = doc.createElement("material");
             Element materialText = doc.createElement("mattext");
@@ -110,8 +110,8 @@ public class MultipleChoice extends BrainhoneyQuestion {
             Element setVariable = doc.createElement("setvar");
 
             respCondition.setAttribute("title", "Response Condition " + Integer.toString(j + 1));
-            varequal.setAttribute("respident", randID + "_LID");
-            varequal.appendChild(doc.createTextNode(randID + "_A" + questionNumber));
+            varequal.setAttribute("respident", brain.getQuestionID() + "_LID");
+            varequal.appendChild(doc.createTextNode(brain.getQuestionID() + "_A" + questionNumber));
             setVariable.setAttribute("action", "Set");
 
 
@@ -126,7 +126,7 @@ public class MultipleChoice extends BrainhoneyQuestion {
 
             Element displayFeedback = doc.createElement("displayfeedback");
             displayFeedback.setAttribute("feedbacktype", "Response");
-            displayFeedback.setAttribute("linkrefid", randID + "_IF" + questionNumber);
+            displayFeedback.setAttribute("linkrefid", brain.getQuestionID() + "_IF" + questionNumber);
             questionNumber++;
 
             respCondition.appendChild(displayFeedback);
@@ -141,7 +141,7 @@ public class MultipleChoice extends BrainhoneyQuestion {
         // are associated with each question via feedback ID.
         for (String qChoice : brainhoney.getqChoice()) {
             Element itemFeedback = doc.createElement("itemfeedback");
-            itemFeedback.setAttribute("ident", randID + "_IF" + feedbackNumber);
+            itemFeedback.setAttribute("ident", brain.getQuestionID() + "_IF" + feedbackNumber);
             Element fMaterial = doc.createElement("material");
             Element mattext = doc.createElement("mattext");
             mattext.setAttribute("texttype", "text/html");

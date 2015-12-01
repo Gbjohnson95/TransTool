@@ -104,7 +104,6 @@ public class Section {
             }
 
             if (didChoose == true) {
-                idNumber = question.getIdNumber();
                 itemNumber = question.getItemNumber();
                 feedbackNumber = question.getItemNumber();
                 questionNumber = question.getItemNumber();

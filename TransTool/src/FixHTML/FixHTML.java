@@ -57,10 +57,8 @@ public class FixHTML {
         appendedPath += "resources\\";
 
         File input = new File(appendedPath  + item.getLocation());
-        System.out.println("Save path for fix html: " + appendedPath  + item.getLocation());
         if (input.exists()) {
             try {
-                System.out.println("It exists!  Which is good because... you know.");
 
                 Document doc = Jsoup.parse(input, "UTF-8");
 
@@ -92,7 +90,6 @@ public class FixHTML {
                 for (Element empty : emptySearch) {
                    
                     if (!empty.hasText() && !empty.tagName().equals("head") && !empty.tagName().equals("body") ) {
-                        System.out.println("Tag name is: " + empty.tagName());
                         empty.unwrap();
                     }
                 }
@@ -104,7 +101,6 @@ public class FixHTML {
                 //writer.println(doc.html());
                 //writer.close();
                 bodyText = doc.html();
-                System.out.println("doc.html: " + doc.html());
 
             } catch (IOException ex) {
                 System.out.println("Error!! Unable to open file!");

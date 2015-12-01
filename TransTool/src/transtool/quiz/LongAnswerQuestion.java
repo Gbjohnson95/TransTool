@@ -24,7 +24,7 @@ public class LongAnswerQuestion extends BrainhoneyQuestion {
      * @param root 
      */
     public LongAnswerQuestion(BrainhoneyContents brain, Document document, int id, int item, Element root) {
-        super(brain, document, id, item, root);
+        super(brain, document, brain.getQuestionID(), item, root);
         writeHeader();
         
         Element fieldEntry2 = doc.createElement("fieldentry");
@@ -69,7 +69,7 @@ public class LongAnswerQuestion extends BrainhoneyQuestion {
         response_label.appendChild(material2);
         material2.appendChild(matText2);
 
-        str.setAttribute("ident", randID + "_STR");
+        str.setAttribute("ident", brain.getQuestionID() + "_STR");
         str.setAttribute("cardinality", "multiple");
 
         fib.setAttribute("rows", "5");
@@ -77,7 +77,7 @@ public class LongAnswerQuestion extends BrainhoneyQuestion {
         fib.setAttribute("prompt", "Box");
         fib.setAttribute("fibtype", "String");
 
-        response_label.setAttribute("ident", randID + "_LA");
+        response_label.setAttribute("ident", brain.getQuestionID() + "_LA");
 
         matText2.setAttribute("texttype", "text/plain");
 

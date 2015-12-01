@@ -20,7 +20,7 @@ import transtool.questions.BrainhoneyContents;
 public class ShortAnswerQuestion extends BrainhoneyQuestion {
 
     public ShortAnswerQuestion(BrainhoneyContents brain, Document document, int id, int item, Element root) {
-        super(brain, document, id, item, root);
+        super(brain, document, brain.getQuestionID(), item, root);
         writeHeader();
 
         Element fieldEntry2 = doc.createElement("fieldentry");
@@ -50,7 +50,7 @@ public class ShortAnswerQuestion extends BrainhoneyQuestion {
         str.appendChild(fib);
         fib.appendChild(response_label);
 
-        str.setAttribute("ident", randID + "_A" + questionNumber + "_ANS");
+        str.setAttribute("ident", brain.getQuestionID() + "_A" + questionNumber + "_ANS");
         str.setAttribute("rcardinality", "Single");
 
         fib.setAttribute("rows", "1");
@@ -58,7 +58,7 @@ public class ShortAnswerQuestion extends BrainhoneyQuestion {
         fib.setAttribute("prompt", "Box");
         fib.setAttribute("fibtype", "String");
 
-        response_label.setAttribute("ident", randID + "_A" + questionNumber + "_ANS");
+        response_label.setAttribute("ident", brain.getQuestionID() + "_A" + questionNumber + "_ANS");
 
         Element resprocessing = doc.createElement("resprocessing");
         Element outcomes = doc.createElement("outcomes");
@@ -83,7 +83,7 @@ public class ShortAnswerQuestion extends BrainhoneyQuestion {
 
             Element varequal = doc.createElement("varequal");
 
-            varequal.setAttribute("respident", randID + "_A" + questionNumber + "_ANS");
+            varequal.setAttribute("respident", brain.getQuestionID() + "_A" + questionNumber + "_ANS");
             varequal.setAttribute("case", "no");
 
             varequal.setTextContent(rightAnswer);

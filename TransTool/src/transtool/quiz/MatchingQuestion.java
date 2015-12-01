@@ -16,15 +16,15 @@ import transtool.questions.BrainhoneyContents;
 public class MatchingQuestion extends BrainhoneyQuestion {
 
     /**
-     * 
+     *
      * @param brain
      * @param document
      * @param id
      * @param item
-     * @param root 
+     * @param root
      */
     public MatchingQuestion(BrainhoneyContents brain, Document document, int id, int item, Element root) {
-        super(brain, document, id, item, root);
+        super(brain, document, brain.getQuestionID(), item, root);
         writeHeader();
 
         //Field entries are very question specific.  Well... for the question type.
@@ -93,7 +93,7 @@ public class MatchingQuestion extends BrainhoneyQuestion {
             Element mattext2 = doc.createElement("mattext");
             Element renderChoice = doc.createElement("render_choice");
 
-            grp.setAttribute("respident", randID + "_C" + questionNumber);
+            grp.setAttribute("respident", brain.getQuestionID() + "_C" + questionNumber);
 
             grp.setAttribute("rcardinality", "single");
             mattext2.setAttribute("texttype", "text/html");
@@ -109,12 +109,11 @@ public class MatchingQuestion extends BrainhoneyQuestion {
             renderChoice.appendChild(flowL);
             flowL.setAttribute("class", "Block");
 
-
             for (int i = 0; i < brainhoney.getRightAnswer().size(); i++) {
 
                 Element responseLabel = doc.createElement("response_label");
                 flowL.appendChild(responseLabel);
-                responseLabel.setAttribute("ident", randID + "_M" + itemNumber);
+                responseLabel.setAttribute("ident", brain.getQuestionID() + "_M" + itemNumber);
 
                 Element flowMat = doc.createElement("flow_mat");
                 responseLabel.appendChild(flowMat);
@@ -126,7 +125,9 @@ public class MatchingQuestion extends BrainhoneyQuestion {
                 material3.appendChild(mattext3);
 
                 mattext3.setAttribute("texttype", "text/html");
-                mattext3.setTextContent(brainhoney.getqChoice().get(i));
+                if (i < brainhoney.getqChoice().size()) {
+                    mattext3.setTextContent(brainhoney.getqChoice().get(i));
+                }
 
                 Element respcondition = doc.createElement("respcondition");
                 Element conditionvar = doc.createElement("conditionvar");
@@ -138,8 +139,8 @@ public class MatchingQuestion extends BrainhoneyQuestion {
                 conditionvar.appendChild(varequal);
                 respcondition.appendChild(setvar);
 
-                varequal.setAttribute("respident", randID + "_C" + questionNumber);
-                varequal.setTextContent(randID + "_M" + itemNumber);
+                varequal.setAttribute("respident", brain.getQuestionID() + "_C" + questionNumber);
+                varequal.setTextContent(brain.getQuestionID() + "_M" + itemNumber);
 
                 setvar.setAttribute("action", "Add");
                 setvar.setTextContent("1");
