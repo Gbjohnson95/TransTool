@@ -5,6 +5,7 @@
  */
 package Items;
 
+import FixHTML.FixHTML;
 import java.io.File;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,8 +22,9 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 /**
- * Discussion Board
- *  Takes in information and outputs a discussion board with that information.
+ * Discussion Board Takes in information and outputs a discussion board with
+ * that information.
+ *
  * @author hallm8
  */
 public class DiscussionBoard extends Item {
@@ -35,7 +37,6 @@ public class DiscussionBoard extends Item {
         itemType = "Discussion";
         materialType = "d2ldiscussion";
         try {
-
             // Standard DOM procedures
             DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder;
@@ -88,6 +89,20 @@ public class DiscussionBoard extends Item {
             content.appendChild(title);
             title.setTextContent(name);
 
+            FixHTML fix = new FixHTML();
+            fix.setFilePath(brainhoneyPath);
+            fix.setItem(this);
+            fix.fix();
+            setBodyText(fix.getBodyText());
+
+            if (fix.getBodyText().isEmpty()) {
+
+            } else {
+                Element description = doc.createElement("description");
+                description.setTextContent(bodyText);
+                content.appendChild(description);
+            }
+
             Element topic = doc.createElement("topic");
             topics.appendChild(topic);
 
@@ -101,13 +116,13 @@ public class DiscussionBoard extends Item {
             Element requires_approval2 = doc.createElement("requires_approval");
             Element is_locked2 = doc.createElement("is_locked");
             Element must_post2 = doc.createElement("must_post_to_participate");
-            if (gradeable.equals("true")){
+            if (gradeable.equals("true")) {
                 Element gItem = doc.createElement("grade_item_id");
                 Element nonInclude = doc.createElement("include_nonscored_values");
-                
+
                 properties2.appendChild(gItem);
                 properties2.appendChild(nonInclude);
-                
+
                 gItem.setTextContent(gradeAssociation);
                 nonInclude.setTextContent("False");
             }
@@ -141,7 +156,7 @@ public class DiscussionBoard extends Item {
             Transformer transformer = transformerFactory.newTransformer();
             DOMSource source = new DOMSource(doc);
             href = "discussion_d2l_" + itemID + ".xml";
-            
+
             pathAndName = savePath + "\\discussion_d2l_" + itemID + ".xml";
             StreamResult result = new StreamResult(new File(pathAndName));
 
@@ -161,43 +176,43 @@ public class DiscussionBoard extends Item {
     }
 
     /**
-     * D ID
-     *  Identification number of the Discussion Board
-     * @return 
+     * D ID Identification number of the Discussion Board
+     *
+     * @return
      */
     public String getDid() {
         return did;
     }
 
     /**
-     * D ID
-     *  Identification number of the Discussion Board
-     * @param did 
+     * D ID Identification number of the Discussion Board
+     *
+     * @param did
      */
     public void setDid(String did) {
         this.did = did;
     }
 
     /**
-     * D Ident
-     *  Each item is attached to an ID# and an Identification.  I don't know why.
-     * But each one is different, so this is the reference number for it.
-     * @return 
+     * D Ident Each item is attached to an ID# and an Identification. I don't
+     * know why. But each one is different, so this is the reference number for
+     * it.
+     *
+     * @return
      */
     public String getDident() {
         return dident;
     }
 
     /**
-     * D Ident
-     *  Each item is attached to an ID# and an Identification.  I don't know why.
-     * But each one is different, so this is the reference number for it.
-     * @param dident 
+     * D Ident Each item is attached to an ID# and an Identification. I don't
+     * know why. But each one is different, so this is the reference number for
+     * it.
+     *
+     * @param dident
      */
     public void setDident(String dident) {
         this.dident = dident;
     }
-    
-    
-    
+
 }

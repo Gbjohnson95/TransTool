@@ -5,6 +5,7 @@
  */
 package Manifest;
 
+import FixHTML.FixHTML;
 import GradeItems.WriteGrades;
 import Items.DropBox;
 import Items.Item;
@@ -20,6 +21,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
+import javax.swing.JTextPane;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -46,11 +48,14 @@ public class Manifest {
     private String brainhoneyPath;
     private ArrayList<String> fileNames = new ArrayList<>();
     private String title;
+    private String jPanelText;
+    private JTextPane eventLogPanel;
+    private String loadPath;
 
     public Manifest(String toSave, String brainhoneyPath) {
         title = "import";
-        manifestList = new ArrayList<>();
         savePath = toSave;
+        manifestList = new ArrayList<>();
         this.brainhoneyPath = brainhoneyPath;
         System.out.println(savePath);
     }
@@ -61,6 +66,19 @@ public class Manifest {
     public void buildManifest() {
         try {
 
+            File file = new File(savePath + "\\content");
+            if (!file.exists()) {
+                if (file.mkdir()) {
+                    System.out.println("Directory is created!");
+                } else {
+                    System.out.println("Error!  Directory already exists!!");
+                }
+            }
+
+            jPanelText = "Creating new manifest...";
+
+            eventLogPanel.setText(jPanelText);
+            jPanelText += "Testing...";
             DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
 
@@ -85,7 +103,6 @@ public class Manifest {
             organizations.setAttribute("default", "d2l_orgs");
             organization.setAttribute("identifier", "d2l_org");
 
-
             // Creating the question library in the XML
             resource.setAttribute("identifier", "res_question_library");
             resource.setAttribute("type", "webcontent");
@@ -96,7 +113,6 @@ public class Manifest {
             resources.appendChild(resource);
 
             // Now creating the actual sections themselves.
-
             fileNames.add("questiondb.xml");
 
             // for loop, creating content items
@@ -104,7 +120,7 @@ public class Manifest {
             // XML names to add to the file zipper
             //BrainhoneyItemParse bParse = new BrainhoneyItemParse(brainhoneyPath, quiz.getBrainhoneyContents());
             GatherItems gather = new GatherItems();
-            gather.setNameOfXML(brainhoneyPath);
+            gather.setBrainhoneyPath(brainhoneyPath);
             gather.setSavePath(savePath);
             gather.populateItems();
             title = gather.getCourseTitle();
@@ -128,14 +144,12 @@ public class Manifest {
             for (Item item1 : theItem) {
                 for (DropBox dB : dBox) {
                     if (item1.getItemID().equals(dB.getItemID())) {
-
-                        System.out.println("successfully matched a dropbox!");
                         dB = (DropBox) item1;
                     }
                 }
             }
 
-            WriteDropBox dropBox = new WriteDropBox(dBox, savePath);
+            WriteDropBox dropBox = new WriteDropBox(dBox, savePath, brainhoneyPath);
 
             ArrayList<QuizItem> quizItems = gather.getQuizItem();
             ArrayList<Section> sections = new ArrayList<>();
@@ -160,6 +174,11 @@ public class Manifest {
                     qResource.setAttribute("d2l_2p0:material_type", item.getMaterialType());
                     qResource.setAttribute("type", "webcontent");
                     qResource.setAttribute("identifier", item.getIdent());
+                    
+                    
+                   
+                    
+                    
                 }
             }
 
@@ -206,14 +225,29 @@ public class Manifest {
     }
 
     /**
-     * ZIP FILES
-     *  Zips the files up.  Also, deletes the files after zipping them up.  
+     * ZIP FILES Zips the files up. Also, deletes the files after zipping them
+     * up.
      */
     public void zipFiles() {
         byte[] buffer = new byte[1024];
         try {
 
-            //String[] sourceFiles = {savePath + "\\imsmanifest.xml", savePath + "\\questiondb.xml"};
+            // On rare occasions, there will be a semi colon in the title name,
+            // ruining everything while zipping the file.
+            if (title.contains(":") || title.contains(".")) {
+                String temp = "";
+                for (int i = 0; i < title.length(); i++) {
+
+                    if (title.charAt(i) == ':' || title.charAt(i) == '.') {
+
+                    } else {
+                        temp += title.charAt(i);
+                    }
+                }
+                title = temp;
+            }
+            System.out.println("File name: " + title);
+
             FileOutputStream fos = new FileOutputStream(savePath + "\\" + title + ".zip");
             ZipOutputStream zos = new ZipOutputStream(fos);
 
@@ -243,5 +277,71 @@ public class Manifest {
             Logger.getLogger(TransToolUI.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
+    public ArrayList<String> getManifestList() {
+        return manifestList;
+    }
+
+    public void setManifestList(ArrayList<String> manifestList) {
+        this.manifestList = manifestList;
+    }
+
+    public String getSavePath() {
+        return savePath;
+    }
+
+    public void setSavePath(String savePath) {
+        this.savePath = savePath;
+    }
+
+    public String getBrainhoneyPath() {
+        return brainhoneyPath;
+    }
+
+    public void setBrainhoneyPath(String brainhoneyPath) {
+        this.brainhoneyPath = brainhoneyPath;
+    }
+
+    public ArrayList<String> getFileNames() {
+        return fileNames;
+    }
+
+    public void setFileNames(ArrayList<String> fileNames) {
+        this.fileNames = fileNames;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public JTextPane getEventLogPanel() {
+        return eventLogPanel;
+    }
+
+    public void setEventLogPanel(JTextPane eventLogPanel) {
+        this.eventLogPanel = eventLogPanel;
+    }
+
+    public String getjPanelText() {
+        return jPanelText;
+    }
+
+    public void setjPanelText(String jPanelText) {
+        this.jPanelText = jPanelText;
+    }
+
+    public String getLoadPath() {
+        return loadPath;
+    }
+
+    public void setLoadPath(String loadPath) {
+        this.loadPath = loadPath;
+    }
+    
+    
 
 }

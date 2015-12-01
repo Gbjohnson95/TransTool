@@ -127,7 +127,6 @@ public class BrainhoneyQuestion {
             fieldEntry3.appendChild(doc.createTextNode("1.000000000"));
         } else {
             fieldEntry3.appendChild(doc.createTextNode(brainhoney.getScore() + ".000000000"));
-            System.out.println("Brainhoney score is!  " + brainhoney.getScore());
         }
         qtiDataField3.appendChild(fieldEntry3);
 

@@ -28,6 +28,12 @@ public class Item {
     protected String gradeable;
     protected String weight;
     protected String gradeItem;
+    protected String bodyText;
+    protected String brainhoneyPath;
+
+    public Item() {
+        bodyText = new String();
+    }
 
     /**
      *
@@ -301,7 +307,14 @@ public class Item {
      * @param location
      */
     public void setLocation(String location) {
-        this.location = location;
+        this.location = new String();
+        for (int i = 0; i < location.length(); i++) {
+            if (location.charAt(i) == '/') {
+                this.location += "\\";
+            } else {
+                this.location += location.charAt(i);
+            }
+        }
     }
 
     /**
@@ -318,6 +331,22 @@ public class Item {
      */
     public void setGradeAssociation(String gradeAssociation) {
         this.gradeAssociation = gradeAssociation;
+    }
+
+    public String getBodyText() {
+        return bodyText;
+    }
+
+    public void setBodyText(String bodyText) {
+        this.bodyText = bodyText;
+    }
+
+    public String getBrainhoneyPath() {
+        return brainhoneyPath;
+    }
+
+    public void setBrainhoneyPath(String brainhoneyPath) {
+        this.brainhoneyPath = brainhoneyPath;
     }
 
 }

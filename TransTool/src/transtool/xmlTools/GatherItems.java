@@ -30,15 +30,14 @@ import transtool.questions.BrainhoneyContents;
  */
 public class GatherItems {
 
-    private String nameOfXML;
     private int identifier = 10000;
     private int id = 3;
     private ArrayList<Item> items = new ArrayList<>();
     private ArrayList<QuizItem> quizItem = new ArrayList<>();
     private String savePath;
+    private String brainhoneyPath;
     private int gradeAssociation;
     private ArrayList<GradeCategories> gradeCategories = new ArrayList<>();
-
     private int itemID = 10000;
     private int quizID = 1;
     private ArrayList<DropBox> dropBoxes = new ArrayList<>();
@@ -53,7 +52,7 @@ public class GatherItems {
 
         try {
             dBuilder = dbFactory.newDocumentBuilder();
-            Document doc = dBuilder.parse(nameOfXML);
+            Document doc = dBuilder.parse(brainhoneyPath);
 
             // Normalize the document.  
             doc.getDocumentElement().normalize();
@@ -106,22 +105,6 @@ public class GatherItems {
             Logger.getLogger(GatherItems.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-    }
-
-    /**
-     *
-     * @return
-     */
-    public String getNameOfXML() {
-        return nameOfXML;
-    }
-
-    /**
-     *
-     * @param nameOfXML
-     */
-    public void setNameOfXML(String nameOfXML) {
-        this.nameOfXML = nameOfXML;
     }
 
     /**
@@ -310,6 +293,7 @@ public class GatherItems {
     void createQuizItem(Element data, Document doc) {
         QuizItem quiz = new QuizItem();
         quiz.setSavePath(savePath);
+        quiz.setBrainhoneyPath(brainhoneyPath);
         quiz.setParent(data.getElementsByTagName("parent").item(0).getTextContent());
         quiz.setName(data.getElementsByTagName("title").item(0).getTextContent());
         quiz.setLocation(data.getElementsByTagName("href").item(0).getTextContent());
@@ -415,6 +399,7 @@ public class GatherItems {
 
         DropBox dropBox = new DropBox();
 
+        dropBox.setBrainhoneyPath(brainhoneyPath);
         dropBox.setSavePath(savePath);
         dropBox.setParent(data.getElementsByTagName("parent").item(0).getTextContent());
         if (data.getElementsByTagName("title").getLength() > 0){
@@ -451,7 +436,9 @@ public class GatherItems {
      */
     public void createDiscussionBoard(Element data, Document doc) {
         DiscussionBoard discussionBoard = new DiscussionBoard();
+        
 
+        discussionBoard.setBrainhoneyPath(brainhoneyPath);
         discussionBoard.setSavePath(savePath);
         discussionBoard.setParent(data.getElementsByTagName("parent").item(0).getTextContent());
         discussionBoard.setName(data.getElementsByTagName("title").item(0).getTextContent());
@@ -504,4 +491,14 @@ public class GatherItems {
             }
         }
     }
+
+    public String getBrainhoneyPath() {
+        return brainhoneyPath;
+    }
+
+    public void setBrainhoneyPath(String brainhoneyPath) {
+        this.brainhoneyPath = brainhoneyPath;
+    }
+    
+    
 }

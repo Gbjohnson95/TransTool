@@ -5,6 +5,7 @@
  */
 package Items;
 
+import FixHTML.FixHTML;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -44,7 +45,7 @@ public class QuizItem extends Item {
     private String quizID;
 
     /**
-     * 
+     *
      */
     public QuizItem() {
         brainhoney = new ArrayList<>();
@@ -54,70 +55,81 @@ public class QuizItem extends Item {
         itemType = "Quiz";
     }
 
-
     /**
-     * 
+     *
      */
     @Override
     public void writeItem() {
-
+        
         try {
 
             // Standard DOM procedures
             DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder;
-
+            
             docBuilder = docFactory.newDocumentBuilder();
 
             // root elements
             Document doc = docBuilder.newDocument();
-
+            
             Element root = doc.createElement("questestinterop");
             doc.appendChild(root);
-
+            
             root.setAttribute("xmlns:d2l_2p0", "http://desire2learn.com/xsd/d2lcp_v2p0");
-
+            
             Element assessment = doc.createElement("assessment");
             root.appendChild(assessment);
-
+            
             assessment.setAttribute("d2l_2p0:resource_code", "byui_produ-" + ident);
             assessment.setAttribute("ident", "res_quiz_" + ident);
             ident = "res_quiz_" + ident;
             assessment.setAttribute("title", name);
             assessment.setAttribute("d2l_2p0:id", itemID);
-
+            
             Element rubric = doc.createElement("rubric");
             Element flow_mat = doc.createElement("flow_mat");
             Element material = doc.createElement("material");
             Element mattext = doc.createElement("mattext");
-
+            
             assessment.appendChild(rubric);
             rubric.appendChild(flow_mat);
             flow_mat.appendChild(material);
             material.appendChild(mattext);
-
-            mattext.setAttribute("d2l_2p0:isdisplayed", "no");
+            
+            FixHTML fix = new FixHTML();
+            
+            fix.setFilePath(brainhoneyPath);
+            fix.setItem(this);
+            fix.fix();
+            setBodyText(fix.getBodyText());
+            
+            if (bodyText.isEmpty()) {
+                mattext.setAttribute("d2l_2p0:isdisplayed", "no");
+            } else {
+                mattext.setAttribute("d2l_2p0:isdisplayed", "yes");
+                mattext.setTextContent(bodyText);
+            }
             mattext.setAttribute("texttype", "text/html");
-
+            
             Element presentation_material = doc.createElement("presentation_material");
             Element flow_mat2 = doc.createElement("flow_mat");
             Element material2 = doc.createElement("material");
             Element mattext2 = doc.createElement("mattext");
             Element material3 = doc.createElement("material");
             Element mattext3 = doc.createElement("mattext");
-
+            
             assessment.appendChild(presentation_material);
             presentation_material.appendChild(flow_mat2);
             flow_mat2.appendChild(material2);
             flow_mat2.appendChild(material3);
             material2.appendChild(mattext2);
             material3.appendChild(mattext3);
-
+            
             material2.setAttribute("label", "page header");
             mattext2.setAttribute("d2l_2p0:isdisplayed", "no");
             material3.setAttribute("label", "page footer");
             mattext3.setAttribute("d2l_2p0:isdisplayed", "no");
-
+            
             Element assess_procextension = doc.createElement("assess_procextension");
             Element introMessage = doc.createElement("d2l_2p0:intro_message");
             Element category1 = doc.createElement("category");
@@ -139,7 +151,7 @@ public class QuizItem extends Item {
             Element restrictions = doc.createElement("d2l_2p0:attempt_restrictions");
             Element calcType = doc.createElement("d2l_2p0:mark_calculation_type");
             Element forward = doc.createElement("d2l_2p0:is_forward_only");
-
+            
             assessment.appendChild(assess_procextension);
             assess_procextension.appendChild(introMessage);
             assess_procextension.appendChild(category1);
@@ -161,7 +173,7 @@ public class QuizItem extends Item {
             assess_procextension.appendChild(restrictions);
             assess_procextension.appendChild(calcType);
             assess_procextension.appendChild(forward);
-
+            
             category1.setTextContent(parent);
             introMessage.setAttribute("d2l_2p0:isdisplayed", "no");
             introMessage.setAttribute("texttype", "text/html");
@@ -182,7 +194,7 @@ public class QuizItem extends Item {
             attempts.setTextContent(attemptLimit);
             calcType.setTextContent("1");
             forward.setTextContent("no");
-
+            
             Element assessfeedback = doc.createElement("assessfeedback");
             Element rubric2 = doc.createElement("rubric");
             Element flow_mat3 = doc.createElement("flow_mat");
@@ -194,7 +206,7 @@ public class QuizItem extends Item {
             Element restrictIP = doc.createElement("d2l_2p0:submission_restrictip");
             Element average = doc.createElement("d2l_2p0:show_class_average");
             Element scoreDistr = doc.createElement("d2l_2p0:show_score_distribution");
-
+            
             assessment.appendChild(assessfeedback);
             assessfeedback.appendChild(rubric2);
             rubric2.appendChild(flow_mat3);
@@ -206,7 +218,7 @@ public class QuizItem extends Item {
             rubric2.appendChild(restrictIP);
             rubric2.appendChild(average);
             rubric2.appendChild(scoreDistr);
-
+            
             assessfeedback.setAttribute("title", "");
             mattext4.setAttribute("texttype", "yes");
             mattext4.setTextContent("<p>Your quiz has been submitted successfully.</p>");
@@ -216,9 +228,9 @@ public class QuizItem extends Item {
             restrictIP.setTextContent("no");
             average.setTextContent("no");
             scoreDistr.setTextContent("no");
-
+            
             section = new Section(itemNumber, idNumber, assessment, this, doc);
-
+            
             assessment.appendChild(section.createSection());
             itemNumber = section.getItemNumber();
             questionNumber = section.getItemNumber();
@@ -236,9 +248,9 @@ public class QuizItem extends Item {
             // Output to console for testing
             // StreamResult result = new StreamResult(System.out);
             transformer.transform(source, result);
-
+            
             System.out.println("File saved!");
-
+            
         } catch (ParserConfigurationException ex) {
             System.out.println("Error!!! Unable to save file! Something wrong!!");
         } catch (TransformerConfigurationException ex) {
@@ -246,224 +258,224 @@ public class QuizItem extends Item {
         } catch (TransformerException ex) {
             Logger.getLogger(QuizItem.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        
     }
 
     /**
-     * 
-     * @return 
+     *
+     * @return
      */
     public String getAttemptLimit() {
         return attemptLimit;
     }
 
     /**
-     * 
-     * @param attemptLimit 
+     *
+     * @param attemptLimit
      */
     public void setAttemptLimit(String attemptLimit) {
         this.attemptLimit = attemptLimit;
     }
 
     /**
-     * 
-     * @return 
+     *
+     * @return
      */
     public String getSecurityLevel() {
         return securityLevel;
     }
 
     /**
-     * 
-     * @param securityLevel 
+     *
+     * @param securityLevel
      */
     public void setSecurityLevel(String securityLevel) {
         this.securityLevel = securityLevel;
     }
 
     /**
-     * 
-     * @return 
+     *
+     * @return
      */
     public String getPassword() {
         return password;
     }
 
     /**
-     * 
-     * @param password 
+     *
+     * @param password
      */
     public void setPassword(String password) {
         this.password = password;
     }
 
     /**
-     * 
-     * @return 
+     *
+     * @return
      */
     public Element getQuizItem() {
         return quizItem;
     }
 
     /**
-     * 
-     * @param quizItem 
+     *
+     * @param quizItem
      */
     public void setQuizItem(Element quizItem) {
         this.quizItem = quizItem;
     }
 
     /**
-     * 
+     *
      */
     public void populateClass() {
         if (quizItem != null) {
-
+            
         } else {
             System.out.println("Object not initialized!  Please initialize!");
         }
     }
 
     /**
-     * 
-     * @return 
+     *
+     * @return
      */
     public int getItemNumber() {
         return itemNumber;
     }
-    
-/**
- * 
- * @param itemNumber 
- */
+
+    /**
+     *
+     * @param itemNumber
+     */
     public void setItemNumber(int itemNumber) {
         this.itemNumber = itemNumber;
     }
 
     /**
-     * 
-     * @return 
+     *
+     * @return
      */
     public int getQuestionNumber() {
         return questionNumber;
     }
 
     /**
-     * 
-     * @param questionNumber 
+     *
+     * @param questionNumber
      */
     public void setQuestionNumber(int questionNumber) {
         this.questionNumber = questionNumber;
     }
 
     /**
-     * 
-     * @return 
+     *
+     * @return
      */
     public int getFeedbackNumber() {
         return feedbackNumber;
     }
 
     /**
-     * 
-     * @param feedbackNumber 
+     *
+     * @param feedbackNumber
      */
     public void setFeedbackNumber(int feedbackNumber) {
         this.feedbackNumber = feedbackNumber;
     }
 
     /**
-     * 
-     * @return 
+     *
+     * @return
      */
     public int getIdNumber() {
         return idNumber;
     }
 
     /**
-     * 
-     * @param idNumber 
+     *
+     * @param idNumber
      */
     public void setIdNumber(int idNumber) {
         this.idNumber = idNumber;
     }
 
     /**
-     * 
-     * @return 
+     *
+     * @return
      */
     public Section getSection() {
         return section;
     }
 
     /**
-     * 
-     * @param section 
+     *
+     * @param section
      */
     public void setSection(Section section) {
         this.section = section;
     }
 
     /**
-     * 
-     * @return 
+     *
+     * @return
      */
     public ArrayList<String> getQuizQuestions() {
         return quizQuestions;
     }
 
     /**
-     * 
-     * @param quizQuestions 
+     *
+     * @param quizQuestions
      */
     public void setQuizQuestions(ArrayList<String> quizQuestions) {
         this.quizQuestions = quizQuestions;
     }
 
     /**
-     * 
-     * @return 
+     *
+     * @return
      */
     public ArrayList<BrainhoneyContents> getBrainhoney() {
         return brainhoney;
     }
 
     /**
-     * 
-     * @param brainhoney 
+     *
+     * @param brainhoney
      */
     public void setBrainhoney(ArrayList<BrainhoneyContents> brainhoney) {
         this.brainhoney = brainhoney;
     }
 
     /**
-     * 
-     * @return 
+     *
+     * @return
      */
     public String getQuizID() {
         return quizID;
     }
 
     /**
-     * 
-     * @param quizID 
+     *
+     * @param quizID
      */
     public void setQuizID(String quizID) {
         this.quizID = quizID;
     }
 
     /**
-     * 
+     *
      * @param toSet
-     * @param theID 
+     * @param theID
      */
     public void setItemQuizFeed(int toSet, int theID) {
-
+        
         itemNumber = toSet;
         questionNumber = toSet;
         feedbackNumber = toSet;
         idNumber = theID;
-
+        
     }
-
+    
 }

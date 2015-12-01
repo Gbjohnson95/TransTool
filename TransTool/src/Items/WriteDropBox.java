@@ -5,6 +5,7 @@
  */
 package Items;
 
+import FixHTML.FixHTML;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -27,18 +28,19 @@ import org.w3c.dom.Element;
 public class WriteDropBox {
 
     /**
-     * 
+     *
      */
-    public WriteDropBox(){
-        
+    public WriteDropBox() {
+
     }
-    
+
     /**
-     * 
+     *
      * @param dropBoxes
-     * @param savePath 
+     * @param savePath
+     * @param loadPath
      */
-    public WriteDropBox(ArrayList<DropBox> dropBoxes, String savePath) {
+    public WriteDropBox(ArrayList<DropBox> dropBoxes, String savePath, String loadPath) {
         try {
 
             // Standard DOM procedures
@@ -57,6 +59,7 @@ public class WriteDropBox {
             int i = 1;
             // For loop creating dropboxes.
             for (DropBox dropBox : dropBoxes) {
+                dropBox.setBrainhoneyPath(loadPath);
                 Element folder = doc.createElement("folder");
                 header.appendChild(folder);
 
@@ -70,8 +73,28 @@ public class WriteDropBox {
                 folder.setAttribute("files_per_submission", "0");
                 folder.setAttribute("submissions", "2");
                 folder.setAttribute("resource_code", "byui_produ-" + dropBox.getIdent());
+                
+                
+
+                FixHTML fix = new FixHTML();
+
+                fix.setFilePath(dropBox.getBrainhoneyPath());
+                fix.setItem(dropBox);
+                fix.fix();
+                dropBox.setBodyText(fix.getBodyText());
+                
+                if (!dropBox.getBodyText().isEmpty()){
+                    Element instructions = doc.createElement("instructions");
+                    Element text = doc.createElement("text");
+                    folder.appendChild(instructions);
+                    instructions.appendChild(text);
+                    
+                    instructions.setAttribute("text_type", "text/html");
+                    text.setTextContent(dropBox.getBodyText());
+                }
+
             }
-            
+
             // write the content into xml file
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
@@ -86,7 +109,7 @@ public class WriteDropBox {
 
         } catch (ParserConfigurationException | TransformerException ex) {
             Logger.getLogger(WriteDropBox.class.getName()).log(Level.SEVERE, null, ex);
-        } 
+        }
     }
 
 }

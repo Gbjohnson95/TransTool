@@ -5,6 +5,7 @@
  */
 package transtool.ui;
 
+
 import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
@@ -50,7 +51,7 @@ public class TransToolUI extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextPane1 = new javax.swing.JTextPane();
+        eventLogPanel = new javax.swing.JTextPane();
         jLabel5 = new javax.swing.JLabel();
         jSeparator3 = new javax.swing.JSeparator();
         jLabel3 = new javax.swing.JLabel();
@@ -98,7 +99,7 @@ public class TransToolUI extends javax.swing.JFrame {
             }
         });
 
-        jScrollPane1.setViewportView(jTextPane1);
+        jScrollPane1.setViewportView(eventLogPanel);
 
         jLabel5.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jLabel5.setText("<html><b>Event Log</b></html>");
@@ -284,12 +285,15 @@ public class TransToolUI extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
 
         manifest = new Manifest(savePath, filePath);
+        manifest.setEventLogPanel(eventLogPanel);
         manifest.buildManifest();
+
         try {
             Desktop.getDesktop().open(new File(savePath));
         } catch (IOException ex) {
             Logger.getLogger(TransToolUI.class.getName()).log(Level.SEVERE, null, ex);
         }
+
 
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -343,6 +347,7 @@ public class TransToolUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextPane eventLogPanel;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
@@ -367,7 +372,6 @@ public class TransToolUI extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator4;
     private javax.swing.JSeparator jSeparator5;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTextPane jTextPane1;
     private javax.swing.JLabel pathFileText;
     // End of variables declaration//GEN-END:variables
 
