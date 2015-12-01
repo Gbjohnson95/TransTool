@@ -301,7 +301,6 @@ public class WriteGrades {
             DOMSource source = new DOMSource(doc);
             StreamResult result = new StreamResult(new File((filePath) + "\\grades_d2l.xml"));
 
-            System.out.println("Source is: " + filePath);
             // Output to console for testing
             transformer.transform(source, result);          
             

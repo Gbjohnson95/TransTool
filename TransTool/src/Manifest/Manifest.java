@@ -125,6 +125,8 @@ public class Manifest {
             gather.populateItems();
             title = gather.getCourseTitle();
 
+            jPanelText += "\nWriting grade items...";
+            eventLogPanel.setText(jPanelText);
             // pull each section off, so they can be sent to a reference later
             // for loop through each Item and create a reference
             // Now, let's create the grading categories and items in an XML
@@ -141,6 +143,8 @@ public class Manifest {
 
             System.out.println("Item size: " + gather.getItems().size() + " And DropBox Size: " + dBox.size());
 
+            jPanelText += "\nSetting up DropBoxes...";
+            eventLogPanel.setText(jPanelText);
             for (Item item1 : theItem) {
                 for (DropBox dB : dBox) {
                     if (item1.getItemID().equals(dB.getItemID())) {
@@ -154,12 +158,16 @@ public class Manifest {
             ArrayList<QuizItem> quizItems = gather.getQuizItem();
             ArrayList<Section> sections = new ArrayList<>();
 
+            jPanelText += "\nAdding sections to quizzes...";
+            eventLogPanel.setText(jPanelText);
             for (QuizItem quizItem : quizItems) {
                 sections.add(quizItem.getSection());
             }
 
             QuestionDB questionDB = new QuestionDB(sections, savePath);
 
+            jPanelText += "\nCreating the resources in the manifest...";
+            eventLogPanel.setText(jPanelText);
             // for loop through each item, adding them to the manifest.
             for (Item item : gather.getItems()) {
                 if (!item.getItemType().equals("Dropbox")) {
@@ -174,11 +182,7 @@ public class Manifest {
                     qResource.setAttribute("d2l_2p0:material_type", item.getMaterialType());
                     qResource.setAttribute("type", "webcontent");
                     qResource.setAttribute("identifier", item.getIdent());
-                    
-                    
-                   
-                    
-                    
+
                 }
             }
 
@@ -215,6 +219,8 @@ public class Manifest {
             fileNames.add("imsmanifest.xml");
             fileNames.add("dropbox_d2l.xml");
 
+            jPanelText += "\nZipping Files...";
+            eventLogPanel.setText(jPanelText);
             zipFiles();
         } catch (ParserConfigurationException pce) {
             System.out.println("Oops!  Error!!");
@@ -341,7 +347,5 @@ public class Manifest {
     public void setLoadPath(String loadPath) {
         this.loadPath = loadPath;
     }
-    
-    
 
 }

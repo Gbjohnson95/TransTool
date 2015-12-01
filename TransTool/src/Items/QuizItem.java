@@ -62,7 +62,6 @@ public class QuizItem extends Item {
         
         try {
             
-            System.out.println("Question size is: " + brainhoney.size());
 
             // Standard DOM procedures
             DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();

@@ -42,9 +42,6 @@ public class GatherItems {
     private int quizID = 1;
     private ArrayList<DropBox> dropBoxes = new ArrayList<>();
     private String courseTitle;
-    
-    
-    
 
     /**
      *
@@ -59,10 +56,10 @@ public class GatherItems {
 
             // Normalize the document.  
             doc.getDocumentElement().normalize();
-            
+
             Element title = (Element) doc.getElementsByTagName("course").item(0);
             courseTitle = title.getAttribute("title");
-            
+
             NodeList node = doc.getElementsByTagName("item");
 
             for (int i = 0; i < node.getLength(); i++) {
@@ -70,7 +67,7 @@ public class GatherItems {
                 Element dataStructure = (Element) nodes.getElementsByTagName("data").item(0);
                 NodeList dataS = nodes.getElementsByTagName("data");
                 if (dataS.getLength() > 0) {
-                    
+
                     NodeList testing = dataStructure.getElementsByTagName("type");
 
                     if (testing.getLength() < 1) {
@@ -271,23 +268,21 @@ public class GatherItems {
     }
 
     /**
-     * 
-     * @return 
+     *
+     * @return
      */
     public String getCourseTitle() {
         return courseTitle;
     }
 
     /**
-     * 
-     * @param courseTitle 
+     *
+     * @param courseTitle
      */
     public void setCourseTitle(String courseTitle) {
         this.courseTitle = courseTitle;
     }
 
-    
-    
     /**
      *
      * @param data
@@ -372,11 +367,7 @@ public class GatherItems {
                                 bText.add(body.getTextContent());
                             }
                             quizQuestion.setqChoice(bText);
-
                         }
-                        System.out.println("Debugging: Question ID is: " + quizQuestion.getQuestionID());
-                        System.out.println("Debugging: Quiz name is: " + quiz.getName());
-                        System.out.println("Debugging: the quiz body says: " + quizQuestion.getBody());
                     }
                 }
             }
@@ -407,13 +398,12 @@ public class GatherItems {
         dropBox.setBrainhoneyPath(brainhoneyPath);
         dropBox.setSavePath(savePath);
         dropBox.setParent(data.getElementsByTagName("parent").item(0).getTextContent());
-        if (data.getElementsByTagName("title").getLength() > 0){
-        dropBox.setName(data.getElementsByTagName("title").item(0).getTextContent());
-        }
-        else {
+        if (data.getElementsByTagName("title").getLength() > 0) {
+            dropBox.setName(data.getElementsByTagName("title").item(0).getTextContent());
+        } else {
             dropBox.setName("Untitled DropBox");
         }
-        
+
         dropBox.setLocation(data.getElementsByTagName("href").item(0).getTextContent());
         if (data.getElementsByTagName("gradable").getLength() > 0) {
             dropBox.setGradeable(data.getElementsByTagName("gradable").item(0).getTextContent());
@@ -441,7 +431,6 @@ public class GatherItems {
      */
     public void createDiscussionBoard(Element data, Document doc) {
         DiscussionBoard discussionBoard = new DiscussionBoard();
-        
 
         discussionBoard.setBrainhoneyPath(brainhoneyPath);
         discussionBoard.setSavePath(savePath);
@@ -504,6 +493,5 @@ public class GatherItems {
     public void setBrainhoneyPath(String brainhoneyPath) {
         this.brainhoneyPath = brainhoneyPath;
     }
-    
-    
+
 }

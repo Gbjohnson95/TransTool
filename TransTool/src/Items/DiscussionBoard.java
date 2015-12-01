@@ -150,6 +150,15 @@ public class DiscussionBoard extends Item {
 
             itemID = did;
             ident = dident;
+            
+            
+            if (fix.getBodyText().isEmpty()) {
+
+            } else {
+                Element description = doc.createElement("description");
+                description.setTextContent(bodyText);
+                content2.appendChild(description);
+            }
 
             // write the content into xml file
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
