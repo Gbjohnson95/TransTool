@@ -76,7 +76,7 @@ public class TransToolUI extends javax.swing.JFrame {
         jLabel1.setText("<html><b>Trans</b>Tool</html>");
 
         jLabel2.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        jLabel2.setText("v0.1.1");
+        jLabel2.setText("v0.2.1");
 
         pathFileText.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         pathFileText.setText("<html><b>Step 1:</b> Select The BrainHoney Manifest File</html>");
@@ -182,7 +182,7 @@ public class TransToolUI extends javax.swing.JFrame {
         jLabel6.setText("<html><b>Trans</b>Tool</html>");
 
         jLabel7.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        jLabel7.setText("v0.1.1");
+        jLabel7.setText("v0.2.1");
 
         jLabel8.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jLabel8.setText("<html><p><b>TransTool:</b> A simple BrainHoney to Brightspace transition Tool</p><p>Copyright (C) 2015 BYU - Idaho</p><br /><p>This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.</p><br /><p>This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.</p><br /><p>You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.</p></html>");

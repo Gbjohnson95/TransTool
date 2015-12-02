@@ -10,12 +10,9 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.jsoup.Jsoup;
-import org.jsoup.Jsoup;
-import org.jsoup.parser.Parser;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.safety.Whitelist;
@@ -87,6 +84,7 @@ public class FixHTML {
                 Whitelist white = Whitelist.basicWithImages();
                 white.preserveRelativeLinks(true);
                 white.removeTags("span");
+                white.addEnforcedAttribute("a", "target", "_blank");
                 String test = Jsoup.clean(doc.body().html(), white);
 
                 // Replacing common variables.  Replacing them to accomodate online
@@ -98,8 +96,6 @@ public class FixHTML {
                 test = test.replace("$WED$", "<strong>Due: Wednesday, see <a href=\"/d2l/le/calendar/ {OrgUnitId} \" target=\"_blank\">Calendar</a>&nbsp;for times</strong>");
                 test = test.replace("$TUE$", "<strong>Due: Tuesday, see <a href=\"/d2l/le/calendar/ {OrgUnitId} \" target=\"_blank\">Calendar</a>&nbsp;for times</strong>");
                 test = test.replace("$MON$", "<strong>Due: Monday, see <a href=\"/d2l/le/calendar/ {OrgUnitId} \" target=\"_blank\">Calendar</a>&nbsp;for times</strong>");
-                
-                
 
                 Element body = doc.createElement("body");
                 body.append(test);
