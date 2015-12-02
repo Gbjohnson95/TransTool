@@ -56,7 +56,7 @@ public class FixHTML {
         }
         appendedPath += "resources\\";
 
-        File input = new File(appendedPath  + item.getLocation());
+        File input = new File(appendedPath + item.getLocation());
         if (input.exists()) {
             try {
 
@@ -68,9 +68,16 @@ public class FixHTML {
 
                 Element head = doc.getElementsByTag("head").first();
 
+                if (!head.hasText()) {
+                    head.append("<meta charset=\"utf-8\">\n"
+                            + "	<title>" + item.getName() + "</title>\n"
+                            + "	<link rel=\"stylesheet\" href=\"{OrgUnitPath} Web Files/HTML/../css/styles.css\" />\n"
+                            + "	<script src=\"https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js\"></script>\n"
+                            + "	<script src=\"{OrgUnitPath} Web Files/HTML/../js/online.js\"></script>\n"
+                            + "	<script src=\"{OrgUnitPath} Web Files/HTML/../js/course.js\"></script>");
+                }
                 // Replace bolds
                 doc.getElementsByTag("b").tagName("strong");
-
                 // Replace italics.
                 doc.getElementsByTag("i").tagName("em");
 
@@ -82,24 +89,30 @@ public class FixHTML {
                 white.removeTags("span");
                 String test = Jsoup.clean(doc.body().html(), white);
 
+                // Replacing common variables.  Replacing them to accomodate online
+                // classes.  
+                test = test.replace("$ITEMNAME$", item.getName());
+                test = test.replace("$SAT$", "<strong>Due: Monday, see <a href=\"/d2l/le/calendar/ {OrgUnitId} \" target=\"_blank\">Calendar</a>&nbsp;for times</strong>");
+                test = test.replace("$FRI$", "<strong>Due: Friday, see <a href=\"/d2l/le/calendar/ {OrgUnitId} \" target=\"_blank\">Calendar</a>&nbsp;for times</strong>");
+                test = test.replace("$THUR$", "<strong>Due: Thursday, see <a href=\"/d2l/le/calendar/ {OrgUnitId} \" target=\"_blank\">Calendar</a>&nbsp;for times</strong>");
+                test = test.replace("$WED$", "<strong>Due: Wednesday, see <a href=\"/d2l/le/calendar/ {OrgUnitId} \" target=\"_blank\">Calendar</a>&nbsp;for times</strong>");
+                test = test.replace("$TUE$", "<strong>Due: Tuesday, see <a href=\"/d2l/le/calendar/ {OrgUnitId} \" target=\"_blank\">Calendar</a>&nbsp;for times</strong>");
+                test = test.replace("$MON$", "<strong>Due: Monday, see <a href=\"/d2l/le/calendar/ {OrgUnitId} \" target=\"_blank\">Calendar</a>&nbsp;for times</strong>");
+                
+                
+
                 Element body = doc.createElement("body");
                 body.append(test);
 
                 Elements emptySearch = body.getAllElements();
 
-                for (Element empty : emptySearch) {
-                   
-                    if (!empty.hasText() && !empty.tagName().equals("head") && !empty.tagName().equals("body") ) {
-                        empty.unwrap();
-                    }
-                }
+                emptySearch.stream().filter((empty) -> (!empty.hasText() && !empty.tagName().equals("head") && !empty.tagName().equals("body"))).forEach((empty) -> {
+                    empty.unwrap();
+                });
 
                 doc.getElementsByTag("body").remove();
                 html.appendChild(body);
 
-                //PrintWriter writer = new PrintWriter("C:\\Users\\hallm8\\Downloads\\Brainhoney Stuff\\test.html", "UTF-8");
-                //writer.println(doc.html());
-                //writer.close();
                 bodyText = doc.html();
 
             } catch (IOException ex) {
