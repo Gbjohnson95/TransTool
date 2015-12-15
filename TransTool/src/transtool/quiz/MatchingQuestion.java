@@ -97,7 +97,9 @@ public class MatchingQuestion extends BrainhoneyQuestion {
 
             grp.setAttribute("rcardinality", "single");
             mattext2.setAttribute("texttype", "text/html");
-            mattext2.setTextContent(brainhoney.getRightAnswer().get(j));
+            if (j < brainhoney.getRightAnswer().size()) {
+                mattext2.setTextContent(brainhoney.getRightAnswer().get(j));
+            }
             renderChoice.setAttribute("shuffle", "yes");
 
             flow.appendChild(grp);

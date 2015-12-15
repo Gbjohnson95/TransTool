@@ -6,9 +6,6 @@
 package HTMLCleaner;
 
 import Items.Item;
-import org.htmlcleaner.CleanerProperties;
-import org.htmlcleaner.HtmlCleaner;
-import org.htmlcleaner.TagNode;
 
 /**
  *
@@ -20,10 +17,6 @@ public class HTMLCleaner {
 
     public HTMLCleaner() {
 
-        HtmlCleaner htmlCleaner = new HtmlCleaner();
-        CleanerProperties properties = htmlCleaner.getProperties();
-
-        TagNode root = htmlCleaner.clean(item.getLocation());
         
     }
 

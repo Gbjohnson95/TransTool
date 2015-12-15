@@ -31,6 +31,7 @@ public class BrainhoneyContents {
     private String score;
     private String partial;
     private String questionID;
+    private boolean didFill = false;
 
     /*
      * Default constructor.  Creates new, and that's about it.
@@ -206,4 +207,14 @@ public class BrainhoneyContents {
     public void setQuestionID(String questionID) {
         this.questionID = questionID;
     }
+
+    public boolean isDidFill() {
+        return didFill;
+    }
+
+    public void setDidFill(boolean didFill) {
+        this.didFill = didFill;
+    }
+    
+    
 }

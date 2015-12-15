@@ -6,12 +6,15 @@
 package transtool.xmlTools;
 
 import GradeItems.GradeCategories;
+import Items.Content;
 import Items.DiscussionBoard;
 import Items.DropBox;
+import Items.Folder;
 import Items.Item;
 import Items.QuizItem;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.parsers.DocumentBuilder;
@@ -30,23 +33,46 @@ import transtool.questions.BrainhoneyContents;
  */
 public class GatherItems {
 
-    private int identifier = 10000;
-    private int id = 3;
-    private ArrayList<Item> items = new ArrayList<>();
-    private ArrayList<QuizItem> quizItem = new ArrayList<>();
+    private int identifier;
+    private int id;
+    private ArrayList<Item> items;
+    private ArrayList<QuizItem> quizItem;
     private String savePath;
     private String brainhoneyPath;
     private int gradeAssociation;
-    private ArrayList<GradeCategories> gradeCategories = new ArrayList<>();
-    private int itemID = 10000;
-    private int quizID = 1;
-    private ArrayList<DropBox> dropBoxes = new ArrayList<>();
+    private ArrayList<GradeCategories> gradeCategories;
+    private int itemID;
+    private int quizID;
+    private ArrayList<DropBox> dropBoxes;
     private String courseTitle;
+    private ArrayList<String> contentNames;
+    private ArrayList<Folder> folders;
+
+    /**
+     * GATHER ITEMS
+     * 
+     * This Constructor will initialize 
+     */
+    public GatherItems() {
+        Random randomGen = new Random();
+        
+        this.quizID = 1;
+        this.itemID = randomGen.nextInt(400001) + 100000;
+        this.id = 3;
+        this.identifier = randomGen.nextInt(40001) + 10000;
+        this.items = new ArrayList<>();
+        this.quizItem = new ArrayList<>();
+        this.gradeCategories = new ArrayList<>();
+        this.dropBoxes = new ArrayList<>();
+        this.folders = new ArrayList<>();
+    }
 
     /**
      *
      */
     public void populateItems() {
+        contentNames = new ArrayList<>();
+
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder;
 
@@ -62,7 +88,7 @@ public class GatherItems {
 
             NodeList node = doc.getElementsByTagName("item");
 
-            for (int i = 0; i < node.getLength(); i++) {
+            for (int i = 1; i < node.getLength(); i++) {
                 Element nodes = (Element) node.item(i);
                 Element dataStructure = (Element) nodes.getElementsByTagName("data").item(0);
                 NodeList dataS = nodes.getElementsByTagName("data");
@@ -71,6 +97,8 @@ public class GatherItems {
                     NodeList testing = dataStructure.getElementsByTagName("type");
 
                     if (testing.getLength() < 1) {
+                        // Likely a folder.  We shall see... we shall see.
+                        createFolder(dataStructure, doc);
 
                     } else if (testing.item(0).getTextContent().isEmpty()) {
 
@@ -80,7 +108,6 @@ public class GatherItems {
                         switch (type) {
                             case ("Assessment"):
                             case ("Homework"):
-
                                 createQuizItem(dataStructure, doc);
                                 break;
                             case ("Assignment"):
@@ -90,6 +117,9 @@ public class GatherItems {
                                 createDiscussionBoard(dataStructure, doc);
                                 break;
                             case ("Resource"):
+                                createContentPage(dataStructure, doc);
+                                break;
+                            case ("AssetLink"):
                                 break;
                         }
                     }
@@ -267,6 +297,22 @@ public class GatherItems {
         this.dropBoxes = dropBoxes;
     }
 
+    public ArrayList<String> getContentNames() {
+        return contentNames;
+    }
+
+    public void setContentNames(ArrayList<String> contentNames) {
+        this.contentNames = contentNames;
+    }
+
+    public ArrayList<Folder> getFolders() {
+        return folders;
+    }
+
+    public void setFolders(ArrayList<Folder> folders) {
+        this.folders = folders;
+    }
+
     /**
      *
      * @return
@@ -334,6 +380,7 @@ public class GatherItems {
             if (bQuestion.hasAttribute("questionid")) {
                 for (BrainhoneyContents quizQuestion : quizQuestions) {
                     if (quizQuestion.getQuestionID().equals(bQuestion.getAttribute("questionid"))) {
+                        quizQuestion.setDidFill(true);
                         quizQuestion.setBody(bQuestion.getElementsByTagName("body").item(0).getTextContent());
                         quizQuestion.setScore(bQuestion.getAttribute("score"));
                         quizQuestion.setInteractionType(bQuestion.getElementsByTagName("interaction").item(0).getAttributes().getNamedItem("type").getTextContent());
@@ -356,7 +403,6 @@ public class GatherItems {
                                 answer.add(answers.item(k).getTextContent());
                             }
                             quizQuestion.setRightAnswer(answer);
-
                         }
 
                         if (bQuestion.getElementsByTagName("body").getLength() > 1) {
@@ -381,7 +427,6 @@ public class GatherItems {
 
         identifier++;
         id++;
-
     }
 
     /**
@@ -415,9 +460,11 @@ public class GatherItems {
         dropBox.setItemID(Integer.toString(id));
         dropBox.setIdent(Integer.toString(identifier));
 
-        items.add(dropBox);
         if (isDropBox.getLength() > 0) {
+            items.add(dropBox);
             dropBoxes.add(dropBox);
+        } else {
+            createContentPage(data, doc);
         }
         identifier++;
         id++;
@@ -484,6 +531,66 @@ public class GatherItems {
                 gradeCategories.add(category);
             }
         }
+    }
+
+    void createContentPage(Element data, Document doc) {
+        Content content = new Content();
+
+        if (data.getElementsByTagName("title").getLength() > 0) {
+            content.setName(data.getElementsByTagName("title").item(0).getTextContent());
+        } else {
+            content.setName("Empty Page");
+        }
+
+        // If I randomize the name to one number in 999999, there is a one in a million
+        // chance of getting the exact same number as another one.
+        for (String contentName : contentNames) {
+            if (content.getName().equals(contentName)) {
+                Random randomGen = new Random();
+                content.setName(content.getName() + Integer.toString(randomGen.nextInt(999999)));
+            }
+        }
+
+        content.setMaterialType("content");
+        contentNames.add(content.getName());
+        content.setGradeable("false");
+        content.setLocation(data.getElementsByTagName("href").item(0).getTextContent());
+        content.setItemID(data.getAttribute("id"));
+        content.setParent(data.getElementsByTagName("parent").item(0).getTextContent());
+        content.setIdent(Integer.toString(identifier));
+        identifier++;
+        content.setBrainhoneyPath(brainhoneyPath);
+        content.setSavePath(savePath);
+        content.setItemType("Content");
+        items.add(content);
+    }
+
+    void createInternalAsset(Element data, Document doc) {
+
+    }
+
+    void createExternalLink(Element data, Document doc) {
+
+    }
+
+    /**
+     * CREATE FOLDER
+     *
+     * Creates a Folder and adds it to the folders array list.
+     *
+     * @param data
+     * @param doc
+     */
+    void createFolder(Element data, Document doc) {
+        Folder folder = new Folder();
+        folder.setFolderID(data.getElementsByTagName("folder").item(0).getTextContent());
+        if (data.getElementsByTagName("folder").getLength() > 0) {
+            folder.setFolderName(data.getElementsByTagName("title").item(0).getTextContent());
+        } else {
+            folder.setFolderName("Blank Folder");
+        }
+        folder.setParent(data.getElementsByTagName("parent").item(0).getTextContent());
+        folders.add(folder);
     }
 
     public String getBrainhoneyPath() {

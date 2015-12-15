@@ -82,7 +82,7 @@ public class QuizItem extends Item {
             
             assessment.setAttribute("d2l_2p0:resource_code", "byui_produ-" + ident);
             assessment.setAttribute("ident", "res_quiz_" + ident);
-            ident = "res_quiz_" + ident;
+            //ident = "res_quiz_" + ident;
             assessment.setAttribute("title", name);
             assessment.setAttribute("d2l_2p0:id", itemID);
             

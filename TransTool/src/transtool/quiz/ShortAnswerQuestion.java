@@ -120,6 +120,7 @@ public class ShortAnswerQuestion extends BrainhoneyQuestion {
                 int precision = 0;
                 boolean isPrecision = false;
 
+                /*
                 System.out.println("Regex item discovered!!! Simplifying!");
                 for (int i = 0; i < rightAnswer.length(); i++) {
                     if (rightAnswer.charAt(i) == '.' && rightAnswer.charAt(i + 1) == '.') {
@@ -170,7 +171,9 @@ public class ShortAnswerQuestion extends BrainhoneyQuestion {
                     }
                 }
             }
+        }*/
+            }
+
         }
     }
-
 }

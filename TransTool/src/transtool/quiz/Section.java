@@ -60,168 +60,167 @@ public class Section {
         sectionproc.appendChild(typeDisplaySection);
 
         // each Brainhoney class is actually a single question
-        
         for (BrainhoneyContents brainhoneyContent : brainhoney) {
-            boolean didChoose = false;
-            BrainhoneyQuestion question = new BrainhoneyQuestion();
+            if (brainhoneyContent.isDidFill()) {
+                boolean didChoose = false;
+                BrainhoneyQuestion question = new BrainhoneyQuestion();
+                switch (brainhoneyContent.getInteractionType()) {
+                    case "choice":
+                        question = new MultipleChoice(brainhoneyContent, doc, idNumber, itemNumber, section);
+                        didChoose = true;
+                        break;
 
-            
-            switch (brainhoneyContent.getInteractionType()) {
-                case "choice":
-                    question = new MultipleChoice(brainhoneyContent, doc, idNumber, itemNumber, section);
-                    didChoose = true;
-                    break;
+                    case "text":
+                        question = new ShortAnswerQuestion(brainhoneyContent, doc, idNumber, itemNumber, section);
+                        didChoose = true;
+                        break;
 
-                case "text":
-                    question = new ShortAnswerQuestion(brainhoneyContent, doc, idNumber, itemNumber, section);
-                    didChoose = true;
-                    break;
+                    case "essay":
+                        question = new LongAnswerQuestion(brainhoneyContent, doc, idNumber, itemNumber, section);
+                        didChoose = true;
+                        break;
 
-                case "essay":
-                    question = new LongAnswerQuestion(brainhoneyContent, doc, idNumber, itemNumber, section);
-                    didChoose = true;
-                    break;
+                    case "match":
+                        question = new MatchingQuestion(brainhoneyContent, doc, idNumber, itemNumber, section);
+                        didChoose = true;
+                        break;
 
-                case "match":
-                    question = new MatchingQuestion(brainhoneyContent, doc, idNumber, itemNumber, section);
-                    didChoose = true;
-                    break;
+                    case "order":
+                        //question = new OrderQuestion(brainhoneyContent, doc, idNumber, itemNumber, section);
+                        break;
 
-                case "order":
-                    //question = new OrderQuestion(brainhoneyContent, doc, idNumber, itemNumber, section);
-                    break;
+                    case "answer":
+                        question = new MultiSelect(brainhoneyContent, doc, idNumber, itemNumber, section);
+                        didChoose = true;
+                        break;
 
-                case "answer":
-                    question = new MultiSelect(brainhoneyContent, doc, idNumber, itemNumber, section);
-                    didChoose = true;
-                    break;
+                    case "custom":
+                    case "composite":
+                    default:
+                        System.out.println("Custom/Composite Question selected!");
+                        break;
 
-                case "custom":
-                case "composite":
-                default:
-                    System.out.println("Custom/Composite Question selected!");
-                    break;
+                }
+
+                if (didChoose == true) {
+                    itemNumber = question.getItemNumber();
+                    feedbackNumber = question.getItemNumber();
+                    questionNumber = question.getItemNumber();
+                    section.appendChild(question.getItem());
+                }
             }
-
-            if (didChoose == true) {
-                itemNumber = question.getItemNumber();
-                feedbackNumber = question.getItemNumber();
-                questionNumber = question.getItemNumber();
-                section.appendChild(question.getItem());
-            }
-
         }
 
         return section;
     }
 
     /**
-     * 
-     * @return 
+     *
+     * @return
      */
     public Quiz getQuiz() {
         return quiz;
     }
 
     /**
-     * 
-     * @param quiz 
+     *
+     * @param quiz
      */
     public void setQuiz(Quiz quiz) {
         this.quiz = quiz;
     }
 
     /**
-     * 
-     * @return 
+     *
+     * @return
      */
     public Document getDoc() {
         return doc;
     }
 
     /**
-     * 
-     * @param doc 
+     *
+     * @param doc
      */
     public void setDoc(Document doc) {
         this.doc = doc;
     }
 
     /**
-     * 
-     * @return 
+     *
+     * @return
      */
     public int getItemNumber() {
         return itemNumber;
     }
 
     /**
-     * 
-     * @param itemNumber 
+     *
+     * @param itemNumber
      */
     public void setItemNumber(int itemNumber) {
         this.itemNumber = itemNumber;
     }
 
     /**
-     * 
-     * @return 
+     *
+     * @return
      */
     public int getQuestionNumber() {
         return questionNumber;
     }
 
     /**
-     * 
-     * @param questionNumber 
+     *
+     * @param questionNumber
      */
     public void setQuestionNumber(int questionNumber) {
         this.questionNumber = questionNumber;
     }
 
     /**
-     * 
-     * @return 
+     *
+     * @return
      */
     public int getFeedbackNumber() {
         return feedbackNumber;
     }
 
     /**
-     * 
-     * @param feedbackNumber 
+     *
+     * @param feedbackNumber
      */
     public void setFeedbackNumber(int feedbackNumber) {
         this.feedbackNumber = feedbackNumber;
     }
 
     /**
-     * 
-     * @return 
+     *
+     * @return
      */
     public int getIdNumber() {
         return idNumber;
     }
 
     /**
-     * 
-     * @param idNumber 
+     *
+     * @param idNumber
      */
     public void setIdNumber(int idNumber) {
         this.idNumber = idNumber;
     }
 
     /**
-     * 
-     * @return 
+     *
+     * @return
      */
     public Element getRootItem() {
         return rootItem;
     }
 
     /**
-     * 
-     * @param rootItem 
+     *
+     * @param rootItem
      */
     public void setRootItem(Element rootItem) {
         this.rootItem = rootItem;

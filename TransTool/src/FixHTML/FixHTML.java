@@ -65,14 +65,17 @@ public class FixHTML {
 
                 Element head = doc.getElementsByTag("head").first();
 
-                if (!head.hasText()) {
+                if (!head.hasText() && item.getItemType().equals("Content")) {
                     head.append("<meta charset=\"utf-8\">\n"
                             + "	<title>" + item.getName() + "</title>\n"
-                            + "	<link rel=\"stylesheet\" href=\"{OrgUnitPath} Web Files/HTML/../css/styles.css\" />\n"
+                            + "	<link rel=\"stylesheet\" href=\"../Web Files/css/styles.css\" />\n"
                             + "	<script src=\"https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js\"></script>\n"
-                            + "	<script src=\"{OrgUnitPath} Web Files/HTML/../js/online.js\"></script>\n"
-                            + "	<script src=\"{OrgUnitPath} Web Files/HTML/../js/course.js\"></script>");
+                            + "	<script src=\"../Web Files/js/online.js\"></script>\n"
+                            + "	<script src=\"../Web Files/JavaScript/course.js\"></script>");
                 }
+
+                html.appendChild(head);
+
                 // Replace bolds
                 doc.getElementsByTag("b").tagName("strong");
                 // Replace italics.
@@ -97,12 +100,26 @@ public class FixHTML {
                 test = test.replace("$TUE$", "<strong>Due: Tuesday, see <a href=\"/d2l/le/calendar/ {OrgUnitId} \" target=\"_blank\">Calendar</a>&nbsp;for times</strong>");
                 test = test.replace("$MON$", "<strong>Due: Monday, see <a href=\"/d2l/le/calendar/ {OrgUnitId} \" target=\"_blank\">Calendar</a>&nbsp;for times</strong>");
 
+                // we will grab the body... which we have the text of, and 
+                // replace it.
                 Element body = doc.createElement("body");
-                body.append(test);
+                Element main = doc.createElement("div");
+                Element header = doc.createElement("div");
+                Element article = doc.createElement("div");
 
+                main.attr("id", "main");
+                header.attr("id", "header");
+                article.attr("id", "article");
+
+                body.appendChild(main);
+                main.appendChild(header);
+                main.appendChild(article);
+                article.append(test);
                 Elements emptySearch = body.getAllElements();
 
-                emptySearch.stream().filter((empty) -> (!empty.hasText() && !empty.tagName().equals("head") && !empty.tagName().equals("body"))).forEach((empty) -> {
+                emptySearch.stream().filter((empty)
+                        -> (!empty.hasText() && !empty.tagName().equals("head")
+                        && !empty.tagName().equals("body"))).forEach((empty) -> {
                     empty.unwrap();
                 });
 
@@ -114,18 +131,43 @@ public class FixHTML {
             } catch (IOException ex) {
                 System.out.println("Error!! Unable to open file!");
             }
+        } else {
+            System.out.println("Tried to clean HTML and doesn't exist: " + appendedPath + item.getLocation());
+            System.out.println("Title: " + item.getName());
         }
     }
 
     public void writeHTML() {
         PrintWriter writer;
         try {
-            writer = new PrintWriter(filePath + "\\content\\" + item.getName() + ".html", "UTF-8");
+            String pathName = item.getName();
+            pathName = pathName.replaceAll("[^a-zA-Z0-9.-]", " ");
+
+            System.out.println(pathName);
+            item.setHref("\\Course Files\\" + pathName + ".html");
+
+            if (item.getHref().length() > 112) {
+                String replaceHref = new String();
+                for (int i = 0; i > 128; i++) {
+                    replaceHref += item.getHref().charAt(i);
+                }
+                item.setHref(replaceHref + ".html");
+            }
+
+            if (item.getHref().equals(".html")) {
+                item.setHref("Blank HTML Page.html");
+            }
+
+            // add a header to the page and write file.
+            bodyText = bodyText.replace("<div id=\"main\">", "<div id=\"main\">\n"
+                    + "<div id=\"header\"><img src=\"../Web Files/Images/smallBanner.jpg\" alt=\"Course Banner\" width = \"100%\"/></div>");
+            writer = new PrintWriter(filePath + item.getHref(), "UTF-8");
             writer.println(bodyText);
+            writer.flush();
             writer.close();
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(FixHTML.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (UnsupportedEncodingException ex) {
+
+        } catch (FileNotFoundException | UnsupportedEncodingException ex) {
+            System.out.println("Error writing!!!");
             Logger.getLogger(FixHTML.class.getName()).log(Level.SEVERE, null, ex);
         }
 
