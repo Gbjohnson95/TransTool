@@ -48,6 +48,8 @@ The following features are planned on in the future:
 
 ***
 
+The TransTool is currently being worked on, mostly by a single person (Mark Hall). During the creation of this tool, he tried to make it easy, with as few buttons as possible. However, he cannot always foresee every possible circumstance, so feedback is always appreciated
+
 For a feature request, please go to the following URL and fill out the form provided:
 
 https://docs.google.com/forms/d/1K2xCiLCE9cz3KOHsZ9mYe_p1xVhc7NR_lbqaN_EyLFA/viewform

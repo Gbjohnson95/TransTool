@@ -6,12 +6,14 @@
 package transtool.xmlTools;
 
 import GradeItems.GradeCategories;
+import Items.AssetLink;
 import Items.Content;
 import Items.DiscussionBoard;
 import Items.DropBox;
 import Items.Folder;
 import Items.Item;
 import Items.QuizItem;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
@@ -20,6 +22,7 @@ import java.util.logging.Logger;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import org.apache.commons.io.FileUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -50,12 +53,12 @@ public class GatherItems {
 
     /**
      * GATHER ITEMS
-     * 
-     * This Constructor will initialize 
+     *
+     * This Constructor will initialize
      */
     public GatherItems() {
         Random randomGen = new Random();
-        
+
         this.quizID = 1;
         this.itemID = randomGen.nextInt(400001) + 100000;
         this.id = 3;
@@ -120,6 +123,7 @@ public class GatherItems {
                                 createContentPage(dataStructure, doc);
                                 break;
                             case ("AssetLink"):
+                                createAssetLink(dataStructure, doc);
                                 break;
                         }
                     }
@@ -583,7 +587,11 @@ public class GatherItems {
      */
     void createFolder(Element data, Document doc) {
         Folder folder = new Folder();
+        if (data.getElementsByTagName("folder").getLength() > 0){
         folder.setFolderID(data.getElementsByTagName("folder").item(0).getTextContent());
+        }
+        else
+            folder.setFolderID("000001");
         if (data.getElementsByTagName("folder").getLength() > 0) {
             folder.setFolderName(data.getElementsByTagName("title").item(0).getTextContent());
         } else {
@@ -591,6 +599,76 @@ public class GatherItems {
         }
         folder.setParent(data.getElementsByTagName("parent").item(0).getTextContent());
         folders.add(folder);
+    }
+
+    /**
+     * ASSET LINK: Pulls a link from the content and puts it right into the
+     * content page.
+     *
+     * @param data
+     * @param doc
+     */
+    public void createAssetLink(Element data, Document doc) {
+        AssetLink asset = new AssetLink();
+
+        // For links, we need the parent, the title (if one exists), the link
+        // location, and... that's it. 
+        //
+        // However, it should be noted that some assets are called as documents,
+        // and others are called as URL's.  We need to decide between the two,
+        // so an if/then statement should suffice.  If it is a URL, simply slap
+        // it on the href.  If it is a content item though, we have to strip the
+        // location and place it in Course Files
+        asset.setParent(data.getElementsByTagName("parent").item(0).getTextContent());
+
+        if (data.getElementsByTagName("title").getLength() > 0) {
+            asset.setName(data.getElementsByTagName("title").item(0).getTextContent());
+        } else {
+            asset.setName("Unnamed Link");
+        }
+
+        String href = data.getElementsByTagName("href").item(0).getTextContent();
+        // No folder location SHOULD have a // in it, so that is very convenient.
+        if (href.contains("//")) {
+            asset.setHref(href);
+            asset.setMaterialType("contentlink");
+        } else {
+            String appendedPath = new String();
+            for (int i = 0; i < href.length(); i++) {
+                appendedPath += href.charAt(i);
+                if (href.charAt(i) == '/') {
+                    appendedPath = new String();
+                }
+            }
+
+            // I am going to simply pull the item right now, so the transition
+            // smoothly comes across.
+            String newLocation = brainhoneyPath.replace("brainhoneymanifest.xml", "") + "resources\\" + href;
+            File source = new File(newLocation);
+            File dest = new File(savePath + "\\Course Files\\Documents and Images\\" + appendedPath);
+            try {
+                FileUtils.copyFile(source, dest);
+            } catch (IOException e) {
+                System.out.println("Error!!! Could not load file!");
+                System.out.println("Source is: " + source.getAbsolutePath());
+                System.out.println("Destination is: " + dest.getAbsolutePath());
+            }
+
+            href = "Course Files\\Documents and Images\\" + appendedPath;
+            asset.setMaterialType("content");
+        }
+        
+        asset.setItemID(data.getAttribute("id"));
+        asset.setParent(data.getElementsByTagName("parent").item(0).getTextContent());
+        asset.setIdent(Integer.toString(identifier));
+        identifier++;
+        asset.setBrainhoneyPath(brainhoneyPath);
+        asset.setSavePath(href);
+        
+
+        asset.setHref(href);
+
+        items.add(asset);
     }
 
     public String getBrainhoneyPath() {

@@ -71,8 +71,16 @@ public class Manifest {
         try {
             
             File file = new File(savePath + "\\Course Files");
+            File file2 = new File(savePath + "\\Course Files\\Documents and Images");
             if (!file.exists()) {
                 if (file.mkdir()) {
+                    System.out.println("Directory is created!");
+                } else {
+                    System.out.println("Error!  Directory already exists!!");
+                }
+            }
+            if (!file2.exists()) {
+                if (file2.mkdir()) {
                     System.out.println("Directory is created!");
                 } else {
                     System.out.println("Error!  Directory already exists!!");
