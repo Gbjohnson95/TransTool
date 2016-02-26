@@ -30,7 +30,13 @@ public class MultipleChoice extends BrainhoneyQuestion {
 
         //Field entries are very question specific.  Well... for the question type.
         Element fieldEntry2 = doc.createElement("fieldentry");
+        if (brainhoney.getqChoice().size() == 2  && (brainhoney.getqChoice().get(0).equalsIgnoreCase("True") || brainhoney.getqChoice().get(0).equalsIgnoreCase("False"))
+                && (brainhoney.getqChoice().get(1).equalsIgnoreCase("True") || brainhoney.getqChoice().get(1).equalsIgnoreCase("False"))){
+            fieldEntry2.appendChild(doc.createTextNode("True/False"));
+        }
+        else{
         fieldEntry2.appendChild(doc.createTextNode("Multiple Choice"));
+        }
         Element qtiDataField2 = (Element) rootItem.getElementsByTagName("qti_metadatafield").item(1);
         qtiDataField2.appendChild(fieldEntry2);
 
