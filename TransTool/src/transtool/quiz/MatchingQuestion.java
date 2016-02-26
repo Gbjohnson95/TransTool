@@ -5,6 +5,7 @@
  */
 package transtool.quiz;
 
+import java.util.ArrayList;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import transtool.questions.BrainhoneyContents;
@@ -87,76 +88,90 @@ public class MatchingQuestion extends BrainhoneyQuestion {
         int answerNumber = itemNumber + brainhoney.getqChoice().size();
         questionNumber = answerNumber;
 
+        ArrayList<String> alreadyChosen = new ArrayList<>();
+
         for (int j = 0; j < brainhoney.getqChoice().size(); j++) {
-            Element grp = doc.createElement("response_grp");
-            Element material2 = doc.createElement("material");
-            Element mattext2 = doc.createElement("mattext");
-            Element renderChoice = doc.createElement("render_choice");
 
-            grp.setAttribute("respident", brain.getQuestionID() + "_C" + questionNumber);
-
-            grp.setAttribute("rcardinality", "single");
-            mattext2.setAttribute("texttype", "text/html");
-            if (j < brainhoney.getRightAnswer().size()) {
-                mattext2.setTextContent(brainhoney.getRightAnswer().get(j));
+            boolean isChosen = false;
+            for (String chosen : alreadyChosen) {
+                if (chosen.equals(brainhoney.getRightAnswer().get(j))) {
+                    isChosen = true;
+                    System.out.println("Error on: " + chosen);
+                }
             }
-            renderChoice.setAttribute("shuffle", "yes");
 
-            flow.appendChild(grp);
-            grp.appendChild(material2);
-            material2.appendChild(mattext2);
-            grp.appendChild(renderChoice);
+            if (isChosen == false) {
+                alreadyChosen.add(brainhoney.getRightAnswer().get(j));
+                Element grp = doc.createElement("response_grp");
+                Element material2 = doc.createElement("material");
+                Element mattext2 = doc.createElement("mattext");
+                Element renderChoice = doc.createElement("render_choice");
 
-            Element flowL = doc.createElement("flow_label");
-            renderChoice.appendChild(flowL);
-            flowL.setAttribute("class", "Block");
+                grp.setAttribute("respident", brain.getQuestionID() + "_C" + questionNumber);
 
-            for (int i = 0; i < brainhoney.getRightAnswer().size(); i++) {
+                grp.setAttribute("rcardinality", "single");
+                mattext2.setAttribute("texttype", "text/html");
+                if (j < brainhoney.getRightAnswer().size()) {
+                    mattext2.setTextContent(brainhoney.getRightAnswer().get(j));
+                }
+                renderChoice.setAttribute("shuffle", "yes");
 
-                Element responseLabel = doc.createElement("response_label");
-                flowL.appendChild(responseLabel);
-                responseLabel.setAttribute("ident", brain.getQuestionID() + "_M" + itemNumber);
+                flow.appendChild(grp);
+                grp.appendChild(material2);
+                material2.appendChild(mattext2);
+                grp.appendChild(renderChoice);
 
-                Element flowMat = doc.createElement("flow_mat");
-                responseLabel.appendChild(flowMat);
+                Element flowL = doc.createElement("flow_label");
+                renderChoice.appendChild(flowL);
+                flowL.setAttribute("class", "Block");
 
-                Element material3 = doc.createElement("material");
-                flowMat.appendChild(material3);
+                for (int i = 0; i < brainhoney.getRightAnswer().size(); i++) {
+                    Element responseLabel = doc.createElement("response_label");
+                    flowL.appendChild(responseLabel);
+                    responseLabel.setAttribute("ident", brain.getQuestionID() + "_M" + itemNumber);
 
-                Element mattext3 = doc.createElement("mattext");
-                material3.appendChild(mattext3);
+                    Element flowMat = doc.createElement("flow_mat");
+                    responseLabel.appendChild(flowMat);
 
-                mattext3.setAttribute("texttype", "text/html");
-                if (i < brainhoney.getqChoice().size()) {
-                    mattext3.setTextContent(brainhoney.getqChoice().get(i));
+                    Element material3 = doc.createElement("material");
+                    flowMat.appendChild(material3);
+
+                    Element mattext3 = doc.createElement("mattext");
+                    material3.appendChild(mattext3);
+
+                    mattext3.setAttribute("texttype", "text/html");
+                    if (i < brainhoney.getqChoice().size()) {
+                        mattext3.setTextContent(brainhoney.getqChoice().get(i));
+                    }
+
+                    Element respcondition = doc.createElement("respcondition");
+                    Element conditionvar = doc.createElement("conditionvar");
+                    Element varequal = doc.createElement("varequal");
+                    Element setvar = doc.createElement("setvar");
+
+                    resprocessing.appendChild(respcondition);
+                    respcondition.appendChild(conditionvar);
+                    conditionvar.appendChild(varequal);
+                    respcondition.appendChild(setvar);
+
+                    varequal.setAttribute("respident", brain.getQuestionID() + "_C" + questionNumber);
+                    varequal.setTextContent(brain.getQuestionID() + "_M" + itemNumber);
+
+                    setvar.setAttribute("action", "Add");
+                    setvar.setTextContent("1");
+
+                    if (brainhoney.getRightAnswer().get(i).equals(brainhoney.getRightAnswer().get(j))) {
+                        setvar.setAttribute("varname", "D2L_Correct");
+                    } else {
+                        setvar.setAttribute("varname", "D2L_Incorrect");
+                    }
+                    itemNumber++;
+
                 }
 
-                Element respcondition = doc.createElement("respcondition");
-                Element conditionvar = doc.createElement("conditionvar");
-                Element varequal = doc.createElement("varequal");
-                Element setvar = doc.createElement("setvar");
-
-                resprocessing.appendChild(respcondition);
-                respcondition.appendChild(conditionvar);
-                conditionvar.appendChild(varequal);
-                respcondition.appendChild(setvar);
-
-                varequal.setAttribute("respident", brain.getQuestionID() + "_C" + questionNumber);
-                varequal.setTextContent(brain.getQuestionID() + "_M" + itemNumber);
-
-                setvar.setAttribute("action", "Add");
-                setvar.setTextContent("1");
-
-                if (i == j) {
-                    setvar.setAttribute("varname", "D2L_Correct");
-                } else {
-                    setvar.setAttribute("varname", "D2L_Incorrect");
-                }
-                itemNumber++;
-
+                questionNumber++;
+                itemNumber = qNumber;
             }
-            questionNumber++;
-            itemNumber = qNumber;
         }
 
     }
