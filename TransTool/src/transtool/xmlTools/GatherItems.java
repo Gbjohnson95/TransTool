@@ -343,7 +343,9 @@ public class GatherItems {
         quiz.setSavePath(savePath);
         quiz.setBrainhoneyPath(brainhoneyPath);
         quiz.setParent(data.getElementsByTagName("parent").item(0).getTextContent());
+        if (data.getElementsByTagName("title").getLength() != 0){
         quiz.setName(data.getElementsByTagName("title").item(0).getTextContent());
+        }
         quiz.setLocation(data.getElementsByTagName("href").item(0).getTextContent());
         if (data.getElementsByTagName("gradable").getLength() > 0) {
             quiz.setGradeable(data.getElementsByTagName("gradable").item(0).getTextContent());
