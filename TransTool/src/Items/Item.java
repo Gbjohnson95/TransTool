@@ -33,6 +33,7 @@ public class Item {
 
     public Item() {
         bodyText = new String();
+        name = new String();
     }
 
     /**
