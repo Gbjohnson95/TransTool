@@ -26,7 +26,7 @@ public class FixHTML {
 
     private Item item;
     private String filePath;
-    private String bodyText = "";
+    private String bodyText;
 
     /**
      * FIX HTML
@@ -36,33 +36,40 @@ public class FixHTML {
      *
      */
     public FixHTML() {
-
+        item = new Item();
+        filePath = new String();
+        bodyText = new String();
     }
 
+    /**
+     * FIX
+     *  What fix will do is the following:
+     *  - Take a path and open a file, parsing it into jSoup
+     *  - Use the jSoup properties to clean up the code
+     *  - Lastly, do some variable replacing and put it back into the HTML
+     */
     public void fix() {
-        String brainhoneyPath = item.getBrainhoneyPath();
-        String fileName = new String();
-        String appendedPath = new String();
+        
+        /**
+         * For the first part, we grab the brainhoney path of the old file.
+         * Then, we have to pull off the words "brainhoneymanifest.xml" to get
+         * the actual path.  Lastly, we feed it back so we can open the file
+         * 
+         * hmmm....
+         * 
+         * Okay, just used String.replace on brainhoneyPath and saved me from
+         * a for loop.  Woohoo!  (Yes, the code probably uses a for loop anyway)
+         */
+        String brainhoneyPath = item.getBrainhoneyPath().replace("brainhoneymanifest.xml", "") + "resources\\";
+        File input = new File(brainhoneyPath + item.getLocation());
 
-        for (int i = 0; i < brainhoneyPath.length(); i++) {
-            fileName += brainhoneyPath.charAt(i);
-            if (brainhoneyPath.charAt(i) == '\\') {
-                appendedPath += fileName;
-                fileName = new String();
-            }
-        }
-        appendedPath += "resources\\";
-
-        File input = new File(appendedPath + item.getLocation());
+        // Input.exists is a very useful file, I've noticed.
         if (input.exists()) {
             try {
-
                 Document doc = Jsoup.parse(input, "UTF-8");
-
                 //First, let's set up things until the body text.
                 Element html = doc.getElementsByTag("html").first();
                 html.attr("lang", "en-us");
-
                 Element head = doc.getElementsByTag("head").first();
 
                 if (!head.hasText() && item.getItemType().equals("Content")) {
@@ -87,18 +94,21 @@ public class FixHTML {
                 Whitelist white = Whitelist.basicWithImages();
                 white.preserveRelativeLinks(true);
                 white.removeTags("span");
+                white.addTags("h1", "h2", "h3", "h4", "h5");
+                white.addTags("ul", "li", "table", "tr", "td");
                 white.addEnforcedAttribute("a", "target", "_blank");
                 String test = Jsoup.clean(doc.body().html(), white);
 
                 // Replacing common variables.  Replacing them to accomodate online
                 // classes.  
                 test = test.replace("$ITEMNAME$", item.getName());
-                test = test.replace("$SAT$", "<strong>Due: Monday, see <a href=\"/d2l/le/calendar/ {OrgUnitId} \" target=\"_blank\">Calendar</a>&nbsp;for times</strong>");
-                test = test.replace("$FRI$", "<strong>Due: Friday, see <a href=\"/d2l/le/calendar/ {OrgUnitId} \" target=\"_blank\">Calendar</a>&nbsp;for times</strong>");
-                test = test.replace("$THUR$", "<strong>Due: Thursday, see <a href=\"/d2l/le/calendar/ {OrgUnitId} \" target=\"_blank\">Calendar</a>&nbsp;for times</strong>");
-                test = test.replace("$WED$", "<strong>Due: Wednesday, see <a href=\"/d2l/le/calendar/ {OrgUnitId} \" target=\"_blank\">Calendar</a>&nbsp;for times</strong>");
-                test = test.replace("$TUE$", "<strong>Due: Tuesday, see <a href=\"/d2l/le/calendar/ {OrgUnitId} \" target=\"_blank\">Calendar</a>&nbsp;for times</strong>");
-                test = test.replace("$MON$", "<strong>Due: Monday, see <a href=\"/d2l/le/calendar/ {OrgUnitId} \" target=\"_blank\">Calendar</a>&nbsp;for times</strong>");
+                test = test.replace("$Itemname$", item.getName());
+                test = test.replace("$SAT$", "<strong>Due: Monday, see Calendar&nbsp;for times</strong>");
+                test = test.replace("$FRI$", "<strong>Due: Friday, see Calendar&nbsp;for times</strong>");
+                test = test.replace("$THUR$", "<strong>Due: Thursday, see Calendar&nbsp;for times</strong>");
+                test = test.replace("$WED$", "<strong>Due: Wednesday, see Calendar&nbsp;for times</strong>");
+                test = test.replace("$TUE$", "<strong>Due: Tuesday, see Calendar&nbsp;for times</strong>");
+                test = test.replace("$MON$", "<strong>Due: Monday, see Calendar&nbsp;for times</strong>");
 
                 // we will grab the body... which we have the text of, and 
                 // replace it.
@@ -132,7 +142,7 @@ public class FixHTML {
                 System.out.println("Error!! Unable to open file!");
             }
         } else {
-            System.out.println("Tried to clean HTML and doesn't exist: " + appendedPath + item.getLocation());
+            System.out.println("Tried to clean HTML and doesn't exist: " + brainhoneyPath + item.getLocation());
             System.out.println("Title: " + item.getName());
         }
     }
